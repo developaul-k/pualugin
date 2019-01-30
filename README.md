@@ -48,8 +48,7 @@
 
 ## 2. Tab
 
-* Tab Plugin은 tab__anchor 클릭 시 해당하는 tab__panel이 열립니다.
-* toggle__anchor는 모든 태그로 사용가능합니다. ( ex: button, div, span ..... )
+* Tab Plugin은 tab__anchor 클릭 시 해당하는 tab__panel 노출됨.
 
 ### Basic Code
 
