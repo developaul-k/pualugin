@@ -26,7 +26,7 @@ jQuery파일 다운로드
 </head>
 <body>
     <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
-    <script src="./src/js/youngstrap.js"></script> <!-- youngstrap 플러그인 추가 -->
+    <script src="./src/js/pualugin.js"></script> <!-- pualugin 플러그인 추가 -->
 </body>
 </html>
 ```
