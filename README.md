@@ -29,19 +29,19 @@
 * **mode**
     * **type**: String
     * **default**: static
-    * **description**: static, slide, fade 3가지 옵션 선택가능합니다.
+    * **description**: **static**, **slide**, **fade** 중 선택
 * **isOpened**
     * **type**: Boolean
     * **default**: false
-    * **description**: 초기에 toggle__panel 노출 여부를 설정합니다.
+    * **description**: 초기에 toggle__panel 노출 여부를 설정
 * **event**
     * **type**: String
     * **default**: click
-    * **description**: click, focusin 2가지 옵션 선택가능합니다.
+    * **description**: **click**, **focusin** 중 선택
 * **easing**
     * **type**: String
     * **default**: swing
 * **activeClassName**
     * **type**: String
     * **default**: is-active
-    * **description**: 원하는 클래스명으로 변경 가능합니다.
+    * **description**: 원하는 클래스명으로 변경 가능
