@@ -73,8 +73,6 @@
 			activeClassName: 'is-active',
 			onChangeBefore: null,
 			onChangeAfter: null,
-			selectedText: 'Selected',
-			firstOpen: false,
 			isOpened: false
 		};
 
@@ -107,13 +105,11 @@
 				plugin.$anchor = plugin.$wrap.find(plugin.options.anchorEl);
 				plugin.$panel = plugin.$wrap.find(plugin.options.panelEl);
 
-				if ( !plugin.options.firstOpen ) {
+				if ( !plugin.options.isOpened ) {
 					plugin.$panel.attr('aria-expended', false).hide();
 				} else {
-					this.flag = true
+					plugin.show()
 				}
-
-				plugin.options.isOpened && plugin.toggle()
 			},
 
 			bindEvents: function () {
