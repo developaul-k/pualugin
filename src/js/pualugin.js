@@ -1,5 +1,6 @@
 /*
-** Auth : Pual Kim
+** PluginName: Pualugin
+** Auth: Pual
 */
 
 ;
