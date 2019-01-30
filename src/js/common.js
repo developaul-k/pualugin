@@ -1,5 +1,5 @@
 /*
-** Auth : Paul Kim
+** Auth : Pual Kim
 */
 
 ;
@@ -16,9 +16,13 @@
 	*/
 	;
 	(function () {
-		/***
-		 * get Unique String
-		 */
+		/*
+		** GET Unique String
+		** @param String 'js'
+		** @return 'js1'
+		** @param null
+		** @return '1'
+		*/
 		UTIL.uuid = (function () {
 			var _uuid = 0;
 			return function (prefix) {
@@ -28,11 +32,11 @@
 			}
 		})();
 
-		/***
-		 * 전달된 부모엘리먼트 하위에 focus가능한 엘리먼트 반환
-		 * @param parentElement
-		 * @returns {[*,*]}
-		 */
+		/*
+		** 전달된 부모엘리먼트 하위에 focus가능한 엘리먼트 반환
+		** @param parentElement
+		** @returns {[*,*]}
+		*/
 		UTIL.findFocusEl = function (parentElement) {
 			var _basket = [];
 
@@ -46,16 +50,6 @@
 			});
 
 			return [_basket[0], _basket[_basket.length - 1]];
-		};
-
-		$.fn.scrollEnd = function(callback, timeout) {
-			$(this).scroll(function(){
-				var $this = $(this);
-				if ($this.data('scrollTimeout')) {
-					clearTimeout($this.data('scrollTimeout'));
-				}
-				$this.data('scrollTimeout', setTimeout(callback,timeout));
-			});
 		};
 	})()
 
