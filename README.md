@@ -1,8 +1,39 @@
 # youngstrap ( jQuery UI Library )
 
-## 1. Toggle
 
-* Toggle Plugin은 toggle__anchor를 클릭 시 toggle__panel이 나타났다 사라졌다를 반복합니다.
+## Getting started
+CLI를 이용한 jQuery 설치
+```html
+<!-- npm -->
+npm install jquery
+<!-- yarn -->
+yarn add jquery
+<!-- bower -->
+bower install jquery
+```
+jQuery파일 다운로드
+* https://code.jquery.com/jquery/
+
+플러그인을 사용할 **your.html**을 만듭니다.
+```html
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>UI Component</title>
+</head>
+<body>
+    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="./src/js/youngstrap.js"></script> <!-- youngstrap 플러그인 추가 -->
+</body>
+</html>
+```
+
+## Toggle
+
+Toggle Plugin은 toggle__anchor를 클릭 시 toggle__panel이 나타났다 사라졌다를 반복합니다.
 * toggle__anchor는 모든 태그로 사용가능합니다. ( ex: button, div, span ..... )
 * 초기값은 toggle_panel이 숨겨진 상태입니다.
 
@@ -46,9 +77,11 @@
     * **default**: is-active
     * **description**: 원하는 클래스명으로 변경 가능
 
-## 2. Tab
+----------------
 
-* Tab Plugin은 tab__anchor 클릭 시 해당하는 tab__panel 노출됨.
+## Tab
+
+Tab Plugin은 tab__anchor 클릭 시 해당하는 tab__panel 노출됨.
 
 ### Basic Code
 
