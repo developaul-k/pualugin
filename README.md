@@ -158,3 +158,79 @@ Tab Plugin은 tab__anchor 클릭 시 해당하는 tab__panel 노출됨.
     * **type**: String
     * **default**: Selected
     * **description**: 원하는 명칭으로 변경 가능 (title 속성으로 들어갑니다.)
+
+
+## Accordion
+
+Accordion은 tab__anchor 클릭 시 해당하는 tab__panel 노출됨.
+
+### Basic Code
+
+``` html
+<ul data-js="accordion">
+    <li data-js="accordion__item">
+        <a href="#" data-js="accordion__anchor">accordion__anchor1</a>
+        <div data-js="accordion__panel">accordion__panel1</div>
+    </li>
+    <li data-js="accordion__item">
+        <a href="#" data-js="accordion__anchor">accordion__anchor2</a>
+        <div data-js="accordion__panel">accordion__panel2</div>
+    </li>
+    <li data-js="accordion__item">
+        <a href="#" data-js="accordion__anchor">accordion__anchor3</a>
+        <div data-js="accordion__panel">accordion__panel3</div>
+    </li>
+</ul>
+```
+
+### Basic Code + Options
+
+``` html
+<ul data-js="accordion" data-options='{"autoFold":false}'>
+    <li data-js="accordion__item">
+        <a href="#" data-js="accordion__anchor">accordion__anchor1</a>
+        <div data-js="accordion__panel">accordion__panel1</div>
+    </li>
+    <li data-js="accordion__item">
+        <a href="#" data-js="accordion__anchor">accordion__anchor2</a>
+        <div data-js="accordion__panel">accordion__panel2</div>
+    </li>
+    <li data-js="accordion__item">
+        <a href="#" data-js="accordion__anchor">accordion__anchor3</a>
+        <div data-js="accordion__panel">accordion__panel3</div>
+    </li>
+</ul>
+```
+
+### Options
+
+* **mode**
+    * **type**: String
+    * **default**: static
+    * **description**: **static**, **slide**, 중 선택
+* **speed**
+    * **type**: Number
+    * **default**: 300
+* **easing**
+    * **type**: String
+    * **default**: swing
+* **initIndex**
+    * **type**: Number
+    * **default**: 0
+    * **description**: 원하는 탭 순서로 초기화
+* **isInitActive**
+    * **type**: Boolean
+    * **default**: flase
+    * **description**: 초기화 단계에서 initIndex에 입력한 탭 열기
+* **autoFold**
+    * **type**: Boolean
+    * **default**: true
+    * **description**: 다른 탭 클릭 시 기존에 열려있던 탭은 닫힘
+* **autoScroll**
+    * **type**: Boolean
+    * **default**: false
+    * **description**: 선택한 탭의 위치로 스크롤 이동
+* **activeClassName**
+    * **type**: String
+    * **default**: is-active
+    * **description**: 원하는 클래스명으로 변경 가능
