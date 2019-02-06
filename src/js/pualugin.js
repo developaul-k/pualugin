@@ -87,18 +87,17 @@
 		}
 
 		$.extend(Plugin.prototype, {
-
 			init: function () {
 				var plugin = this;
 				plugin.buildCache();
 				plugin.bindEvents();
 			},
-
-			destroy: function () {
+			reInit: function() {
 				var plugin = this;
-				plugin.unbindEvents();
-			},
 
+				plugin.destroy();
+				plugin.init();
+			},
 			buildCache: function () {
 				var plugin = this;
 
@@ -112,7 +111,6 @@
 					plugin.show()
 				}
 			},
-
 			bindEvents: function () {
 				var plugin = this;
 				var eventName = (function () {
@@ -139,13 +137,19 @@
 					}
 				});
 
+				plugin.$wrap.on('show.' + pluginName, function (e) {
+					plugin.show();
+				})
+
 				plugin.$wrap.on('hide.' + pluginName, function (e) {
 					plugin.hide();
 				})
 			},
-
 			unbindEvents: function () {
 				var plugin = this;
+
+				plugin.$anchor.off('.' + plugin._name)
+				plugin.$wrap.off('.' + plugin._name)
 			},
 			beforeChange: function ($anchor, $panel) {
 				var plugin = this,
@@ -197,7 +201,6 @@
 				}
 				plugin.$panel.attr('aria-expended', true);
 			},
-
 			hide: function () {
 				var plugin = this;
 
@@ -217,6 +220,17 @@
 					plugin.$panel.stop().hide();
 				}
 				plugin.$panel.attr('aria-expended', false);
+			},
+			removeCache: function() {
+				var plugin = this;
+
+				plugin.$panel.removeAttr('aria-expended style');
+			},
+			destroy: function () {
+				var plugin = this;
+
+				plugin.unbindEvents();
+				plugin.removeCache();
 			}
 		});
 

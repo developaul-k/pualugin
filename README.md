@@ -40,7 +40,7 @@ Toggle Plugin은 toggle__anchor를 클릭 시 toggle__panel이 나타났다 사�
 ### Basic Code
 
 ``` html
-<div data-js="toggle">
+<div class="your-element" data-js="toggle">
     <a href="#" data-js="toggle__anchor">toggle__anchor</a>
     <div data-js="toggle__panel">toggle__panel</div>
 </div>
@@ -49,7 +49,7 @@ Toggle Plugin은 toggle__anchor를 클릭 시 toggle__panel이 나타났다 사�
 ### Basic Code + Options
 
 ``` html
-<div data-js="toggle" data-options='{ "isOpened": true }'>
+<div class="your-element" data-js="toggle" data-options='{ "isOpened": true }'>
     <a href="#" data-js="toggle__anchor">toggle__anchor</a>
     <div data-js="toggle__panel">toggle__panel</div>
 </div>
@@ -76,6 +76,62 @@ Toggle Plugin은 toggle__anchor를 클릭 시 toggle__panel이 나타났다 사�
     * **type**: String
     * **default**: is-active
     * **description**: 원하는 클래스명으로 변경 가능
+* **onChangeBeforeText**
+    * **type**: String
+    * **default**: null
+    * **description**: panel 오픈 전 노출될 anchor 텍스트
+* **onChangeAfterText**
+    * **type**: String
+    * **default**: null
+    * **description**: panel 오픈 후 노출될 anchor 텍스트
+
+### Callback Options
+
+``` javascript
+var toggle = $('.your-element').data('plugin_toggle');
+
+toggle.options.onChangeBefore = function( toggle, anchor, panel ) {
+    /* ... your code */
+}
+
+toggle.options.onChangeAfter = function( toggle, anchor, panel ) {
+    /* ... your code */
+}
+```
+
+* **onChangeBefore**
+    * **Arguments**: toggle, anchor, panel
+    * **description**: 패널 오픈 전 실행될 함수
+* **onChangeAfter**
+    * **Arguments**: toggle, anchor, panel
+    * **description**: 패널 오픈 후 실행될 함수
+
+### Method
+
+``` javascript
+var toggle = $('.your-element').data('plugin_toggle');
+
+toggle.show();
+
+toggle.hide();
+
+toggle.destroy();
+
+toggle.reInit();
+```
+
+* **show**
+    * **Arguments**: none
+    * **description**: 패널 열기
+* **hide**
+    * **Arguments**: none
+    * **description**: 패널 닫기
+* **destroy**
+    * **Arguments**: none
+    * **description**: 플러그인 초기화
+* **reInit**
+    * **Arguments**: none
+    * **description**: 플러그인 초기화 후 재생성 ex) 비동기 마크업 생성 시 사용
 
 
 ## Tab
