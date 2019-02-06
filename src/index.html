@@ -5,12 +5,46 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>UI Component</title>
+    <style>
+        h1 {
+            margin-bottom: 10px;
+            font-size: 15px;
+        }
+        .plugin {
+            margin: 25px 0 10px;
+        }
+    </style>
 </head>
 <body>
-    <div data-js="toggle">
-        <button data-js="toggle__anchor">toggle_anchor</button>
-        <div data-js="toggle__panel">toggle_panel</div>
+    <div class="plugin">
+        <h1>toggle</h1>
+        <div data-js="toggle">
+            <button data-js="toggle__anchor">toggle_anchor</button>
+            <div data-js="toggle__panel">toggle_panel</div>
+        </div>
     </div>
+
+    <div class="plugin">
+        <h1>tab</h1>
+        <div class="your-element" data-js="tab">
+            <ul>
+                <li data-js="tab__list">
+                    <a href="#" data-js="tab__anchor">tab-anchor1</a>
+                </li>
+                <li data-js="tab__list">
+                    <a href="#" data-js="tab__anchor">tab-anchor2</a>
+                </li>
+                <li data-js="tab__list">
+                    <a href="#" data-js="tab__anchor">tab-anchor3</a>
+                </li>
+            </ul>
+
+            <div data-js="tab__panel"> tab-panel1 </div>
+            <div data-js="tab__panel"> tab-panel2 </div>
+            <div data-js="tab__panel"> tab-panel3 </div>
+        </div>
+    </div>
+
     <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="./js/pualugin.js"></script>
 </body>

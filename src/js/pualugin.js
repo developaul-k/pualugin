@@ -92,8 +92,7 @@
 			},
 			reInit: function() {
 				var plugin = this;
-
-				plugin.destroy();
+				plugin.flag = false;
 				plugin.init();
 			},
 			buildCache: function () {
@@ -122,27 +121,33 @@
 					return events + '.' + plugin._name;
 				})();
 
-				plugin.$anchor.on(eventName, function (e) {
-					e.stopPropagation();
+				plugin.$anchor
+					.off(eventName)
+					.on(eventName, function (e) {
+						e.stopPropagation();
 
-					var $this = $(this);
+						var $this = $(this);
 
-					var key = e.which || e.keyCode;
+						var key = e.which || e.keyCode;
 
-					if (e.type === 'click' || e.type === 'focusin' || key === 13 || key === 32) {
-						plugin.idx = $(this).data('index');
-						plugin.toggle();
-						e.preventDefault();
-					}
-				});
+						if (e.type === 'click' || e.type === 'focusin' || key === 13 || key === 32) {
+							plugin.idx = $(this).data('index');
+							plugin.toggle();
+							e.preventDefault();
+						}
+					});
 
-				plugin.$wrap.on('show.' + pluginName, function (e) {
-					plugin.show();
-				})
+				plugin.$wrap
+					.off('show.' + pluginName)
+					.on('show.' + pluginName, function (e) {
+						plugin.show();
+					});
 
-				plugin.$wrap.on('hide.' + pluginName, function (e) {
-					plugin.hide();
-				})
+				plugin.$wrap
+					.off('hide.' + pluginName)
+					.on('hide.' + pluginName, function (e) {
+						plugin.hide();
+					})
 			},
 			unbindEvents: function () {
 				var plugin = this;
@@ -218,6 +223,7 @@
 				var plugin = this;
 
 				plugin.unbindEvents();
+				plugin.flag = false;
 				plugin.$panel.removeAttr('aria-expended style');
 			}
 		});
@@ -257,8 +263,6 @@
 			withScroll: false,
 			isInitActive: true,
 			initIndex: 0,
-			onChangeBefore: null,
-			onChangeAfter: null,
 			selectedText: 'Selected'
 		};
 
@@ -274,7 +278,6 @@
 		}
 
 		$.extend(Plugin.prototype, {
-
 			init: function () {
 				var plugin = this;
 				plugin.buildCache();
@@ -284,16 +287,16 @@
 				}
 				plugin.initialized = true;
 			},
-
 			destroy: function () {
 				var plugin = this;
 				plugin.unbindEvents();
 				plugin.$list.removeAttr('role');
 				plugin.$anchor.removeAttr('style role').removeClass(plugin.options.activeClassName);
 				plugin.$panel.removeAttr('style role aria-labelledby').removeClass(plugin.options.activeClassName);
+				plugin.idx = 0;
 				plugin.flag = false;
+				plugin.initialized = false;
 			},
-
 			buildCache: function () {
 				var plugin = this;
 				var tabsId = [];
@@ -308,6 +311,7 @@
 
 					return byOption.length ? byOption : replace;
 				}());
+
 				plugin.$list.attr('role', 'tablist');
 
 				plugin.$anchor.each(function (index) {
@@ -340,7 +344,6 @@
 					});
 				});
 			},
-
 			bindEvents: function () {
 				var plugin = this;
 				var eventName = (function () {
@@ -354,62 +357,52 @@
 					return events + '.' + plugin._name;
 				})();
 
-				plugin.$anchor.on(eventName, function (e) {
-					e.stopPropagation();
-					var $this = $(this);
-					if ($this.hasClass(plugin.options.activeClassName) || $this.hasClass(plugin.options.disabledClassName) || plugin.flag) {
-						return;
-					}
+				plugin.$anchor
+					.off(eventName)
+					.on(eventName, function (e) {
+						e.stopPropagation();
+						var $this = $(this);
 
-					var key = e.which;
+						if ($this.hasClass(plugin.options.activeClassName) || $this.hasClass(plugin.options.disabledClassName) || plugin.flag) return;
 
-					if (e.type === 'click' || e.type === 'focusin' || key === 13 || key === 32) {
-						plugin.idx = $(this).data('index');
-						plugin.hide(this);
-						plugin.show(this);
-						e.preventDefault();
-					}
+						var key = e.which;
 
+						if (e.type === 'click' || e.type === 'focusin' || key === 13 || key === 32) {
+							plugin.idx = $(this).data('index');
+							plugin.hide(this);
+							plugin.show(this);
+							e.preventDefault();
+						}
+					});
 
-				});
-
-				plugin.$wrap.on('go.' + plugin._name, function (ev, index, withScroll) {
-					plugin.$anchor.eq(index).trigger(plugin.options.event);
-					if (withScroll) {
-						$('html, body').stop().animate({
-							scrollTop: plugin.$wrap.offset().top
-						}, plugin.options.speed);
-					}
-				})
+				plugin.$wrap
+					.off('go.' + plugin._name)
+					.on('go.' + plugin._name, function (ev, index, withScroll) {
+						plugin.$anchor.eq(index).trigger(plugin.options.event);
+						if (withScroll) {
+							$('html, body').stop().animate({
+								scrollTop: plugin.$wrap.offset().top
+							}, plugin.options.speed);
+						}
+					})
 			},
-
 			unbindEvents: function () {
 				var plugin = this;
 				plugin.$anchor.off('.' + plugin._name).removeData(plugin._name + '_target');
 				plugin.$wrap.off('.' + plugin._name);
 			},
-
 			beforeChange: function ($anchor, $panel) {
-				var plugin = this,
-					onChangeBefore = plugin.options.onChangeBefore;
+				var plugin = this;
 
-				if (typeof onChangeBefore === 'function') {
-					onChangeBefore.apply(plugin.element, [plugin, $anchor, $panel]);
-				}
+				plugin.$wrap.trigger('beforeChange', [plugin, $anchor, $panel]);
 			},
-
 			afterChange: function ($anchor, $panel) {
-				var plugin = this,
-					onChangeAfter = plugin.options.onChangeAfter;
+				var plugin = this;
 
-				if (typeof onChangeAfter === 'function') {
-					onChangeAfter.apply(plugin.element, [plugin, $anchor, $panel]);
-				}
-				$('body').trigger('TAB_CHANGE', [plugin, plugin.$wrap]);
+				plugin.$wrap.trigger('afterChange', [plugin, $anchor, $panel]);
 
 				$panel.find('.slick-initialized').length && $panel.find('.slick-initialized').slick('setPosition');
 			},
-
 			show: function (_target) {
 				var plugin = this,
 					$anchor = $(_target);
@@ -447,7 +440,6 @@
 					}, plugin.options.speed);
 				}
 			},
-
 			hide: function (_except) {
 				var plugin = this;
 
@@ -469,43 +461,24 @@
 						$panel.stop().hide();
 					}
 				});
-			}
+			},
+			reInit: function() {
+				var plugin = this;
 
+				plugin.idx = 0;
+				plugin.flag = false;
+				plugin.destroy();
+				plugin.init();
+			}
 		});
 
 		$.fn[pluginName] = function ( options ) {
-			/*
-			** 테스트중 190114
-			var _ = this,
-				options = arguments[0] || $(this).data('options'),
-				args = Array.prototype.slice.call(arguments, 1),
-				l = _.length,
-				i,
-				ret;
-			for (i = 0; i < l; i++) {
-				if (typeof options == 'object' || typeof options == 'undefined')
-					_[i].tab = new Plugin(_[i], options);
-				else
-					console.log( _[i].tab )
-					// ret = _[i].tab[options].apply(_[i].tab, args);
-				if (typeof ret != 'undefined') return ret;
-			}
-
-			return _;
-			*/
-
 			return this.each(function () {
 				if (!$.data(this, "plugin_" + pluginName)) {
 					$.data(this, "plugin_" + pluginName, new Plugin(this, options || $(this).data('options')));
 				}
 			});
 		}
-
-		$.fn[pluginName].options = {
-			go: function (elem, index) {
-				elem.trigger('go', index);
-			}
-		};
 
 		$(function () {
 			$('[data-js=tab]').tab();
