@@ -233,47 +233,44 @@ $('.your-element').tab();
     * **default**: Selected
     * **description**: 원하는 명칭으로 변경 가능 (title 속성으로 들어갑니다.)
 
-### Callback Options
+### Events
 
 ``` javascript
-var yourVariable = $('.your-element').data('plugin_tab');
+var yourVariable = $('.your-element');
 
-yourVariable.options.onChangeBefore = function( tab, anchor, panel ) {
-    /* ... your code */
-}
+yourVariable.on('beforeChange', function( event, plugin, anchor, panel ){
+    /* your code ... */
+})
 
-yourVariable.options.onChangeAfter = function( tab, anchor, panel ) {
-    /* ... your code */
-}
+yourVariable.on('afterChange', function( event, plugin, anchor, panel ){
+    /* your code ... */
+})
 ```
 
-* **onChangeBefore**
-    * **Arguments**: toggle, anchor, panel
-    * **description**: 패널 오픈 전 실행될 함수
-* **onChangeAfter**
-    * **Arguments**: toggle, anchor, panel
-    * **description**: 패널 오픈 후 실행될 함수
+* **beforeChange**
+    * **Arguments**: event, plugin, anchor, panel
+    * **description**: 탭 오픈 전 실행될 함수
+* **afterChange**
+    * **Arguments**: event, plugin, anchor, panel
+    * **description**: 탭 오픈 후 실행될 함수 함수
 
 ### Method
 
 ``` javascript
 var yourVariable = $('.your-element').data('plugin_tab');
 
-yourVariable.show();
-
-yourVariable.hide();
+yourVariable.go(1); //OR
+yourVariable.go(2, true); //OR
+yourVariable.go(0, false); //OR
 
 yourVariable.destroy();
 
 yourVariable.reInit();
 ```
 
-* **show**
-    * **Arguments**: none
-    * **description**: 패널 열기
-* **hide**
-    * **Arguments**: none
-    * **description**: 패널 닫기
+* **go**
+    * **Arguments**: index, withScroll(Boolean): 선택된 탭의 상단으로 스크롤 이동 여부
+    * **description**: 원하는 탭 오픈
 * **destroy**
     * **Arguments**: none
     * **description**: 플러그인 초기화

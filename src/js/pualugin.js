@@ -374,17 +374,6 @@
 							e.preventDefault();
 						}
 					});
-
-				plugin.$wrap
-					.off('go.' + plugin._name)
-					.on('go.' + plugin._name, function (ev, index, withScroll) {
-						plugin.$anchor.eq(index).trigger(plugin.options.event);
-						if (withScroll) {
-							$('html, body').stop().animate({
-								scrollTop: plugin.$wrap.offset().top
-							}, plugin.options.speed);
-						}
-					})
 			},
 			unbindEvents: function () {
 				var plugin = this;
@@ -461,6 +450,17 @@
 						$panel.stop().hide();
 					}
 				});
+			},
+			go: function(index, withScroll) {
+				var plugin = this;
+
+				plugin.$anchor.eq(index).trigger(plugin.options.event);
+
+				if (withScroll) {
+					$('html, body').stop().animate({
+						scrollTop: plugin.$wrap.offset().top
+					}, plugin.options.speed);
+				}
 			},
 			reInit: function() {
 				var plugin = this;
