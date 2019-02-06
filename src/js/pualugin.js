@@ -72,8 +72,6 @@
 			onChangeBeforeText: null,
 			onChangeAfterText: null,
 			activeClassName: 'is-active',
-			onChangeBefore: null,
-			onChangeAfter: null,
 			isOpened: false
 		};
 
@@ -126,6 +124,7 @@
 
 				plugin.$anchor.on(eventName, function (e) {
 					e.stopPropagation();
+
 					var $this = $(this);
 
 					var key = e.which || e.keyCode;
@@ -152,20 +151,14 @@
 				plugin.$wrap.off('.' + plugin._name)
 			},
 			beforeChange: function ($anchor, $panel) {
-				var plugin = this,
-					onChangeBefore = plugin.options.onChangeBefore;
+				var plugin = this;
 
-				if (typeof onChangeBefore === 'function') {
-					onChangeBefore.apply(plugin.element, [plugin, $anchor, $panel]);
-				}
+				plugin.$wrap.trigger('beforeChange', [plugin, $anchor, $panel])
 			},
 			afterChange: function ($anchor, $panel) {
-				var plugin = this,
-					onChangeAfter = plugin.options.onChangeAfter;
+				var plugin = this;
 
-				if (typeof onChangeAfter === 'function') {
-					onChangeAfter.apply(plugin.element, [plugin, $anchor, $panel]);
-				}
+				plugin.$wrap.trigger('afterChange', [plugin, $anchor, $panel])
 
 				$panel.find('.slick-initialized').length && $panel.find('.slick-initialized').slick('setPosition');
 			},
@@ -221,16 +214,11 @@
 				}
 				plugin.$panel.attr('aria-expended', false);
 			},
-			removeCache: function() {
-				var plugin = this;
-
-				plugin.$panel.removeAttr('aria-expended style');
-			},
 			destroy: function () {
 				var plugin = this;
 
 				plugin.unbindEvents();
-				plugin.removeCache();
+				plugin.$panel.removeAttr('aria-expended style');
 			}
 		});
 

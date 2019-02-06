@@ -85,39 +85,39 @@ Toggle Plugin은 toggle__anchor를 클릭 시 toggle__panel이 나타났다 사�
     * **default**: null
     * **description**: panel 오픈 후 노출될 anchor 텍스트
 
-### Callback Options
+### Events
 
 ``` javascript
-var toggle = $('.your-element').data('plugin_toggle');
+var yourVariable = $('.your-element');
 
-toggle.options.onChangeBefore = function( toggle, anchor, panel ) {
-    /* ... your code */
-}
+yourVariable.on('beforeChange', function( event, plugin, anchor, panel ){
+    /* your code ... */
+})
 
-toggle.options.onChangeAfter = function( toggle, anchor, panel ) {
-    /* ... your code */
-}
+yourVariable.on('afterChange', function( event, plugin, anchor, panel ){
+    /* your code ... */
+})
 ```
 
-* **onChangeBefore**
-    * **Arguments**: toggle, anchor, panel
+* **beforeChange**
+    * **Arguments**: event, plugin, anchor, panel
     * **description**: 패널 오픈 전 실행될 함수
-* **onChangeAfter**
-    * **Arguments**: toggle, anchor, panel
+* **afterChange**
+    * **Arguments**: event, plugin, anchor, panel
     * **description**: 패널 오픈 후 실행될 함수
 
 ### Method
 
 ``` javascript
-var toggle = $('.your-element').data('plugin_toggle');
+var yourVariable = $('.your-element').data('plugin_toggle');
 
-toggle.show();
+yourVariable.show();
 
-toggle.hide();
+yourVariable.hide();
 
-toggle.destroy();
+yourVariable.destroy();
 
-toggle.reInit();
+yourVariable.reInit();
 ```
 
 * **show**
@@ -141,7 +141,7 @@ Tab Plugin은 tab__anchor 클릭 시 해당하는 tab__panel 노출됨.
 ### Basic Code
 
 ``` html
-<div data-js="tab">
+<div class="your-element" data-js="tab">
     <ul>
         <li data-js="tab__list">
             <a href="#" data-js="tab__anchor">tab-anchor1</a>
@@ -163,7 +163,7 @@ Tab Plugin은 tab__anchor 클릭 시 해당하는 tab__panel 노출됨.
 ### Basic Code + Options
 
 ``` html
-<div data-js="tab" data-options='{ "mode": "slide" }'>
+<div class="your-element" data-js="tab" data-options='{ "mode": "slide" }'>
     <ul>
         <li data-js="tab__list">
             <a href="#" data-js="tab__anchor">tab-anchor1</a>
@@ -215,6 +215,40 @@ Tab Plugin은 tab__anchor 클릭 시 해당하는 tab__panel 노출됨.
     * **default**: Selected
     * **description**: 원하는 명칭으로 변경 가능 (title 속성으로 들어갑니다.)
 
+### Callback Options
+
+``` javascript
+var yourVariable = $('.your-element').data('plugin_tab');
+
+yourVariable.options.onChangeBefore = function( tab, anchor, panel ) {
+    /* ... your code */
+}
+
+yourVariable.options.onChangeAfter = function( tab, anchor, panel ) {
+    /* ... your code */
+}
+```
+
+* **onChangeBefore**
+    * **Arguments**: toggle, anchor, panel
+    * **description**: 패널 오픈 전 실행될 함수
+* **onChangeAfter**
+    * **Arguments**: toggle, anchor, panel
+    * **description**: 패널 오픈 후 실행될 함수
+
+### Method
+
+``` javascript
+var yourVariable = $('.your-element').data('plugin_tab');
+
+yourVariable.show();
+
+yourVariable.hide();
+
+yourVariable.destroy();
+
+yourVariable.reInit();
+```
 
 ## Accordion
 
