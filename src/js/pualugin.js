@@ -495,7 +495,7 @@
 		var pluginName = 'accordion';
 
 		var defaults = {
-			mode: 'static', // static, slide
+			mode: 'slide', // static, slide
 			speed: 200,
 			easing: 'linear',
 			itemEl: '[data-js="accordion__item"]',
@@ -505,12 +505,9 @@
 			isInitActive: true,
 			initIndex: 0,
 			autoFold: true,
-			onBeforeChange: null,
-			onAfterChange: null,
 			expandedText: 'collapse',
 			collapsedText: 'expand',
-			autoScroll: false,
-			noneClick: false
+			autoScroll: false
 		};
 
 		function Plugin(element, options) {
@@ -526,27 +523,26 @@
 		}
 
 		$.extend(Plugin.prototype, {
-
 			init: function () {
 				var plugin = this;
+
 				plugin.buildCache();
 				plugin.bindEvents();
 				plugin.$panel.hide();
 				if (plugin.options.isInitActive) {
-					plugin._open(plugin.$anchor.eq(plugin.options.initIndex));
+					plugin.open(plugin.$anchor.eq(plugin.options.initIndex));
 				}
 				plugin.initialized = true;
 			},
-
 			destroy: function () {
 				var plugin = this;
+
 				plugin.unbindEvents();
 				plugin.$header.removeAttr('style').removeClass(plugin.options.activeClassName);
 				plugin.$panel.removeAttr('style').removeClass(plugin.options.activeClassName);
 				plugin.flag = false;
-				plugin.removeAria();
+				plugin.removeProperty();
 			},
-
 			buildCache: function () {
 				var plugin = this;
 
@@ -554,15 +550,15 @@
 				plugin.$header = plugin.$wrap.find(plugin.options.itemEl);
 				plugin.$anchor = plugin.$wrap.find(plugin.options.anchorEl);
 				plugin.$panel = plugin.$wrap.find(plugin.options.panelEl);
-				plugin.removeAria();
-				plugin.setAria();
-			},
 
+				plugin.setProperty();
+			},
 			bindEvents: function () {
 				var plugin = this;
 
-				if ( !plugin.options.noneClick ) {
-					plugin.$wrap.on('click' + '.' + plugin._name, plugin.options.anchorEl, function (e) {
+				plugin.$wrap
+					.off('click' + '.' + plugin._name)
+					.on('click' + '.' + plugin._name, plugin.options.anchorEl, function (e) {
 						e.stopPropagation();
 						e.preventDefault();
 						if (plugin.flag) {
@@ -570,61 +566,55 @@
 						}
 						plugin.toggle($(this));
 					});
-				}
 
-				plugin.$anchor.on('open.' + plugin._name, function () {
-					plugin._open($(this));
-				});
+				plugin.$anchor
+					.off('open.' + plugin._name)
+					.on('open.' + plugin._name, function () {
+						plugin.open($(this));
+					});
 
-				plugin.$anchor.on('close.' + plugin._name, function () {
-					plugin._close($(this));
-				});
+				plugin.$anchor
+					.off('close.' + plugin._name)
+					.on('close.' + plugin._name, function () {
+						plugin.close($(this));
+					});
 			},
-
 			unbindEvents: function () {
 				var plugin = this;
 				plugin.$wrap.off('.' + plugin._name);
 				plugin.$header.off('.' + plugin._name);
 			},
-
 			beforeChange: function ($activeItemEl) {
-				var plugin = this,
-					onBeforeChange = plugin.options.onBeforeChange;
-
-				if (typeof onBeforeChange === 'function') {
-					onBeforeChange.apply(plugin.element, [plugin, $activeItemEl]);
-				}
+				var plugin = this;
+				plugin.$wrap.trigger('beforeChange', [plugin, $activeItemEl]);
 			},
-
 			afterChange: function ($activeItemEl) {
-				var plugin = this,
-					onAfterChange = plugin.options.onAfterChange;
-
-				if (typeof onAfterChange === 'function') {
-					onAfterChange.apply(plugin.element, [plugin, $activeItemEl]);
-				}
+				var plugin = this;
+				plugin.$wrap.trigger('afterChange', [plugin, $activeItemEl]);
 			},
-
 			toggle: function ($targetAnchor) {
 				var plugin = this;
 
 				plugin.flag = true;
 				plugin.beforeChange($targetAnchor);
 
-				if ($targetAnchor.closest(plugin.options.itemEl).hasClass(plugin.options.activeClassName)) {
-					plugin._close($targetAnchor);
+				if ($targetAnchor.hasClass(plugin.options.activeClassName)) {
+					plugin.close($targetAnchor);
 				} else {
-					plugin._open($targetAnchor);
+					plugin.open($targetAnchor);
 				}
 			},
-
-			_open: function ($targetAnchor) {
+			open: function ($targetAnchor) {
 				var plugin = this;
-				var $targetItem = $targetAnchor.closest(plugin.options.itemEl),
-					$targetPanel = $('#' + $targetAnchor.attr('aria-controls'));
+
+				var $panel = $targetAnchor
+					.data(plugin._name + '_isOpen', true)
+					.addClass(plugin.options.activeClassName)
+					.data(plugin._name + '_target')
+					.addClass(plugin.options.activeClassName);
 
 				if (plugin.initialized && plugin.options.mode === 'slide') {
-					$targetPanel.stop().slideDown(plugin.options.speed, plugin.options.easing, function () {
+					$panel.stop().slideDown(plugin.options.speed, plugin.options.easing, function () {
 						plugin.flag = false;
 						if (plugin.options.autoScroll) {
 							$('html, body').stop().animate({
@@ -633,46 +623,48 @@
 						}
 					});
 				} else {
-					$targetPanel.stop().show();
+					$panel.stop().show();
 					plugin.flag = false;
 				}
-
-				$targetItem.addClass(plugin.options.activeClassName);
-				$targetAnchor.addClass(plugin.options.activeClassName).data(plugin._name + '_isOpen', true);
-				$targetPanel.addClass(plugin.options.activeClassName);
 
 				plugin._changeStatus($targetAnchor, true);
 
 				if (plugin.options.autoFold) {
 					plugin.$anchor.not($targetAnchor).each(function () {
-						plugin._close($(this));
+						plugin.close($(this));
 					})
 				}
 			},
-
-			_close: function ($targetAnchor) {
+			close: function ($targetAnchor) {
 				var plugin = this;
-				var $targetItem = $targetAnchor.closest(plugin.options.itemEl),
-					$targetPanel = $('#' + $targetAnchor.attr('aria-controls'));
 
-				if (!$targetItem.length) return false;
+				var $panel = $targetAnchor
+					.data(plugin._name + '_isOpen', false)
+					.removeClass(plugin.options.activeClassName)
+					.data(plugin._name + '_target')
+					.removeClass(plugin.options.activeClassName);
 
 				if (plugin.options.mode === 'slide') {
-					$targetPanel.stop().slideUp(plugin.options.speed, plugin.options.easing, function () {
+					$panel.stop().slideUp(plugin.options.speed, plugin.options.easing, function () {
 						plugin.flag = false;
 					});
 				} else {
-					$targetPanel.stop().hide();
+					$panel.stop().hide();
 					plugin.flag = false;
 				}
 
-				$targetAnchor.removeClass(plugin.options.activeClassName).data(plugin._name + '_isOpen', false);
-				$targetItem.removeClass(plugin.options.activeClassName);
-				$targetPanel.removeClass(plugin.options.activeClassName);
-
 				plugin._changeStatus($targetAnchor, false);
 			},
+			go: function( index, withScroll ) {
+				var plugin = this;
 
+				plugin.$anchor.eq(index).trigger('click');
+				if (withScroll) {
+					$('html, body').stop().animate({
+						scrollTop: plugin.$wrap.offset().top
+					}, plugin.options.speed);
+				}
+			},
 			_changeStatus: function ($anchor, isOpen) {
 				var plugin = this;
 				$anchor.attr({
@@ -680,8 +672,7 @@
 					'title': isOpen ? plugin.options.expandedText : plugin.options.collapsedText,
 				});
 			},
-
-			setAria: function() {
+			setProperty: function() {
 				var plugin = this;
 				var tabsId = [];
 
@@ -711,8 +702,7 @@
 					}).hide();
 				});
 			},
-
-			removeAria: function() {
+			removeProperty: function() {
 				var plugin = this;
 
 				plugin.$anchor.each(function (index) {
@@ -728,8 +718,12 @@
 				plugin.$panel.each(function (index) {
 					$(this).removeAttr('id aria-labelledby role').hide();
 				});
-			}
+			},
+			reInit: function() {
+				var plugin = this;
 
+				plugin.init();
+			}
 		});
 
 		$.fn[pluginName] = function ( options ) {
