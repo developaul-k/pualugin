@@ -1,0 +1,39 @@
+@charset "utf-8";
+.checkbox {
+    margin: 0;
+    padding: 0;
+    line-height: 1.2;
+    position: relative;
+}
+.checkbox__input {
+    padding-left: 20px;
+    display: inline-block;
+    vertical-align: middle;
+}
+.checkbox__input:before {
+    width: 16px;
+    height: 16px;
+    border: 1px solid #000;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    margin-top: -8px;
+    content: '';
+}
+.checkbox__input[aria-checked=true]:after {
+    margin-top: -4px;
+    width: 10px;
+    height: 10px;
+    background-color: #000;
+    position: absolute;
+    top: 50%;
+    left: 4px;
+    content: '';
+}
+.checkbox__hidden {
+    position: absolute;
+    top: -200%;
+    left: -200%;
+    width: 0;
+    height: 0;
+}
