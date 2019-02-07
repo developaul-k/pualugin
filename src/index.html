@@ -6,31 +6,6 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>UI Component</title>
     <link rel="stylesheet" href="./css/pualugin.css">
-    <style>
-        h1 {
-            margin-bottom: 10px;
-            font-size: 20px;
-        }
-        h2 {
-            margin-bottom: 10px;
-            font-size: 15px;
-        }
-        .plugin {
-            margin: 25px 0 10px;
-        }
-        .plugin__flex {
-            margin: 0 -20px;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: top;
-            align-items: top;
-        }
-        .plugin__flex-column {
-            padding: 0 20px;
-            width: 50%;
-            box-sizing: border-box;
-        }
-    </style>
 </head>
 <body>
     <section class="pualugin">
@@ -39,18 +14,19 @@
                 Pualugin
             </div>
             <nav class="pualugin__nav">
-                <ul class="pualugin__nav-ul">
+                <span class="pualugin__nav-status" data-js="nav__status" role="button">메뉴열림</span>
+                <ul class="pualugin__nav-ul" data-js="nav__ul">
                     <li class="pualugin__nav-li">
-                        <a href="#toggle" class="pualugin__nav-anchor">toggle</a>
+                        <a href="#toggle" class="pualugin__nav-anchor" data-js="nav__anchor">toggle</a>
                     </li>
                     <li class="pualugin__nav-li">
-                        <a href="#tab" class="pualugin__nav-anchor">tab</a>
+                        <a href="#tab" class="pualugin__nav-anchor" data-js="nav__anchor">tab</a>
                     </li>
                     <li class="pualugin__nav-li">
-                        <a href="#accordion" class="pualugin__nav-anchor">accordion</a>
+                        <a href="#accordion" class="pualugin__nav-anchor" data-js="nav__anchor">accordion</a>
                     </li>
                     <li class="pualugin__nav-li">
-                        <a href="#sticky" class="pualugin__nav-anchor">sticky</a>
+                        <a href="#sticky" class="pualugin__nav-anchor" data-js="nav__anchor">sticky</a>
                     </li>
                 </ul>
             </nav>
@@ -224,5 +200,13 @@
 
     <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="./js/pualugin.js"></script>
+    <script>
+        $('[data-js="nav__status"]').on('click', function() {
+            $('[data-js="nav__ul"]').toggleClass('is-active');
+        })
+        $('[data-js=nav__anchor]').on('click', function() {
+            $('[data-js="nav__ul"]').removeClass('is-active');
+        })
+    </script>
 </body>
 </html>

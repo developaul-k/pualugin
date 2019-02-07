@@ -1289,8 +1289,8 @@
 				plugin.$target.css({
 					'position': 'fixed',
 					'top': 0,
-					'left': 0,
-					'width': '100%'
+					'left': plugin.$header.offset().left,
+					'width': plugin.$header.outerWidth()
 				})
 			},
 			unFixed: function() {
