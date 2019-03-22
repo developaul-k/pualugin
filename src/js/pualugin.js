@@ -505,12 +505,9 @@
 			isInitActive: true,
 			initIndex: 0,
 			autoFold: true,
-			onBeforeChange: null,
-			onAfterChange: null,
 			expandedText: 'collapse',
 			collapsedText: 'expand',
 			autoScroll: false,
-			noneClick: false
 		};
 
 		function Plugin(element, options) {
@@ -557,20 +554,17 @@
 				plugin.removeAria();
 				plugin.setAria();
 			},
-
 			bindEvents: function () {
 				var plugin = this;
 
-				if ( !plugin.options.noneClick ) {
-					plugin.$wrap.on('click' + '.' + plugin._name, plugin.options.anchorEl, function (e) {
-						e.stopPropagation();
-						e.preventDefault();
-						if (plugin.flag) {
-							return false;
-						}
-						plugin.toggle($(this));
-					});
-				}
+				plugin.$wrap.on('click' + '.' + plugin._name, plugin.options.anchorEl, function (e) {
+					e.stopPropagation();
+					e.preventDefault();
+					if (plugin.flag) {
+						return false;
+					}
+					plugin.toggle($(this));
+				});
 
 				plugin.$anchor.on('open.' + plugin._name, function () {
 					plugin._open($(this));
@@ -580,31 +574,20 @@
 					plugin._close($(this));
 				});
 			},
-
 			unbindEvents: function () {
 				var plugin = this;
 				plugin.$wrap.off('.' + plugin._name);
 				plugin.$header.off('.' + plugin._name);
 			},
-
 			beforeChange: function ($activeItemEl) {
-				var plugin = this,
-					onBeforeChange = plugin.options.onBeforeChange;
-
-				if (typeof onBeforeChange === 'function') {
-					onBeforeChange.apply(plugin.element, [plugin, $activeItemEl]);
-				}
+				var plugin = this;
+				plugin.$wrap.trigger('beforeChange', [plugin, $activeItemEl]);
 			},
 
 			afterChange: function ($activeItemEl) {
-				var plugin = this,
-					onAfterChange = plugin.options.onAfterChange;
-
-				if (typeof onAfterChange === 'function') {
-					onAfterChange.apply(plugin.element, [plugin, $activeItemEl]);
-				}
+				var plugin = this;
+				plugin.$wrap.trigger('afterChange', [plugin, $activeItemEl]);
 			},
-
 			toggle: function ($targetAnchor) {
 				var plugin = this;
 
@@ -617,7 +600,6 @@
 					plugin._open($targetAnchor);
 				}
 			},
-
 			_open: function ($targetAnchor) {
 				var plugin = this;
 				var $targetItem = $targetAnchor.closest(plugin.options.itemEl),
@@ -649,7 +631,6 @@
 					})
 				}
 			},
-
 			_close: function ($targetAnchor) {
 				var plugin = this;
 				var $targetItem = $targetAnchor.closest(plugin.options.itemEl),
@@ -672,7 +653,6 @@
 
 				plugin._changeStatus($targetAnchor, false);
 			},
-
 			_changeStatus: function ($anchor, isOpen) {
 				var plugin = this;
 				$anchor.attr({
@@ -680,7 +660,6 @@
 					'title': isOpen ? plugin.options.expandedText : plugin.options.collapsedText,
 				});
 			},
-
 			setAria: function() {
 				var plugin = this;
 				var tabsId = [];
@@ -711,7 +690,6 @@
 					}).hide();
 				});
 			},
-
 			removeAria: function() {
 				var plugin = this;
 
@@ -734,10 +712,7 @@
 
 		$.fn[pluginName] = function ( options ) {
 			return this.each(function () {
-				if ($.data(this, "plugin_" + pluginName)) {
-					$.data(this, "plugin_" + pluginName).destroy()
-					$.data(this, "plugin_" + pluginName, new Plugin(this, options || $(this).data('options')));
-				} else {
+				if (!$.data(this, "plugin_" + pluginName)) {
 					$.data(this, "plugin_" + pluginName, new Plugin(this, options || $(this).data('options')));
 				}
 			});
