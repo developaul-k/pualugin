@@ -1,0 +1,30 @@
+.pualugin-tab {
+    &__ul {
+        width: 100%;
+        display: table;
+    }
+    &__list {
+        display: table-cell;
+    }
+    &__anchor {
+        padding: 20px 10px;
+        position: relative;
+        display: block;
+        text-align: center;
+        &.is-active:before {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background-color: #716aca;
+            content: '';
+        }
+    }
+    &__panel {
+        padding: 20px;
+        background-color: #fff;
+        box-shadow: 0 10px 30px 0 rgba(24, 28, 33, 0.04);
+        border-radius: 0 0 3px 3px;
+    }
+}

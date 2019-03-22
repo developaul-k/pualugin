@@ -1,0 +1,14 @@
+.pualugin {
+    &__button {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 3px;
+        background-color: #8e54e9;
+        transition: color .15s ease-inout, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+        font-size: 14px;
+        color: #fff;
+        &:hover {
+            background-color: #7630e4
+        }
+    }
+}

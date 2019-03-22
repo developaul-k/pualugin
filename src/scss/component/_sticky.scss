@@ -1,0 +1,12 @@
+.pualugin-sticky {
+    &__section {
+        height: 500px;
+    }
+    &__target {
+        margin-bottom: 0;
+        height: 50px;
+        background-color: #fff;
+        line-height: 50px;
+        text-align: center;
+    }
+}

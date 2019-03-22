@@ -1722,8 +1722,6 @@
 				plugin.$button.attr('aria-expended', false);
 				plugin.$panel.hide();
 				plugin.$element.css('display', 'inline-block');
-
-				plugin.setPosition();
 			},
 			bindEvents: function() {
 				var plugin = this;
@@ -1781,6 +1779,7 @@
 					.css('position', 'absolute')
 					.addClass(plugin.options.activeClassName)
 					.show();
+				plugin.setPosition();
 			},
 			close: function() {
 				var plugin = this;

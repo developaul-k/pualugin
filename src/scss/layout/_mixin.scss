@@ -1,0 +1,17 @@
+@mixin screenSizeMobile() {
+    @media only screen and (max-width: 960px) {
+        @content;
+    }
+}
+
+@mixin screenSizeTablet() {
+    @media only screen and (max-width: 1279px) {
+        @content;
+    }
+}
+
+@mixin screenSizeDeskTop() {
+    @media only screen and (min-width: 1280px) {
+        @content;
+    }
+}

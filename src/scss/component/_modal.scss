@@ -1,0 +1,24 @@
+[data-js=modal] {
+    position: fixed;
+    transition: background-color 0.3s;
+    background-color: transparent;
+    z-index: -1;
+}
+.pualugin-modal {
+    &__body {
+        width: 100%;
+        height: 100%;
+        display: table;
+    }
+    &__inner {
+        display: table-cell;
+        vertical-align: middle;
+        text-align: center;
+    }
+    &__contents {
+        width: 500px;
+        height: 500px;
+        background-color: #fff;
+        display: inline-block;
+    }
+}

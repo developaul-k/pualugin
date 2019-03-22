@@ -1,0 +1,13 @@
+{
+    "devDependencies": {
+        "gulp": "latest",
+        "gulp-connect": "latest",
+        "gulp-watch": "latest",
+        "browser-sync": "latest",
+        "connect-ssi": "latest",
+        "gulp-clean-css": "latest",
+        "gulp-sass": "latest",
+        "gulp-concat": "latest",
+        "gulp-uglify": "latest"
+    }
+}
