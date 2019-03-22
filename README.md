@@ -3,32 +3,23 @@
 
 ## Getting started
 CLI를 이용한 jQuery 설치
-```html
+```css
 <!-- npm -->
 npm install jquery
-<!-- yarn -->
-yarn add jquery
-<!-- bower -->
-bower install jquery
 ```
 jQuery파일 다운로드
 * https://code.jquery.com/jquery/
 
-플러그인을 사용할 **your.html**을 만듭니다.
-```html
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>UI Component</title>
-</head>
-<body>
-    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
-    <script src="./src/js/pualugin.js"></script> <!-- pualugin 플러그인 추가 -->
-</body>
-</html>
+## Quick install
+CLI를 이용한 Gulp && Gulp CLI 를 설치합니다.
+```css
+npm install gulp-cli -g
+npm install
+```
+
+Gulp 서버를 실행합니다.
+```css
+gulp
 ```
 
 ## Toggle
