@@ -1,20 +1,12 @@
-# Pualugin
-
+# Pualugin.js
+Pualugin.js 는 jQuery boilerplate로 작성된 플러그인 모음입니다.
 
 ## Getting started
-
-##### node.js 설치
-<https://nodejs.org/ko/>
-
-##### Commend Line Tools를 이용하여 Gulp && Gulp CLI 를 설치합니다.
-```css
-npm install gulp-cli -g
-npm install
-```
-
-##### Gulp 서버를 실행합니다.
-```css
-gulp
+시작하려면 [jQuery](http://code.jquery.com)를 다운받고 아래와 같이 작성합니다.
+```html
+<link rel="stylesheet" href="/path/to/css/pualugin.css">
+<script src="/path/to/js/jQuery.js"></script> <!-- 다운로드 또는 CDN 이용 -->
+<script src="/path/to/js/pualugin.js"></script>
 ```
 
 ## Toggle
