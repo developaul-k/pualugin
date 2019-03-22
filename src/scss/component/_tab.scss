@@ -1,4 +1,4 @@
-.pualugin-tab {
+#{$pluginName}-tab {
     &__ul {
         width: 100%;
         display: table;
@@ -17,7 +17,7 @@
             left: 0;
             right: 0;
             height: 3px;
-            background-color: #716aca;
+            background-color: $point-color-hover;
             content: '';
         }
     }

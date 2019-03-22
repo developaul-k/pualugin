@@ -1,7 +1,10 @@
-@import  './layout/layout';
-@import  './component/button';
-@import  './component/tooltip';
-@import  './component/accordion';
-@import  './component/tab';
+@import './base/variable';
+@import './base/mixin';
+@import './base/reset';
+@import './base/layout';
+@import './component/button';
+@import './component/tooltip';
+@import './component/accordion';
+@import './component/tab';
 @import './component/sticky';
 @import './component/modal';

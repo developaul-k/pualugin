@@ -4,7 +4,7 @@
     background-color: transparent;
     z-index: -1;
 }
-.pualugin-modal {
+#{$pluginName}-modal {
     &__body {
         width: 100%;
         height: 100%;

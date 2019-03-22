@@ -86,6 +86,7 @@ const watch = () => {
   gulp.watch(paths.styles.src, styles).on('change', path => browserSyncStream(path));
   gulp.watch(paths.scripts.src, scripts).on('change', path => browserSyncReload(path));
   gulp.watch(paths.components.src, components).on('change', path => browserSyncReload(path));
+  gulp.watch(paths.main.src, main).on('change', path => browserSyncReload(path));
 }
 
 const taskSync = gulp.parallel(browserSync, styles, scripts, main, watch);

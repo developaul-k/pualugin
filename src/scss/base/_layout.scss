@@ -1,30 +1,4 @@
-@import './mixin.scss';
-
-* {
-    margin: 0;
-    padding: 0;
-}
-a {
-    text-decoration: none;
-}
-ul,
-ol {
-    list-style: none;
-}
-
-body {
-    padding: 20px;
-    background-color: #F2F3F8;
-}
-h1 {
-    margin-bottom: 10px;
-    font-size: 20px;
-}
-h2 {
-    margin-bottom: 10px;
-    font-size: 15px;
-}
-.plugin {
+#{$plugin} {
     margin: 25px 0 10px;
     &__flex {
         margin: 0 -20px;
@@ -41,14 +15,14 @@ h2 {
                     margin-top: 20px;
                 }
             }
-        }
-        @include screenSizeMobile {
-            width: 100%;
+            @include screenSizeMobile {
+                width: 100%;
+            }
         }
     }
 }
 
-.pualugin {
+#{$pluginName} {
     &__header {
         position: fixed;
         top: 0;
