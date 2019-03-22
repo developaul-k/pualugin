@@ -1,4 +1,4 @@
-# Pualugin ( jQuery UI Library )
+# Pualugin
 
 
 ## Getting started
