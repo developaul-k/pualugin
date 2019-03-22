@@ -3,19 +3,19 @@
 
 ## Getting started
 
-### node.js 설치
+##### node.js 설치
 <https://nodejs.org/ko/>
 
-### jQuery파일 다운로드
+##### jQuery파일 다운로드
 <https://code.jquery.com/jquery/>
 
-### Commend Line Tools를 이용하여 Gulp && Gulp CLI 를 설치합니다.
+##### Commend Line Tools를 이용하여 Gulp && Gulp CLI 를 설치합니다.
 ```css
 npm install gulp-cli -g
 npm install
 ```
 
-### Gulp 서버를 실행합니다.
+##### Gulp 서버를 실행합니다.
 ```css
 gulp
 ```
