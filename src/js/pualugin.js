@@ -495,7 +495,7 @@
 		var pluginName = 'accordion';
 
 		var defaults = {
-			mode: 'static', // static, slide
+			mode: 'slide', // static, slide
 			speed: 200,
 			easing: 'linear',
 			itemEl: '[data-js="accordion__item"]',
@@ -507,7 +507,7 @@
 			autoFold: true,
 			expandedText: 'collapse',
 			collapsedText: 'expand',
-			autoScroll: false,
+			autoScroll: false
 		};
 
 		function Plugin(element, options) {
@@ -523,27 +523,26 @@
 		}
 
 		$.extend(Plugin.prototype, {
-
 			init: function () {
 				var plugin = this;
+
 				plugin.buildCache();
 				plugin.bindEvents();
 				plugin.$panel.hide();
 				if (plugin.options.isInitActive) {
-					plugin._open(plugin.$anchor.eq(plugin.options.initIndex));
+					plugin.open(plugin.$anchor.eq(plugin.options.initIndex));
 				}
 				plugin.initialized = true;
 			},
-
 			destroy: function () {
 				var plugin = this;
+
 				plugin.unbindEvents();
 				plugin.$header.removeAttr('style').removeClass(plugin.options.activeClassName);
 				plugin.$panel.removeAttr('style').removeClass(plugin.options.activeClassName);
 				plugin.flag = false;
-				plugin.removeAria();
+				plugin.removeProperty();
 			},
-
 			buildCache: function () {
 				var plugin = this;
 
@@ -551,28 +550,34 @@
 				plugin.$header = plugin.$wrap.find(plugin.options.itemEl);
 				plugin.$anchor = plugin.$wrap.find(plugin.options.anchorEl);
 				plugin.$panel = plugin.$wrap.find(plugin.options.panelEl);
-				plugin.removeAria();
-				plugin.setAria();
+
+				plugin.setProperty();
 			},
 			bindEvents: function () {
 				var plugin = this;
 
-				plugin.$wrap.on('click' + '.' + plugin._name, plugin.options.anchorEl, function (e) {
-					e.stopPropagation();
-					e.preventDefault();
-					if (plugin.flag) {
-						return false;
-					}
-					plugin.toggle($(this));
-				});
+				plugin.$wrap
+					.off('click' + '.' + plugin._name)
+					.on('click' + '.' + plugin._name, plugin.options.anchorEl, function (e) {
+						e.stopPropagation();
+						e.preventDefault();
+						if (plugin.flag) {
+							return false;
+						}
+						plugin.toggle($(this));
+					});
 
-				plugin.$anchor.on('open.' + plugin._name, function () {
-					plugin._open($(this));
-				});
+				plugin.$anchor
+					.off('open.' + plugin._name)
+					.on('open.' + plugin._name, function () {
+						plugin.open($(this));
+					});
 
-				plugin.$anchor.on('close.' + plugin._name, function () {
-					plugin._close($(this));
-				});
+				plugin.$anchor
+					.off('close.' + plugin._name)
+					.on('close.' + plugin._name, function () {
+						plugin.close($(this));
+					});
 			},
 			unbindEvents: function () {
 				var plugin = this;
@@ -583,7 +588,6 @@
 				var plugin = this;
 				plugin.$wrap.trigger('beforeChange', [plugin, $activeItemEl]);
 			},
-
 			afterChange: function ($activeItemEl) {
 				var plugin = this;
 				plugin.$wrap.trigger('afterChange', [plugin, $activeItemEl]);
@@ -594,19 +598,23 @@
 				plugin.flag = true;
 				plugin.beforeChange($targetAnchor);
 
-				if ($targetAnchor.closest(plugin.options.itemEl).hasClass(plugin.options.activeClassName)) {
-					plugin._close($targetAnchor);
+				if ($targetAnchor.hasClass(plugin.options.activeClassName)) {
+					plugin.close($targetAnchor);
 				} else {
-					plugin._open($targetAnchor);
+					plugin.open($targetAnchor);
 				}
 			},
-			_open: function ($targetAnchor) {
+			open: function ($targetAnchor) {
 				var plugin = this;
-				var $targetItem = $targetAnchor.closest(plugin.options.itemEl),
-					$targetPanel = $('#' + $targetAnchor.attr('aria-controls'));
+
+				var $panel = $targetAnchor
+					.data(plugin._name + '_isOpen', true)
+					.addClass(plugin.options.activeClassName)
+					.data(plugin._name + '_target')
+					.addClass(plugin.options.activeClassName);
 
 				if (plugin.initialized && plugin.options.mode === 'slide') {
-					$targetPanel.stop().slideDown(plugin.options.speed, plugin.options.easing, function () {
+					$panel.stop().slideDown(plugin.options.speed, plugin.options.easing, function () {
 						plugin.flag = false;
 						if (plugin.options.autoScroll) {
 							$('html, body').stop().animate({
@@ -615,43 +623,47 @@
 						}
 					});
 				} else {
-					$targetPanel.stop().show();
+					$panel.stop().show();
 					plugin.flag = false;
 				}
-
-				$targetItem.addClass(plugin.options.activeClassName);
-				$targetAnchor.addClass(plugin.options.activeClassName).data(plugin._name + '_isOpen', true);
-				$targetPanel.addClass(plugin.options.activeClassName);
 
 				plugin._changeStatus($targetAnchor, true);
 
 				if (plugin.options.autoFold) {
 					plugin.$anchor.not($targetAnchor).each(function () {
-						plugin._close($(this));
+						plugin.close($(this));
 					})
 				}
 			},
-			_close: function ($targetAnchor) {
+			close: function ($targetAnchor) {
 				var plugin = this;
-				var $targetItem = $targetAnchor.closest(plugin.options.itemEl),
-					$targetPanel = $('#' + $targetAnchor.attr('aria-controls'));
 
-				if (!$targetItem.length) return false;
+				var $panel = $targetAnchor
+					.data(plugin._name + '_isOpen', false)
+					.removeClass(plugin.options.activeClassName)
+					.data(plugin._name + '_target')
+					.removeClass(plugin.options.activeClassName);
 
 				if (plugin.options.mode === 'slide') {
-					$targetPanel.stop().slideUp(plugin.options.speed, plugin.options.easing, function () {
+					$panel.stop().slideUp(plugin.options.speed, plugin.options.easing, function () {
 						plugin.flag = false;
 					});
 				} else {
-					$targetPanel.stop().hide();
+					$panel.stop().hide();
 					plugin.flag = false;
 				}
 
-				$targetAnchor.removeClass(plugin.options.activeClassName).data(plugin._name + '_isOpen', false);
-				$targetItem.removeClass(plugin.options.activeClassName);
-				$targetPanel.removeClass(plugin.options.activeClassName);
-
 				plugin._changeStatus($targetAnchor, false);
+			},
+			go: function( index, withScroll ) {
+				var plugin = this;
+
+				plugin.$anchor.eq(index).trigger('click');
+				if (withScroll) {
+					$('html, body').stop().animate({
+						scrollTop: plugin.$wrap.offset().top
+					}, plugin.options.speed);
+				}
 			},
 			_changeStatus: function ($anchor, isOpen) {
 				var plugin = this;
@@ -660,7 +672,7 @@
 					'title': isOpen ? plugin.options.expandedText : plugin.options.collapsedText,
 				});
 			},
-			setAria: function() {
+			setProperty: function() {
 				var plugin = this;
 				var tabsId = [];
 
@@ -690,7 +702,7 @@
 					}).hide();
 				});
 			},
-			removeAria: function() {
+			removeProperty: function() {
 				var plugin = this;
 
 				plugin.$anchor.each(function (index) {
@@ -706,8 +718,12 @@
 				plugin.$panel.each(function (index) {
 					$(this).removeAttr('id aria-labelledby role').hide();
 				});
-			}
+			},
+			reInit: function() {
+				var plugin = this;
 
+				plugin.init();
+			}
 		});
 
 		$.fn[pluginName] = function ( options ) {
@@ -1170,80 +1186,142 @@
 	})(jQuery, window, document, undefined);
 
 	/*
-	** Plugin - Number Counting
+	** Plugin - Sticky
 	*/
 	;
-	(function ($, win, doc, undefined) {
-
-		var pluginName = "numberCounting";
+	(function ( $, win, doc, undefined ){
+		var pluginName = 'sticky'
 
 		var defaults = {
-			input: '[data-js=numberCounting__input]',
-			minusEl: '[data-js=numberCounting__minus]',
-			plusEl: '[data-js=numberCounting__plus]',
-			countingVal: 1,
+			position: "top",
+			top: 0,
+			sectionEl: '[data-js=sticky__section]',
+			headerEl: '[data-js=sticky__header]',
+			targetEl: '[data-js=sticky__target]',
+			activeClassName: 'is-floating',
 		};
 
 		function Plugin(element, options) {
 			this.element = element;
 			this._name = pluginName;
 			this._defaults = defaults;
-			this.options = $.extend({}, this._defaults, options);
+			this.options = $.extend( {}, this._defaults, options );
+			this.flag = false;
+			this.headerHeight = 0;
 			this.init();
 		}
 
 		$.extend(Plugin.prototype, {
-			init: function () {
+			init: function() {
 				var plugin = this;
 
 				plugin.buildCache();
 				plugin.bindEvents();
 			},
-			buildCache: function () {
+			buildCache: function() {
 				var plugin = this;
 
-				plugin.$element = $(plugin.element);
-				plugin.$input = plugin.$element.find(plugin.options.input);
-				plugin.$minus = plugin.$element.find(plugin.options.minusEl);
-				plugin.$plus = plugin.$element.find(plugin.options.plusEl);
+				plugin.$wrap = $( plugin.element );
+				plugin.$header = plugin.$wrap.find( plugin.options.headerEl );
+				plugin.$target = plugin.$wrap.find( plugin.options.targetEl );
+				plugin.$win = $( win );
 
-				plugin.$plus.find('.blind').text( '상품수량 ' + plugin.options.countingVal + '개 추가')
-				plugin.$minus.find('.blind').text( '상품수량 ' + plugin.options.countingVal + '개 제거')
+				plugin.headerHeight = plugin.$header.outerHeight();
+
+				plugin.top = plugin.$wrap.offset().top;
+				plugin.bottom = plugin.top + ( plugin.$wrap.outerHeight() - plugin.$header.outerHeight() );
 			},
-			bindEvents: function () {
+			bindEvents: function() {
 				var plugin = this;
 
-				plugin.$minus.on('click.' + pluginName, function (e) {
-					e.stopPropagation();
-					e.preventDefault();
+				plugin.$win.on('scroll.' + plugin._name, function(e) {
+					var scrTop = $(this).scrollTop();
 
-					plugin.down();
-				})
-				plugin.$plus.on('click.' + pluginName, function (e) {
-					e.stopPropagation();
-					e.preventDefault();
-
-					plugin.up();
+					plugin.toggle( scrTop );
 				})
 			},
-			up: function () {
+			toggle: function( scrTop ) {
 				var plugin = this;
 
-				var prevVal = plugin.$input.val()
-				var currentVal = parseInt(prevVal);
-				plugin.$input.val(currentVal + plugin.options.countingVal)
-			},
-			down: function () {
-				var plugin = this;
+				// if ( plugin.getOffsetTop() < plugin.getScrollTop() ) {
+				// 	plugin.setFixed()
+				// } else {
+				// 	plugin.unFixed()
+				// }
 
-				var prevVal = plugin.$input.val()
-				var currentVal = parseInt(prevVal);
+				if ( scrTop > plugin.bottom ) {
+					plugin.unFixed();
 
-				if (prevVal > 0) {
-					plugin.$input.val(currentVal - plugin.options.countingVal)
+					plugin.$wrap.css({
+						position: 'relative'
+					})
+
+					plugin.$target.css({
+						position: 'absolute',
+						bottom: '0',
+						top: 'auto',
+						width: '100%'
+					})
+				} else if ( scrTop >= plugin.top ) {
+					plugin.$wrap.css({
+						position: ''
+					})
+
+					plugin.$target.css({
+						position: '',
+						bottom: '',
+						width: ''
+					})
+					plugin.setFixed();
 				}
-			}
-		});
+
+				else if ( scrTop <= plugin.top ) {
+					plugin.unFixed();
+				}
+			},
+			setFixed: function() {
+				var plugin = this;
+
+				plugin.$header.css('height', plugin.headerHeight);
+				plugin.$target.css({
+					'position': 'fixed',
+					'top': 0,
+					'left': plugin.$header.offset().left,
+					'width': plugin.$header.outerWidth()
+				})
+			},
+			unFixed: function() {
+				var plugin = this;
+
+				plugin.$header.css('height', plugin.headerHeight);
+				plugin.$target.css({
+					'position': '',
+					'top': '',
+					'left': '',
+					'width': ''
+				})
+			},
+			getScrollTop: function() {
+				var plugin = this;
+
+				var scrollTop = plugin.$win.scrollTop();
+
+				return scrollTop
+			},
+			getOffsetTop: function( target ) {
+				var plugin = this;
+
+				if ( target ) {
+					return ($(target).offset().top);
+				} else if ( plugin.options.position === 'bottom' ) {
+					return ( plugin.$wrap.offset().top + plugin.$header.height() ) - plugin.options.top;
+				} else if (  plugin.options.position === 'middle' ) {
+					return ( plugin.$wrap.offset().top + ( plugin.$header.height() / 2 ) ) - plugin.options.top;
+				} else {
+					return plugin.$wrap.offset().top - plugin.options.top;
+				}
+			},
+		})
 
 		$.fn[pluginName] = function ( options ) {
 			return this.each(function () {
@@ -1254,96 +1332,10 @@
 		}
 
 		$(function () {
-			$('[data-js=numberCounting]').numberCounting();
+			$('[data-js=sticky]').sticky();
 		});
 
-
-	})(jQuery, window, document, undefined);
-
-	/*
-	** Plugin - Carousel
-	*/
-	;
-	(function ($, win, doc, undefined) {
-
-		var pluginName = "carousel";
-
-		var defaults = {};
-
-		function Plugin(element, options) {
-			this.element = element;
-			this._name = pluginName;
-			this._defaults = defaults;
-			this.options = $.extend({}, this._defaults, options);
-			this.idx = 0;
-			this.init();
-		}
-
-		$.extend(Plugin.prototype, {
-			init: function () {
-				var plugin = this;
-
-				plugin.buildCache();
-				plugin.bindEvents();
-			},
-			buildCache: function () {
-				var plugin = this;
-
-				plugin.$element = $(plugin.element);
-				plugin.$inner = plugin.$element.find('.carousel__inner');
-				plugin.$slide = plugin.$element.find('.carousel__item');
-				// var dots = document.getElementsByClassName("dot");
-			},
-			bindEvents: function () {
-				var plugin = this;
-
-				plugin.$element.find('.carousel__next').on('click', function () {
-					plugin.indexCounting(1)
-				})
-				plugin.$element.find('.carousel__prev').on('click', function () {
-					plugin.indexCounting(-1)
-				})
-			},
-			indexCounting: function (idx) {
-				var plugin = this;
-
-				plugin.showSlide(plugin.idx += idx);
-			},
-			showSlide: function (idx) {
-				var plugin = this;
-
-				if (idx > plugin.$slide.length - 1) {
-					plugin.idx = 0
-				}
-				if (idx < 0) {
-					plugin.idx = plugin.$slide.length - 1
-				}
-
-				plugin.$inner.animate({
-					marginLeft: -(plugin.$slide.width() * plugin.idx)
-				}, 300)
-			},
-			currentSlide: function (idx) {
-				var plugin = this;
-
-				plugin.showSlide(plugin.idx = idx);
-			}
-		});
-
-		$.fn[pluginName] = function ( options ) {
-			return this.each(function () {
-				if (!$.data(this, "plugin_" + pluginName)) {
-					$.data(this, "plugin_" + pluginName, new Plugin(this, options || $(this).data('options')));
-				}
-			});
-		}
-
-		$(function () {
-			// $('[data-js=carousel]').carousel();
-		});
-
-
-	})(jQuery, window, document, undefined);
+	})(jQuery, window, document, undefined)
 
 	/*
 	** Plugin - Floating
@@ -1403,35 +1395,14 @@
 				plugin.$element = $(plugin.element);
 				plugin.$targetParent = plugin.$element.find(plugin.options.targetParent);
 				plugin.$target = plugin.$element.find(plugin.options.target);
-				plugin.$category = plugin.$element.find(plugin.options.category);
-				plugin.$focusAnchor = plugin.$element.find(plugin.options.focusAnchor);
-				plugin.$focusTarget = plugin.$element.find(plugin.options.focusTarget);
-				plugin.$dropdownButton = plugin.$element.find( plugin.options.dropdownButton );
-				plugin.$dropdownList = plugin.$element.find( plugin.options.dropdownList );
-				plugin.$dropdownItem = plugin.$element.find( plugin.options.dropdownItem );
-				plugin.$dropdownAnchor = plugin.$element.find( plugin.options.dropdownAnchor );
-				plugin.$dropdownTitle = $( plugin.options.dropdownTitle );
 				plugin.$win = $(win);
 				plugin.$doc = $(doc)
 
-				plugin.$dropdownFocusEl = UTIL.findFocusEl( plugin.$dropdownList );
-				plugin.$dropdownAnchorLast = $( plugin.$dropdownFocusEl[1] );
-
 				plugin.targetHeight = 0;
 
-				plugin.top =
-					plugin.options.sectionInFloating === 'single'
-					?
-					plugin.$element.offset().top + plugin.$target.outerHeight()
-					:
-					plugin.$element.offset().top;
+				plugin.top = plugin.$element.offset().top + plugin.$target.outerHeight();
 
-				plugin.bottom =
-					plugin.options.sectionInFloating === 'single'
-					?
-					plugin.top + ( plugin.$element.outerHeight() - plugin.$target.outerHeight() )
-					:
-					plugin.top + ( plugin.$element.outerHeight() - plugin.options.top );
+				plugin.bottom = plugin.top + ( plugin.$element.outerHeight() - plugin.$target.outerHeight() )
 
 				$( plugin.options.target ).each(function(idx) {
 					var $this = $(this);
@@ -1447,21 +1418,6 @@
 						plugin.targetHeight += $this.outerHeight()
 					}
 				})
-
-				plugin.$focusAnchor.each(function(idx) {
-					var $this = $(this);
-
-					$this
-						.data(plugin._name + '_target', plugin.$focusTarget.eq(idx))
-						.data('index', idx);
-				})
-				plugin.$focusTarget.each(function(idx) {
-					$(this).attr({
-						'tabindex': 0,
-						'data-index': idx
-					})
-				})
-
 			},
 			bindEvents: function() {
 				var plugin = this;
@@ -1487,39 +1443,6 @@
 							plugin.close()
 						}
 					}
-				})
-
-				plugin.$dropdownButton.on('click.' + pluginName + ' keydown.' + pluginName, function(e) {
-					var key = e.keyCode || e.which;
-
-					if ( e.shiftKey && key == 9 ) {
-						e.preventDefault();
-						plugin.$dropdownAnchorLast.focus();
-					} else if ( e.type == 'click' || key == 13 ) {
-						e.preventDefault();
-						plugin.toggle('dropdown');
-					}
-				})
-
-				plugin.$dropdownAnchorLast.on('keydown.' + pluginName, function(e) {
-					var key = e.keyCode || e.which;
-
-					if ( !plugin.dropdownFlag ) return;
-
-					if (!e.shiftKey) {
-						if ( key == 9 || key == 40 ) {
-							e.preventDefault();
-							plugin.$dropdownButton.focus();
-						}
-					}
-				})
-
-				// 섹션 이동
-				plugin.$focusAnchor.on('click', function(e) {
-					e.stopPropagation();
-					e.preventDefault();
-					var $this = $(this);
-					plugin.targetFoucs( $this, $this.attr('href') )
 				})
 			},
 			sectionFloating: function( scrTop ) {
@@ -1573,28 +1496,26 @@
 				if (plugin.flag) return;
 
 				plugin.$targetParent.css('height', plugin.$target.outerHeight() );
-				plugin.$target.addClass('is-floating').css('top', plugin.options.top);
-				plugin.$category.addClass('section__dropdown');
-				plugin.targerHeight = plugin.$category.outerHeight();
-				plugin.$dropdownList.hide();
+				plugin.$target.addClass('is-floating').css({
+					'position': 'fixed',
+					'top': plugin.options.top,
+					'left': 0,
+					'width': '100%'
+				});
+				plugin.targerHeight = plugin.$target.outerHeight();
 				plugin.flag = true;
 
-				plugin.setAria();
 			},
 			unFloating: function() {
 				var plugin = this;
 
 				if (!plugin.flag) return;
-				plugin.$dropdownList.show();
 				if (!plugin.options.sectionInFloating) plugin.$targetParent.css('height', '' );
-				plugin.$target.removeClass('is-floating').css('top', '');
-				plugin.$category.removeClass('section__dropdown');
+				plugin.$target.removeClass('is-floating').removeAttr('style')
 				plugin.removeDropdown();
 				plugin.flag = false;
 				plugin.status = false;
-				plugin.dropdownFlag = false;
 
-				plugin.removeAria();
 				plugin.removePerceiveScroll();
 			},
 			getScrollTop: function() {
@@ -1691,35 +1612,6 @@
 				var plugin = this;
 
 				plugin.status = false;
-				plugin.$category.removeClass('section__dropdown--opened');
-				plugin.$dropdownButton.removeClass('is-opened');
-			},
-			setAria: function() {
-				var plugin = this;
-
-				plugin.$dropdownTitle.attr({
-					id: pluginName + '_title'
-				})
-
-				plugin.$dropdownButton.attr({
-					id: pluginName + '_btn',
-					'aria-labelledby': pluginName + '_title ' + pluginName + '_btn' ,
-					'aria-haspopup': 'listbox',
-					'aria-expended': false,
-				})
-				plugin.$dropdownList.attr({
-					id: pluginName + '_btn',
-					role: 'listbox',
-					'aria-labelledby': pluginName + '_title',
-				})
-				plugin.$dropdownItem.attr('role', 'option');
-			},
-			removeAria: function() {
-				var plugin = this;
-
-				plugin.$dropdownButton.removeAttr('id aria-labelledby aria-haspopup aria-expended')
-				plugin.$dropdownList.removeAttr('id role aria-labelledby')
-				plugin.$dropdownItem.removeAttr('role');
 			},
 			setIntervalScroll: function() {
 				var plugin = this;
@@ -1795,8 +1687,12 @@
 		var pluginName = "tooltip";
 
 		var defaults = {
+			position: 'right', //left, top, bottom
+			event: 'focusin', //click
+			indent: 10,
 			button: '[data-js=tooltip__button]',
-			panel: '[data-js=tooltip__panel]'
+			panel: '[data-js=tooltip__panel]',
+			activeClassName: 'is-active'
 		};
 
 		function Plugin(element, options) {
@@ -1822,23 +1718,50 @@
 				plugin.$button = plugin.$element.find(plugin.options.button);
 				plugin.$panel = plugin.$element.find(plugin.options.panel);
 				plugin.$win = $(win);
+
+				plugin.$button.attr('aria-expended', false);
+				plugin.$panel.hide();
+				plugin.$element.css('display', 'inline-block');
+
+				plugin.setPosition();
 			},
 			bindEvents: function() {
 				var plugin = this;
-
-				plugin.$button.on('click.' + pluginName, function(e) {
-					e.preventDefault();
-
-					plugin.toggle();
-				})
-
-				plugin.$win.on('click.' + pluginName, function(e) {
-					if ( plugin.flag ) {
-						if (!plugin.$element.is(e.target) && plugin.$element.has(e.target).length === 0){
-							plugin.close()
-						}
+				var eventName = (function () {
+					var events = plugin.options.event;
+					if ( events === 'focusin' ) {
+						return [ 'focusin.' + plugin._name + ' mouseenter.' + plugin._name, 'focusout.' + plugin._name + ' mouseleave.' + plugin._name ]
 					}
-				})
+
+					return [events + '.' + plugin._name];
+				})();
+
+				if ( eventName.length == 1 ) {
+					plugin.$button.on(eventName[0], function(e) {
+						e.preventDefault();
+						plugin.toggle();
+					})
+
+					plugin.$win.on(eventName[0], function(e) {
+						if ( plugin.flag ) {
+							if (!plugin.$element.is(e.target) && plugin.$element.has(e.target).length === 0){
+								plugin.close()
+							}
+						}
+					})
+				} else if (eventName.length == 2) {
+					plugin.$button
+						.on(eventName[0], function(e) {
+							e.preventDefault();
+
+							plugin.open();
+						})
+						.on(eventName[1], function(e) {
+							e.preventDefault();
+
+							plugin.close();
+						});
+				}
 			},
 			toggle: function() {
 				var plugin = this;
@@ -1853,13 +1776,59 @@
 				var plugin = this;
 
 				plugin.flag = true;
-				plugin.$element.addClass('is-active');
+				plugin.$button.attr('aria-expended', true);
+				plugin.$panel
+					.css('position', 'absolute')
+					.addClass(plugin.options.activeClassName)
+					.show();
 			},
 			close: function() {
 				var plugin = this;
 
 				plugin.flag = false;
-				plugin.$element.removeClass('is-active');
+				plugin.$button.attr('aria-expended', true);
+				plugin.$panel
+					.css('position', '')
+					.removeClass(plugin.options.activeClassName)
+					.hide();
+			},
+			setPosition: function() {
+				var plugin = this;
+
+				var buttonWidth = plugin.$button.outerWidth(),
+					buttonHeight = plugin.$button.outerHeight(),
+					panelWidth = plugin.$panel.outerWidth(),
+					panelHeight = plugin.$panel.outerHeight();
+
+				var buttonOffset = plugin.$button.offset(),
+					buttonTop = buttonOffset.top,
+					buttonLeft = buttonOffset.left;
+
+				switch ( plugin.options.position ) {
+					case 'left':
+						plugin.$panel.css({
+							'top': buttonTop + ( (buttonHeight - panelHeight) / 2 ),
+							'left': ( buttonLeft - panelWidth ) - plugin.options.indent
+						})
+						break;
+					case 'top':
+						plugin.$panel.css({
+							'top': ( buttonTop - panelHeight ) - plugin.options.indent,
+							'left': buttonLeft - ( Math.abs( buttonWidth - panelWidth ) / 2 )
+						})
+						break;
+					case 'bottom':
+						plugin.$panel.css({
+							'top': ( buttonTop + buttonHeight ) + plugin.options.indent,
+							'left': buttonLeft - ( Math.abs( buttonWidth - panelWidth ) / 2 )
+						})
+						break;
+					default:
+						plugin.$panel.css({
+							'top': buttonTop + ( (buttonHeight - panelHeight) / 2 ),
+							'left': ( buttonLeft + buttonWidth ) + plugin.options.indent
+						})
+				}
 			}
 		});
 

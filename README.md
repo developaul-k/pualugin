@@ -43,7 +43,7 @@ Toggle Plugin은 toggle__anchor를 클릭 시 toggle__panel이 나타났다 사�
 * * *
 
 ``` javascript
-$('.your-element').toggle();
+$('.your-element').toggle(); // Initialized
 ```
 
 ### Basic Code
@@ -153,7 +153,7 @@ Tab Plugin은 tab__anchor 클릭 시 해당하는 tab__panel 노출됨.
 * * *
 
 ``` javascript
-$('.your-element').tab();
+$('.your-element').tab(); // Initialized
 ```
 
 ### Basic Code
@@ -282,6 +282,15 @@ yourVariable.reInit();
 
 Accordion은 tab__anchor 클릭 시 해당하는 tab__panel 노출됨.
 
+* * *
+모든 플러그인은 기본적으로 **페이지 렌더링시 Initialized** 됩니다.<br>
+**개별적(비동기 마크업 구현) Initialized** 필요한 경우 아래와 같이 진행합니다.
+* * *
+
+``` javascript
+$('.your-element').accordion(); // Initialized
+```
+
 ### Basic Code
 
 ``` html
@@ -352,3 +361,48 @@ Accordion은 tab__anchor 클릭 시 해당하는 tab__panel 노출됨.
     * **type**: String
     * **default**: is-active
     * **description**: 원하는 클래스명으로 변경 가능
+
+### Events
+
+``` javascript
+var yourVariable = $('.your-element');
+
+yourVariable.on('beforeChange', function( event, plugin, anchor ){
+    /* your code ... */
+})
+
+yourVariable.on('afterChange', function( event, plugin, anchor ){
+    /* your code ... */
+})
+```
+
+* **beforeChange**
+    * **Arguments**: event, plugin, anchor
+    * **description**: 탭 오픈 전 실행될 함수
+* **afterChange**
+    * **Arguments**: event, plugin, anchor
+    * **description**: 탭 오픈 후 실행될 함수 함수
+
+### Method
+
+``` javascript
+var yourVariable = $('.your-element').data('plugin_accordion');
+
+yourVariable.go(1); //OR
+yourVariable.go(2, true); //OR
+yourVariable.go(0, false); //OR
+
+yourVariable.destroy();
+
+yourVariable.reInit();
+```
+
+* **go**
+    * **Arguments**: index, withScroll(Boolean): 선택된 탭의 상단으로 스크롤 이동 여부
+    * **description**: 입력한 index 패널 오픈
+* **destroy**
+    * **Arguments**: none
+    * **description**: 플러그인 초기화
+* **reInit**
+    * **Arguments**: none
+    * **description**: 플러그인 초기화 후 재생성 **ex) 비동기로 아코디언이 추가 된 경우 사용**
