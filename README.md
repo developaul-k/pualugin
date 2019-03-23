@@ -1,5 +1,5 @@
 # Pualugin.js
-Pualugin.js 는 jQuery boilerplate code로 작성한 UI 플러그인 모음입니다.
+Pualugin.js 는 boilerplate code로 작성한 jQuery UI 플러그인 모음입니다.
 
 ## Getting started
 시작하려면 [jQuery](http://code.jquery.com)를 다운받고 아래와 같이 작성합니다.
