@@ -1,5 +1,5 @@
 # Pualugin.js
-Pualugin.js 는 jQuery boilerplate로 작성된 플러그인 모음입니다.
+Pualugin.js 는 jQuery boilerplate code로 작성한 UI 플러그인 모음입니다.
 
 ## Getting started
 시작하려면 [jQuery](http://code.jquery.com)를 다운받고 아래와 같이 작성합니다.
@@ -14,15 +14,6 @@ Pualugin.js 는 jQuery boilerplate로 작성된 플러그인 모음입니다.
 Toggle Plugin은 toggle__anchor를 클릭 시 toggle__panel이 나타났다 사라졌다를 반복합니다.
 * toggle__anchor는 모든 태그로 사용가능합니다. ( ex: button, div, span ..... )
 * 초기값은 toggle_panel이 숨겨진 상태입니다.
-
-* * *
-모든 플러그인은 기본적으로 **페이지 렌더링시 Initialized** 됩니다.<br>
-**개별적(비동기 마크업 구현) Initialized** 필요한 경우 아래와 같이 진행합니다.
-* * *
-
-``` javascript
-$('.your-element').toggle(); // Initialized
-```
 
 ### Basic Code
 
@@ -40,6 +31,15 @@ $('.your-element').toggle(); // Initialized
     <a href="#" data-js="toggle__anchor">toggle__anchor</a>
     <div data-js="toggle__panel">toggle__panel</div>
 </div>
+```
+
+* * *
+모든 플러그인은 기본적으로 **페이지 렌더링시 Initialized** 됩니다.<br>
+**개별적(비동기 마크업 구현) Initialized** 필요한 경우 아래와 같이 진행합니다.
+* * *
+
+``` javascript
+$('.your-element').toggle(); // Initialized
 ```
 
 ### Options
@@ -125,15 +125,6 @@ yourVariable.reInit();
 
 Tab Plugin은 tab__anchor 클릭 시 해당하는 tab__panel 노출됨.
 
-* * *
-모든 플러그인은 기본적으로 **페이지 렌더링시 Initialized** 됩니다.<br>
-**개별적(비동기 마크업 구현) Initialized** 필요한 경우 아래와 같이 진행합니다.
-* * *
-
-``` javascript
-$('.your-element').tab(); // Initialized
-```
-
 ### Basic Code
 
 ``` html
@@ -176,6 +167,15 @@ $('.your-element').tab(); // Initialized
     <div data-js="tab__panel"> tab-panel2 </div>
     <div data-js="tab__panel"> tab-panel3 </div>
 </div>
+```
+
+* * *
+모든 플러그인은 기본적으로 **페이지 렌더링시 Initialized** 됩니다.<br>
+**개별적(비동기 마크업 구현) Initialized** 필요한 경우 아래와 같이 진행합니다.
+* * *
+
+``` javascript
+$('.your-element').tab(); // Initialized
 ```
 
 ### Options
@@ -260,15 +260,6 @@ yourVariable.reInit();
 
 Accordion은 tab__anchor 클릭 시 해당하는 tab__panel 노출됨.
 
-* * *
-모든 플러그인은 기본적으로 **페이지 렌더링시 Initialized** 됩니다.<br>
-**개별적(비동기 마크업 구현) Initialized** 필요한 경우 아래와 같이 진행합니다.
-* * *
-
-``` javascript
-$('.your-element').accordion(); // Initialized
-```
-
 ### Basic Code
 
 ``` html
@@ -305,6 +296,15 @@ $('.your-element').accordion(); // Initialized
         <div data-js="accordion__panel">accordion__panel3</div>
     </li>
 </ul>
+```
+
+* * *
+모든 플러그인은 기본적으로 **페이지 렌더링시 Initialized** 됩니다.<br>
+**개별적(비동기 마크업 구현) Initialized** 필요한 경우 아래와 같이 진행합니다.
+* * *
+
+``` javascript
+$('.your-element').accordion(); // Initialized
 ```
 
 ### Options
