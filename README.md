@@ -227,10 +227,10 @@ yourVariable.on('afterChange', function( event, plugin, anchor, panel ){
 
 * **beforeChange**
     * **Arguments**: event, plugin, anchor, panel
-    * **description**: 탭 오픈 전 실행될 함수
+    * **description**: Tab 오픈 전 실행될 함수
 * **afterChange**
     * **Arguments**: event, plugin, anchor, panel
-    * **description**: 탭 오픈 후 실행될 함수 함수
+    * **description**: Tab 오픈 후 실행될 함수 함수
 
 ### Method
 
@@ -345,21 +345,114 @@ $('.your-element').accordion(); // Initialized
 ``` javascript
 var yourVariable = $('.your-element');
 
-yourVariable.on('beforeChange', function( event, plugin, anchor ){
+yourVariable.on('beforeChange', function( event, plugin, anchor, panel ){
     /* your code ... */
 })
 
-yourVariable.on('afterChange', function( event, plugin, anchor ){
+yourVariable.on('afterChange', function( event, plugin, anchor, panel ){
     /* your code ... */
 })
 ```
 
 * **beforeChange**
     * **Arguments**: event, plugin, anchor
-    * **description**: 탭 오픈 전 실행될 함수
+    * **description**: Accordion 오픈 전 실행될 함수
 * **afterChange**
     * **Arguments**: event, plugin, anchor
-    * **description**: 탭 오픈 후 실행될 함수 함수
+    * **description**: Accordion 오픈 후 실행될 함수
+
+### Method
+
+``` javascript
+var yourVariable = $('.your-element').data('plugin_accordion');
+
+yourVariable.go(1); //OR
+yourVariable.go(2, true); //OR
+yourVariable.go(0, false); //OR
+
+yourVariable.destroy();
+
+yourVariable.reInit();
+```
+
+* **go**
+    * **Arguments**: index, withScroll(Boolean): 선택된 탭의 상단으로 스크롤 이동 여부
+    * **description**: 입력한 index 패널 오픈
+* **destroy**
+    * **Arguments**: none
+    * **description**: 플러그인 초기화
+* **reInit**
+    * **Arguments**: none
+    * **description**: 플러그인 초기화 후 재생성 **ex) 비동기로 아코디언이 추가 된 경우 사용**
+
+
+## Sticky
+
+Sticky는 지정한 target에 스크롤 시 브라우저 상단에 고정된 상태로 따라다니는 플러그인 입니다.
+
+### Basic Code
+
+``` html
+<section class="pualugin-sticky__section" data-js="sticky">
+    <div class="pualugin-sticky__header" data-js="sticky__target-parent">
+        <h1 class="pualugin-sticky__target" data-js="sticky__target">Section1</h1>
+    </div>
+</section>
+```
+
+### Basic Code + Options
+
+``` html
+<section class="pualugin-sticky__section" data-js="sticky" data-options='{ "position": "bottom" }'>
+    <div class="pualugin-sticky__header" data-js="sticky__target-parent">
+        <h1 class="pualugin-sticky__target" data-js="sticky__target">Section1</h1>
+    </div>
+</section>
+```
+
+* * *
+모든 플러그인은 기본적으로 **페이지 렌더링시 Initialized** 됩니다.<br>
+**개별적(비동기 마크업 구현) Initialized** 필요한 경우 아래와 같이 진행합니다.
+* * *
+
+``` javascript
+$('.your-element').sticky(); // Initialized
+```
+
+### Options
+
+* **position**
+    * **type**: String
+    * **default**: top
+    * **description**: **middle**, **bottom**, 중 선택
+* **top**
+    * **type**: Number
+    * **default**: 0
+* **activeClassName**
+    * **type**: String
+    * **default**: is-active
+    * **description**: 원하는 클래스명으로 변경 가능
+
+### Events
+
+``` javascript
+var yourVariable = $('.your-element');
+
+yourVariable.on('beforeChange', function( event, plugin, target ){
+    /* your code ... */
+})
+
+yourVariable.on('afterChange', function( event, plugin, target ){
+    /* your code ... */
+})
+```
+
+* **beforeChange**
+    * **Arguments**: event, plugin, target
+    * **description**: Fixed 전 실행될 함수
+* **afterChange**
+    * **Arguments**: event, plugin, target
+    * **description**: Fixed 후 실행될 함수
 
 ### Method
 
