@@ -1,13 +1,14 @@
 {
     "devDependencies": {
-        "gulp": "latest",
-        "gulp-connect": "latest",
-        "gulp-watch": "latest",
         "browser-sync": "latest",
         "connect-ssi": "latest",
+        "gulp": "latest",
         "gulp-clean-css": "latest",
-        "gulp-sass": "latest",
         "gulp-concat": "latest",
-        "gulp-uglify": "latest"
+        "gulp-connect": "latest",
+        "gulp-file-include": "^2.0.1",
+        "gulp-sass": "latest",
+        "gulp-uglify": "latest",
+        "gulp-watch": "latest"
     }
 }

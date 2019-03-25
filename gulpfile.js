@@ -5,7 +5,8 @@ const gulp = require('gulp'),
       uglify = require('gulp-uglify'),
       bs = require('browser-sync').create(),
       connectSSI = require('connect-ssi'),
-      cleanCSS = require('gulp-clean-css');
+      cleanCSS = require('gulp-clean-css'),
+      fileInclude = require('gulp-file-include');
 
 const src = 'src';
 
@@ -34,7 +35,7 @@ const browserSync = done => {
     open: true,
     server: {
       baseDir: "./",
-      index: "src/index.html"
+      index: "assets/index.html"
     }
   })
   done();
@@ -74,6 +75,7 @@ const components = () => {
   )
 }
 
+
 const main = () => {
   return (
     gulp
@@ -82,13 +84,26 @@ const main = () => {
   )
 }
 
+
+const fileinclude = () => {
+  return (
+    gulp
+      .src([paths.main.src])
+      .pipe(fileInclude({
+        prefix: '@@',
+        basepath: '@file'
+      }))
+      .pipe(gulp.dest('assets/'))
+  )
+}
+
 const watch = () => {
   gulp.watch(paths.styles.src, styles).on('change', path => browserSyncStream(path));
   gulp.watch(paths.scripts.src, scripts).on('change', path => browserSyncReload(path));
   gulp.watch(paths.components.src, components).on('change', path => browserSyncReload(path));
-  gulp.watch(paths.main.src, main).on('change', path => browserSyncReload(path));
+  gulp.watch(paths.main.src, main).on('change', path => browserSyncStream(path));
 }
 
-const taskSync = gulp.parallel(browserSync, styles, scripts, main, watch);
+const taskSync = gulp.parallel(browserSync, styles, scripts, watch, main, fileinclude);
 
 gulp.task('default', taskSync);

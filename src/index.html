@@ -28,17 +28,16 @@
                     <li class="pualugin__nav-li">
                         <a href="sticky" class="pualugin__nav-anchor" data-js="nav__anchor">sticky</a>
                     </li>
+                    <li class="pualugin__nav-li">
+                        <a href="modal" class="pualugin__nav-anchor" data-js="nav__anchor">modal</a>
+                    </li>
                 </ul>
             </nav>
         </header>
         <div class="pualugin__contents">
-            <div id="toggle" class="plugin">
-                <h1>Plugin - toggle</h1>
-                <div data-js="toggle">
-                    <button class="pualugin__button" data-js="toggle__anchor">toggle_anchor</button>
-                    <div data-js="toggle__panel">toggle_panel</div>
-                </div>
-            </div>
+            @@include('components/toggle.html')
+            @@include('components/tab.html')
+            @@include('components/modal.html')
         </div>
     </section>
 
@@ -76,12 +75,15 @@
                         case 'sticky':
                             $('[data-js=sticky]').sticky();
                             break;
+                        case 'modal':
+                            $('[data-js=modal]').modal();
+                            break;
                         default:
                             ;
                     }
                 },
-                error:function(e){
-                    console.log('error')
+                error: function(error){
+                    console.log(error)
                 }
             });
         }

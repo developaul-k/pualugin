@@ -28,17 +28,74 @@
                     <li class="pualugin__nav-li">
                         <a href="sticky" class="pualugin__nav-anchor" data-js="nav__anchor">sticky</a>
                     </li>
+                    <li class="pualugin__nav-li">
+                        <a href="modal" class="pualugin__nav-anchor" data-js="nav__anchor">modal</a>
+                    </li>
                 </ul>
             </nav>
         </header>
         <div class="pualugin__contents">
             <div id="toggle" class="plugin">
-                <h1>Plugin - toggle</h1>
-                <div data-js="toggle">
-                    <button class="pualugin__button" data-js="toggle__anchor">toggle_anchor</button>
-                    <div data-js="toggle__panel">toggle_panel</div>
-                </div>
+    <h1>Plugin - toggle</h1>
+    <div data-js="toggle">
+        <button class="pualugin__button" data-js="toggle__anchor">toggle_anchor</button>
+        <div data-js="toggle__panel">toggle_panel</div>
+    </div>
+</div>
+            <div id="tab" class="plugin">
+    <h1>Plugin - tab</h1>
+    <div class="plugin__flex">
+        <div class="plugin__flex-column">
+            <h2 class="plugin__column-title">Default</h2>
+            <div class="pualugin-tab" data-js="tab">
+                <ul class="pualugin-tab__ul">
+                    <li class="pualugin-tab__list" data-js="tab__list">
+                        <a href="#" class="pualugin-tab__anchor" data-js="tab__anchor">tab-anchor1</a>
+                    </li>
+                    <li class="pualugin-tab__list" data-js="tab__list">
+                        <a href="#" class="pualugin-tab__anchor" data-js="tab__anchor">tab-anchor2</a>
+                    </li>
+                    <li class="pualugin-tab__list" data-js="tab__list">
+                        <a href="#" class="pualugin-tab__anchor" data-js="tab__anchor">tab-anchor3</a>
+                    </li>
+                </ul>
+                <div class="pualugin-tab__panel" data-js="tab__panel"> tab-panel1 </div>
+                <div class="pualugin-tab__panel" data-js="tab__panel"> tab-panel2 </div>
+                <div class="pualugin-tab__panel" data-js="tab__panel"> tab-panel3 </div>
             </div>
+        </div>
+        <div class="plugin__flex-column">
+            <h2 class="plugin__column-title">initIndex: 1</h2>
+            <div class="pualugin-tab" data-js="tab" data-options='{ "initIndex": 1 }'>
+                <ul class="pualugin-tab__ul">
+                    <li class="pualugin-tab__list" data-js="tab__list">
+                        <a href="#" class="pualugin-tab__anchor" data-js="tab__anchor">tab-anchor1</a>
+                    </li>
+                    <li class="pualugin-tab__list" data-js="tab__list">
+                        <a href="#" class="pualugin-tab__anchor" data-js="tab__anchor">tab-anchor2</a>
+                    </li>
+                    <li class="pualugin-tab__list" data-js="tab__list">
+                        <a href="#" class="pualugin-tab__anchor" data-js="tab__anchor">tab-anchor3</a>
+                    </li>
+                </ul>
+                <div class="pualugin-tab__panel" data-js="tab__panel"> tab-panel1 </div>
+                <div class="pualugin-tab__panel" data-js="tab__panel"> tab-panel2 </div>
+                <div class="pualugin-tab__panel" data-js="tab__panel"> tab-panel3 </div>
+            </div>
+        </div>
+    </div>
+</div>
+            <button class="pualugin__button" data-js="modal__open" data-target="#modal">모달 오픈</button>
+
+
+<div id="modal" class="pualugin-modal__element" data-js="modal__element">
+    <div class="pualugin-modal__container">
+        <div class="pualugin-modal__contents">
+            모달 내용입니다.
+            <button class="pualugin-modal__close" data-js="modal__close">닫기</button>
+        </div>
+    </div>
+</div>
         </div>
     </section>
 
@@ -76,12 +133,15 @@
                         case 'sticky':
                             $('[data-js=sticky]').sticky();
                             break;
+                        case 'modal':
+                            $('[data-js=modal]').modal();
+                            break;
                         default:
                             ;
                     }
                 },
-                error:function(e){
-                    console.log('error')
+                error: function(error){
+                    console.log(error)
                 }
             });
         }

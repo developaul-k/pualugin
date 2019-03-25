@@ -1193,10 +1193,10 @@
 		var pluginName = 'sticky'
 
 		var defaults = {
-			position: "top",
+			position: "top", //bottom, middle
 			top: 0,
 			sectionEl: '[data-js=sticky__section]',
-			headerEl: '[data-js=sticky__header]',
+			headerEl: '[data-js=sticky__target-parent]',
 			targetEl: '[data-js=sticky__target]',
 			activeClassName: 'is-floating',
 		};
@@ -1218,6 +1218,21 @@
 				plugin.buildCache();
 				plugin.bindEvents();
 			},
+			destroy: function() {
+				var plugin = this;
+
+				plugin.unbindEvents();
+				plugin.$header.removeAttr('style');
+				plugin.$target.removeAttr('style');
+			},
+			reInit: function() {
+				var plugin = this;
+
+				plugin.destroy();
+				plugin.unbindEvents();
+				plugin.buildCache();
+				plugin.bindEvents();
+			},
 			buildCache: function() {
 				var plugin = this;
 
@@ -1229,59 +1244,37 @@
 				plugin.headerHeight = plugin.$header.outerHeight();
 
 				plugin.top = plugin.$wrap.offset().top;
-				plugin.bottom = plugin.top + ( plugin.$wrap.outerHeight() - plugin.$header.outerHeight() );
+				plugin.bottom = plugin.top + ( plugin.$wrap.outerHeight() - plugin.headerHeight );
 			},
 			bindEvents: function() {
 				var plugin = this;
 
-				plugin.$win.on('scroll.' + plugin._name, function(e) {
+				plugin.$win.on('scroll.' + plugin._name, function() {
 					var scrTop = $(this).scrollTop();
 
 					plugin.toggle( scrTop );
 				})
 			},
+			unbindEvents: function() {
+				plugin.$win.off(plugin._name);
+			},
 			toggle: function( scrTop ) {
 				var plugin = this;
 
-				// if ( plugin.getOffsetTop() < plugin.getScrollTop() ) {
-				// 	plugin.setFixed()
-				// } else {
-				// 	plugin.unFixed()
-				// }
-
 				if ( scrTop > plugin.bottom ) {
 					plugin.unFixed();
-
-					plugin.$wrap.css({
-						position: 'relative'
-					})
-
-					plugin.$target.css({
-						position: 'absolute',
-						bottom: '0',
-						top: 'auto',
-						width: '100%'
-					})
+					plugin.bottomRelative();
 				} else if ( scrTop >= plugin.top ) {
-					plugin.$wrap.css({
-						position: ''
-					})
-
-					plugin.$target.css({
-						position: '',
-						bottom: '',
-						width: ''
-					})
+					plugin.bottomFixed();
 					plugin.setFixed();
-				}
-
-				else if ( scrTop <= plugin.top ) {
+				} else if ( scrTop <= plugin.top ) {
 					plugin.unFixed();
 				}
 			},
 			setFixed: function() {
 				var plugin = this;
 
+				plugin.beforeChange();
 				plugin.$header.css('height', plugin.headerHeight);
 				plugin.$target.css({
 					'position': 'fixed',
@@ -1289,6 +1282,7 @@
 					'left': plugin.$header.offset().left,
 					'width': plugin.$header.outerWidth()
 				})
+				plugin.afterChange();
 			},
 			unFixed: function() {
 				var plugin = this;
@@ -1301,25 +1295,56 @@
 					'width': ''
 				})
 			},
-			getScrollTop: function() {
+			bottomFixed: function() {
 				var plugin = this;
 
-				var scrollTop = plugin.$win.scrollTop();
+				plugin.$wrap.css({
+					position: ''
+				})
 
-				return scrollTop
+				plugin.$target.css({
+					position: '',
+					bottom: '',
+					width: ''
+				})
+			},
+			bottomRelative: function() {
+				var plugin = this;
+
+				plugin.$wrap.css('position', 'relative');
+				plugin.$target.css({
+					position: 'absolute',
+					bottom: '0',
+					top: 'auto',
+					width: '100%'
+				})
 			},
 			getOffsetTop: function( target ) {
 				var plugin = this;
+				var wrapTop = plugin.$wrap.offset().top;
+				var headerHeight = plugin.$header.height();
+				var position = plugin.options.position;
+				var topValue = plugin.options.top;
 
 				if ( target ) {
 					return ($(target).offset().top);
-				} else if ( plugin.options.position === 'bottom' ) {
-					return ( plugin.$wrap.offset().top + plugin.$header.height() ) - plugin.options.top;
-				} else if (  plugin.options.position === 'middle' ) {
-					return ( plugin.$wrap.offset().top + ( plugin.$header.height() / 2 ) ) - plugin.options.top;
+				} else if ( position === 'bottom' ) {
+					return ( wrapTop + headerHeight ) - topValue;
+				} else if (  position === 'middle' ) {
+					return ( wrapTop + ( headerHeight / 2 ) ) - topValue;
 				} else {
-					return plugin.$wrap.offset().top - plugin.options.top;
+					return wrapTop - topValue;
 				}
+			},
+			beforeChange: function () {
+				var plugin = this;
+
+				plugin.$wrap.trigger('beforeChange', [plugin, plugin.$target]);
+			},
+			afterChange: function () {
+				var plugin = this;
+
+				plugin.$wrap.trigger('afterChange', [plugin, plugin.$target]);
 			},
 		})
 
@@ -1335,347 +1360,6 @@
 			$('[data-js=sticky]').sticky();
 		});
 
-	})(jQuery, window, document, undefined)
-
-	/*
-	** Plugin - Floating
-	*/
-	;
-	(function ($, win, doc, undefined) {
-
-		var pluginName = "floating";
-
-		var defaults = {
-			position: "top",
-			top: 0,
-			targetParent: '[data-js=floating__target-parent]',
-			target: '[data-js=floating__target]',
-			category: '[data-js=floating__category]',
-			toggle: '[data-js=floating__category-toggle]',
-			focusAnchor: '[data-js=floating__focus-anchor]',
-			focusTarget: '[data-js=floating__focus-target]',
-			dropdownButton: '[data-js=floating__dropdown-anchor]',
-			dropdownList: '[data-js=floating__dropdown-list]',
-			dropdownItem: '[data-js=floating__dropdown-li]',
-			dropdownAnchor: '[data-js=floating__dropdown-link]',
-			dropdownTitle: '[data-js=floating__dropdown-title]',
-			activeClassName: 'is-active',
-			perceive: false
-		};
-
-		function Plugin(element, options) {
-			this.element = element;
-			this._name = pluginName;
-			this._defaults = defaults;
-			this.options = $.extend({}, this._defaults, options);
-			this.categoryWidth = 0;
-			this.flag = false;
-			this.dropdownFlag = false;
-			this.status = false;
-			this.targetElm = [];
-			this.targetOffsetTop = [];
-			this.lastScrollTop = 0;
-			this.didScroll = null;
-			this.delta = 5;
-			this.init();
-		}
-
-		$.extend(Plugin.prototype, {
-			init: function() {
-				var plugin = this;
-
-				plugin.buildCache();
-				plugin.bindEvents();
-
-				plugin.options.perceive && plugin.setIntervalScroll();
-			},
-			buildCache: function() {
-				var plugin = this;
-
-				plugin.$element = $(plugin.element);
-				plugin.$targetParent = plugin.$element.find(plugin.options.targetParent);
-				plugin.$target = plugin.$element.find(plugin.options.target);
-				plugin.$win = $(win);
-				plugin.$doc = $(doc)
-
-				plugin.targetHeight = 0;
-
-				plugin.top = plugin.$element.offset().top + plugin.$target.outerHeight();
-
-				plugin.bottom = plugin.top + ( plugin.$element.outerHeight() - plugin.$target.outerHeight() )
-
-				$( plugin.options.target ).each(function(idx) {
-					var $this = $(this);
-					var options = $this.closest( '[data-js=floating]' ).data('options');
-
-					if ( typeof options === 'object' ) {
-						if ( options.dropdown ) {
-							plugin.targetHeight += ( $this.outerHeight() - 40 )
-						} else {
-							plugin.targetHeight += $this.outerHeight()
-						}
-					} else {
-						plugin.targetHeight += $this.outerHeight()
-					}
-				})
-			},
-			bindEvents: function() {
-				var plugin = this;
-
-				plugin.$win.on('scroll.' + plugin._name, function(e) {
-					var scrTop = $(this).scrollTop();
-
-					if ( plugin.options.perceive ) {
-						plugin.didScroll = true;
-					}
-
-					if ( plugin.options.sectionInFloating ) {
-						plugin.sectionFloating( scrTop )
-					} else {
-						plugin.toggle('floating');
-						plugin.targetSwitch( scrTop );
-					}
-				})
-
-				plugin.$win.on('click.' + pluginName, function(e) {
-					if ( plugin.dropdownFlag ) {
-						if (!plugin.$target.is(e.target) && plugin.$target.has(e.target).length === 0){
-							plugin.close()
-						}
-					}
-				})
-			},
-			sectionFloating: function( scrTop ) {
-				var plugin = this;
-
-				if ( scrTop > plugin.bottom ) {
-					plugin.unFloating();
-
-					plugin.$element.css({
-						position: 'relative'
-					})
-
-					plugin.$target.css({
-						position: 'absolute',
-						bottom: '0',
-						top: 'auto',
-						width: '100%'
-					})
-				} else if ( scrTop >= plugin.top ) {
-					plugin.$element.css({
-						position: ''
-					})
-
-					plugin.$target.css({
-						position: '',
-						bottom: '',
-						width: ''
-					})
-					plugin.floating();
-				}
-
-				else if ( scrTop <= plugin.top ) {
-					plugin.unFloating();
-				}
-			},
-			toggle: function( toggleCase ) {
-				var plugin = this;
-				if ( toggleCase === 'floating' ) {
-					if ( plugin.getOffsetTop() < plugin.getScrollTop() ) {
-						plugin.floating()
-					} else {
-						plugin.unFloating()
-					}
-				} else if ( toggleCase === 'dropdown' ) {
-					plugin.status ? plugin.close() : plugin.open();
-				}
-			},
-			floating: function() {
-				var plugin = this;
-
-				if (plugin.flag) return;
-
-				plugin.$targetParent.css('height', plugin.$target.outerHeight() );
-				plugin.$target.addClass('is-floating').css({
-					'position': 'fixed',
-					'top': plugin.options.top,
-					'left': 0,
-					'width': '100%'
-				});
-				plugin.targerHeight = plugin.$target.outerHeight();
-				plugin.flag = true;
-
-			},
-			unFloating: function() {
-				var plugin = this;
-
-				if (!plugin.flag) return;
-				if (!plugin.options.sectionInFloating) plugin.$targetParent.css('height', '' );
-				plugin.$target.removeClass('is-floating').removeAttr('style')
-				plugin.removeDropdown();
-				plugin.flag = false;
-				plugin.status = false;
-
-				plugin.removePerceiveScroll();
-			},
-			getScrollTop: function() {
-				var plugin = this;
-
-				var scrollTop = plugin.$doc.scrollTop()
-
-				return scrollTop
-			},
-			getOffsetTop: function( target ) {
-				var plugin = this;
-				if ( target ) {
-					return ($(target).offset().top);
-				} else if ( plugin.options.position === 'bottom' ) {
-					return ( plugin.$targetParent.offset().top + plugin.$targetParent.height() ) - plugin.options.top;
-				} else if (  plugin.options.position === 'middle' ) {
-					return ( plugin.$targetParent.offset().top + ( plugin.$targetParent.height() / 2 ) ) - plugin.options.top;
-				} else {
-					return plugin.$targetParent.offset().top - plugin.options.top;
-				}
-			},
-			targetFoucs: function( $self, target ) {
-				var plugin = this;
-
-				var $anchor = $self;
-
-				plugin.close();
-
-				$('html, body').stop().animate({
-					scrollTop: ( plugin.getOffsetTop( target ) - plugin.targetHeight )
-				}, 300, function() {
-					var relatedScrTop = $(win).scrollTop();
-					$( target ).focus()
-					$(win).scrollTop( relatedScrTop )
-				})
-			},
-			targetSwitch: function( scrollTop ) {
-				var plugin = this;
-
-				$.each( plugin.$focusTarget, function(idx) {
-
-					var $this = $(this);
-					var result = Math.floor( $this.offset().top ) - (plugin.targetHeight + 1);
-
-					if ( $this.next().length ) {
-						if ( result <= scrollTop &&
-								$this.next().offset().top > scrollTop ) {
-									plugin.activeClassCtrl( $( plugin.$focusAnchor[idx] ) )
-						}
-					} else {
-						if ( result <= scrollTop ) {
-							plugin.activeClassCtrl( $( plugin.$focusAnchor[idx] ) )
-						}
-					}
-				})
-			},
-			activeClassCtrl: function( $self ) {
-				var plugin = this;
-
-				plugin.$focusAnchor.not($self).removeClass(plugin.options.activeClassName);
-				$self.addClass(plugin.options.activeClassName);
-				plugin.$dropdownButton.text( $self.text() );
-			},
-			open: function() {
-				var plugin = this;
-
-				if ( plugin.dropdownFlag == true ) return;
-
-				plugin.dropdownFlag = true;
-
-				plugin.$dropdownButton.attr('aria-expended', true);
-				plugin.$dropdownList.slideDown(200);
-				plugin.setDropdown();
-			},
-			close: function() {
-				var plugin = this;
-
-				if ( plugin.dropdownFlag == false ) return;
-
-				plugin.dropdownFlag = false;
-
-				plugin.$dropdownButton.attr('aria-expended', false).focus();
-				plugin.$dropdownList.slideUp(200);
-				plugin.removeDropdown();
-			},
-			setDropdown: function() {
-				var plugin = this;
-
-				plugin.status = true;
-				plugin.$category.addClass('section__dropdown--opened');
-				plugin.$dropdownButton.addClass('is-opened');
-			},
-			removeDropdown: function() {
-				var plugin = this;
-
-				plugin.status = false;
-			},
-			setIntervalScroll: function() {
-				var plugin = this;
-
-				setInterval(function() {
-					if (plugin.didScroll) {
-						plugin.perceiveScroll();
-						plugin.didScroll = false;
-					}
-				}, 250);
-			},
-			perceiveScroll: function() {
-				var plugin = this;
-				var _scrollTop = $(win).scrollTop();
-
-				if ( Math.abs( plugin.lastScrollTop - _scrollTop ) <= plugin.delta ) return;
-
-				if (_scrollTop > plugin.lastScrollTop && _scrollTop > 50){
-					plugin.$target.removeClass('up')
-					plugin.removePerceiveScroll();
-					// down
-				} else {
-					if(_scrollTop + $(window).height() < $(document).height() && _scrollTop > 50) {
-						// up
-						plugin.$target.addClass('up')
-						plugin.setPerceiveScroll();
-					}
-				}
-				plugin.lastScrollTop = _scrollTop;
-			},
-			setPerceiveScroll: function() {
-				var plugin = this;
-				var headerHeight = 0;
-
-				plugin.$target.each(function() {
-					headerHeight += $(this).outerHeight();
-				})
-
-				$('[data-js="floating__target"]').not(plugin.$target).css({
-					'transform': 'translate(0,' + headerHeight + 'px)'
-				})
-			},
-			removePerceiveScroll: function() {
-				var plugin = this;
-
-				$('[data-js="floating__target"]').each(function() {
-					$(this).css({
-						'transform': ''
-					})
-				})
-			}
-		});
-
-		$.fn[pluginName] = function ( options ) {
-			return this.each(function () {
-				if (!$.data(this, "plugin_" + pluginName)) {
-					$.data(this, "plugin_" + pluginName, new Plugin(this, options || $(this).data('options')));
-				}
-			});
-		}
-
-		$(function () {
-			$('[data-js=floating]').floating();
-		});
 	})(jQuery, window, document, undefined)
 
 	/*
@@ -2040,7 +1724,7 @@
 		var defaults = {
 			modal: '[data-js=modal__element]',
 			close: '[data-js=modal__close]',
-			button: '[data-js=modal__button]',
+			open: '[data-js=modal__open]',
 			activeClassName: 'is-open'
 		}
 
@@ -2049,38 +1733,29 @@
 			this._name = pluginName;
 			this._defaults = defaults;
 			this.options = $.extend({}, this._defaults, options);
-			this.appendModal();
+			this.stackLevel = 0;
+			this.initialSetting = false;
 			this.init();
-			this.open = $.proxy(this.open, this);
 		}
 
 		$.extend(Plugin.prototype, {
 			init: function() {
 				var plugin = this;
+				plugin.appendModal();
 				plugin.buildCache();
 				plugin.bindEvents();
-			},
-			appendModal: function() {
-				var plugin = this;
-
-				$('#wrap').find( plugin.options.modal ).each(function() {
-					$('[data-js=modal]').append( $(this) );
-				})
 			},
 			buildCache: function() {
 				var plugin = this;
 
 				plugin.$element = $(plugin.element);
 				plugin.$modal = plugin.$element.find(plugin.options.modal)
+				plugin.$open = $( plugin.options.open )
 				plugin.$close = $( plugin.options.close )
 				plugin.$win = $(win);
 				plugin.$html = $('html');
 				plugin.$body = $('html, body');
 				plugin.$wrap = $('#wrap');
-				plugin._basket = [];
-				plugin._scrollBasket = [];
-
-				plugin.$modal.attr('tabindex', 0);
 			},
 			bindEvents: function() {
 				var plugin = this;
@@ -2097,10 +1772,25 @@
 					plugin.close( $(this).closest( plugin.options.modal ) )
 				})
 
-				$(doc).on('click.' + pluginName, plugin.options.button, function(e) {
+				$(doc).on('click.' + pluginName, plugin.options.open, function(e) {
 					e.preventDefault();
 
-					plugin.open( $($(this).data('modal-target')) );
+					plugin.open( $($(this).data('target')) );
+				})
+			},
+			appendModal: function() {
+				var plugin = this;
+
+				if ( !plugin.initialSetting ) {
+					plugin.initialSetting = true;
+
+					$('body')
+						.append('<div class="pualugin-modal" data-js="modal"></div>')
+						.append('<div class="pualugin-modal__mask" data-js="modal__mask"></div>');
+				}
+
+				$('body').find( plugin.options.modal ).each(function() {
+					$('[data-js=modal]').append( $(this) );
 				})
 			},
 			afterBindEvents: function( focusElementFirst, focusElementLast ) {
@@ -2120,53 +1810,20 @@
 					}
 				})
 			},
-			getScrollTop: function() {
-				var plugin = this;
-
-				return plugin.$win.scrollTop();
-			},
-			setScrollTop: function( val ) {
-				var plugin = this;
-				var $target = $('#' + plugin._basket[plugin._basket.length - 2]);
-
-				if ( plugin._basket.length <= 1 ) {
-					plugin.$html.addClass(plugin.options.activeClassName);
-					plugin.$wrap.scrollTop( val );
-				} else {
-					$target.scrollTop( val );
-				}
-				plugin.setStyles( $target )
-			},
-			removeScrollTop: function ( val ) {
-				var plugin = this;
-				var $target = $('#' + plugin._basket[plugin._basket.length - 1]);
-
-				if ( plugin._basket.length <= 1 ) {
-					plugin.$html.removeClass(plugin.options.activeClassName);
-					plugin.$body.scrollTop( val )
-				} else {
-					$target.scrollTop( val );
-				}
-				plugin.removeStyles( $target )
-
-			},
 			open: function( target ) {
 				var plugin = this;
+				console.log( target )
 				var $target = $(target);
 				var targetId = $target.attr('id');
 				var _focusElements = UTIL.findFocusEl( $target );
 
-				plugin.afterBindEvents( $(_focusElements[0]), $(_focusElements[1]) )
+				// plugin.afterBindEvents( $(_focusElements[0]), $(_focusElements[1]) )
 
-				plugin.getScrollTop();
+				plugin.makeDimd();
 
-				plugin._basket.push(targetId);
-				plugin._scrollBasket.push(plugin.getScrollTop())
-
-				plugin.setScrollTop( plugin._scrollBasket[plugin._scrollBasket.length-1] );
 				$target
 					.addClass(plugin.options.activeClassName)
-					.css('z-index',  300 + plugin._basket.indexOf( targetId ) )
+					.css('z-index',  300 + plugin.stackLevel )
 					.attr({
 						'role': 'dialog',
 						'aria-modal': true
@@ -2179,13 +1836,10 @@
 				var targetId = $target.attr('id');
 
 				$target.removeClass(plugin.options.activeClassName);
-				plugin.removeScrollTop( plugin._scrollBasket[plugin._scrollBasket.length-1] );
 
-				plugin._basket.splice( plugin._basket.length -1 )
-				plugin._scrollBasket.splice( plugin._scrollBasket.length-1 )
-				if ( $target.attr('id').indexOf('Date') == -1 ) {
+				/* if ( $target.attr('id').indexOf('Date') == -1 ) {
 					$('[data-modal-target="#' + $target.attr('id') + '"]').focus();
-				}
+				} */
 			},
 			removeStyles: function( $target ) {
 				$target.css({
@@ -2219,7 +1873,7 @@
 		}
 
 		$(function () {
-			$('[data-js=modal]').modal();
+			$('body').modal();
 		});
 
 	})(jQuery, window, document, undefined)
