@@ -225,6 +225,136 @@
 </div>
 <!-- //Options -->
 
+<!-- Events -->
+<p class="plugin__description">
+  - Events
+</p>
+<div class="code code--html">
+<span class="code__language">JAVASCRIPT</span>
+<pre>
+<code class="javascript">
+  var yourVariable = $('.your-element');
+
+  yourVariable.on('beforeChange', function( event, plugin, anchor, panel ){
+      /* your code ... */
+  })
+  
+  yourVariable.on('afterChange', function( event, plugin, anchor, panel ){
+      /* your code ... */
+  })
+</code>
+</pre>
+</div>
+<div class="pualugin-options">
+  <ul class="pualugin-options__ul">
+    <li class="pualugin-options__li">
+      <div class="pualugin-options__name">
+        beforeChange
+      </div>
+      <ul class="pualugin-options__ul">
+        <li class="pualugin-options__li">
+          Arguments: event, plugin, anchor, panel
+        </li>
+        <li class="pualugin-options__li">
+          description: 패널 오픈 전 실행될 함수
+        </li>
+      </ul>
+    </li>
+    <li class="pualugin-options__li">
+      <div class="pualugin-options__name">
+        afterChange
+      </div>
+      <ul class="pualugin-options__ul">
+        <li class="pualugin-options__li">
+          Arguments: event, plugin, anchor, panel
+        </li>
+        <li class="pualugin-options__li">
+          description: 패널 오픈 후 실행될 함수
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+<!-- //Events -->
+
+<!-- Method -->
+<p class="plugin__description">
+  - Method
+</p>
+<div class="code code--html">
+<span class="code__language">JAVASCRIPT</span>
+<pre>
+<code class="javascript">
+  var yourVariable = $('.your-element').data('plugin_toggle');
+
+  yourVariable.show();
+  
+  yourVariable.hide();
+  
+  yourVariable.destroy();
+  
+  yourVariable.reInit();
+</code>
+</pre>
+</div>
+<div class="pualugin-options">
+  <ul class="pualugin-options__ul">
+    <li class="pualugin-options__li">
+      <div class="pualugin-options__name">
+        show
+      </div>
+      <ul class="pualugin-options__ul">
+        <li class="pualugin-options__li">
+          Arguments: none
+        </li>
+        <li class="pualugin-options__li">
+          description: 패널 열기
+        </li>
+      </ul>
+    </li>
+    <li class="pualugin-options__li">
+      <div class="pualugin-options__name">
+        hide
+      </div>
+      <ul class="pualugin-options__ul">
+        <li class="pualugin-options__li">
+          Arguments: none
+        </li>
+        <li class="pualugin-options__li">
+          description: 패널 닫기
+        </li>
+      </ul>
+    </li>
+    <li class="pualugin-options__li">
+      <div class="pualugin-options__name">
+        destroy
+      </div>
+      <ul class="pualugin-options__ul">
+        <li class="pualugin-options__li">
+          Arguments: none
+        </li>
+        <li class="pualugin-options__li">
+          description: 플러그인 제거
+        </li>
+      </ul>
+    </li>
+    <li class="pualugin-options__li">
+      <div class="pualugin-options__name">
+        reInit
+      </div>
+      <ul class="pualugin-options__ul">
+        <li class="pualugin-options__li">
+          Arguments: none
+        </li>
+        <li class="pualugin-options__li">
+          description: 플러그인 제거 후 생성
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+<!-- //Events -->
+
 </div>
             <div id="tab" class="plugin">
   <h1>Tab</h1>
@@ -474,6 +604,123 @@
   </ul>
 </div>
 <!-- //Options -->
+
+<!-- Events -->
+<p class="plugin__description">
+  - Events
+</p>
+<div class="code code--html">
+<span class="code__language">JAVASCRIPT</span>
+<pre>
+<code class="javascript">
+  var yourVariable = $('.your-element');
+
+  yourVariable.on('beforeChange', function( event, plugin, anchor, panel ){
+      /* your code ... */
+  })
+
+  yourVariable.on('afterChange', function( event, plugin, anchor, panel ){
+      /* your code ... */
+  })
+</code>
+</pre>
+</div>
+<div class="pualugin-options">
+  <ul class="pualugin-options__ul">
+    <li class="pualugin-options__li">
+      <div class="pualugin-options__name">
+        beforeChange
+      </div>
+      <ul class="pualugin-options__ul">
+        <li class="pualugin-options__li">
+          Arguments: event, plugin, anchor, panel
+        </li>
+        <li class="pualugin-options__li">
+          description: 패널 오픈 전 실행될 함수
+        </li>
+      </ul>
+    </li>
+    <li class="pualugin-options__li">
+      <div class="pualugin-options__name">
+        afterChange
+      </div>
+      <ul class="pualugin-options__ul">
+        <li class="pualugin-options__li">
+          Arguments: event, plugin, anchor, panel
+        </li>
+        <li class="pualugin-options__li">
+          description: 패널 오픈 후 실행될 함수
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+<!-- //Events -->
+
+<!-- Method -->
+<p class="plugin__description">
+  - Method
+</p>
+<div class="code code--html">
+<span class="code__language">JAVASCRIPT</span>
+<pre>
+<code class="javascript">
+  var yourVariable = $('.your-element').data('plugin_tab');
+
+  yourVariable.go(1); //OR
+  yourVariable.go(2, true); //OR
+  yourVariable.go(0, false); //OR
+  
+  yourVariable.destroy();
+  
+  yourVariable.reInit();
+</code>
+</pre>
+</div>
+<div class="pualugin-options">
+  <ul class="pualugin-options__ul">
+    <li class="pualugin-options__li">
+      <div class="pualugin-options__name">
+        go
+      </div>
+      <ul class="pualugin-options__ul">
+        <li class="pualugin-options__li">
+          Arguments: index, withScroll(Boolean): 선택된 탭의 상단으로 스크롤 이동 여부
+        </li>
+        <li class="pualugin-options__li">
+          description: 원하는 탭 오픈
+        </li>
+      </ul>
+    </li>
+    <li class="pualugin-options__li">
+      <div class="pualugin-options__name">
+        destroy
+      </div>
+      <ul class="pualugin-options__ul">
+        <li class="pualugin-options__li">
+          Arguments: none
+        </li>
+        <li class="pualugin-options__li">
+          description: 플러그인 제거
+        </li>
+      </ul>
+    </li>
+    <li class="pualugin-options__li">
+      <div class="pualugin-options__name">
+        reInit
+      </div>
+      <ul class="pualugin-options__ul">
+        <li class="pualugin-options__li">
+          Arguments: none
+        </li>
+        <li class="pualugin-options__li">
+          description: 플러그인 제거 후 생성
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+<!-- //Events -->
 
 </div>
             <div id="accordion" class="plugin">
