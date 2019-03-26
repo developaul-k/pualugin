@@ -1,14 +1,18 @@
 {
     "devDependencies": {
         "browser-sync": "latest",
-        "connect-ssi": "latest",
+        "browsersync-ssi": "^0.2.4",
+        "connect-modrewrite": "^0.10.2",
+        "file-system": "^2.2.2",
         "gulp": "latest",
         "gulp-clean-css": "latest",
         "gulp-concat": "latest",
         "gulp-connect": "latest",
-        "gulp-file-include": "^2.0.1",
         "gulp-sass": "latest",
         "gulp-uglify": "latest",
-        "gulp-watch": "latest"
+        "gulp-watch": "latest",
+        "gulp-cache": "^1.1.1",
+        "gulp-sourcemaps": "^2.6.5",
+        "ssi": "^0.3.0"
     }
 }

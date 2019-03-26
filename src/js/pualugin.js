@@ -102,10 +102,20 @@
 				plugin.$anchor = plugin.$wrap.find(plugin.options.anchorEl);
 				plugin.$panel = plugin.$wrap.find(plugin.options.panelEl);
 
+				var _id = plugin.$panel.attr('id') ? plugin.$panel.attr('id') : UTIL.uuid(pluginName + '-');
+
+				plugin.$anchor.attr('aria-controls', _id);
+				plugin.$panel.attr('id', _id);
+
 				if ( !plugin.options.isOpened ) {
-					plugin.$panel.attr('aria-expended', false).hide();
+					plugin.options.onChangeBeforeText !== null && plugin.$anchor.text(plugin.options.onChangeBeforeText)
+					plugin.$anchor.attr('aria-expended', false);
+					plugin.$panel.hide();
 				} else {
-					plugin.show()
+					plugin.flag = true;
+					plugin.options.onChangeAfterText !== null && plugin.$anchor.text(plugin.options.onChangeAfterText)
+					plugin.$anchor.attr('aria-expended', true);
+					plugin.$panel.show()
 				}
 			},
 			bindEvents: function () {
@@ -197,7 +207,7 @@
 					plugin.$panel.stop().show();
 					plugin.afterChange(plugin.$anchor, plugin.$panel);
 				}
-				plugin.$panel.attr('aria-expended', true);
+				plugin.$anchor.attr('aria-expended', true);
 			},
 			hide: function () {
 				var plugin = this;
@@ -217,7 +227,7 @@
 				} else {
 					plugin.$panel.stop().hide();
 				}
-				plugin.$panel.attr('aria-expended', false);
+				plugin.$anchor.attr('aria-expended', false);
 			},
 			destroy: function () {
 				var plugin = this;

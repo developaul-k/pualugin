@@ -1,0 +1,105 @@
+/* Tomorrow Night Blue Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+
+.code {
+    padding: 20px 0 10px;
+    position: relative;
+    overflow: hidden;
+    box-sizing: border-box;
+    border-radius: 0 0 5px 5px;
+    background-color: #002451;
+    &--html {
+        &:after {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 10px;
+            border-radius: 0 0 0 0;
+            background-color: $point-color-hover;
+            z-index: 1;
+            content: '';
+        }
+        .code {
+            &__language {
+                position: absolute;
+                top: 10px;
+                right: 20px;
+                padding: 0 10px;
+                height: 30px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background-color: $point-color-hover;
+                color: $white;
+            }
+        }
+    }
+}
+
+/* Tomorrow Comment */
+.hljs {
+    padding-bottom: 20px;
+    margin-bottom: -30px;
+    display: block;
+    overflow-x: auto;
+    background: #002451;
+    color: white;
+    &-comment,
+    &-quote {
+        color: #7285b7;
+    }
+    /* Tomorrow Red */
+    &-variable,
+    &-template-variable,
+    &-tag,
+    &-name,
+    &-selector-id,
+    &-selector-class,
+    &-regexp,
+    &-deletion {
+        color: #ff9da4;
+    }
+
+    /* Tomorrow Orange */
+    &-number,
+    &-built_in,
+    &-builtin-name,
+    &-literal,
+    &-type,
+    &-params,
+    &-meta,
+    &-link {
+        color: #ffc58f;
+    }
+
+    /* Tomorrow Yellow */
+    &-attribute {
+        color: #ffeead;
+    }
+    /* Tomorrow Green */
+    &-string,
+    &-symbol,
+    &-bullet,
+    &-addition {
+        color: #d1f1a9;
+    }
+    /* Tomorrow Blue */
+    &-title,
+    &-section {
+        color: #bbdaff;
+    }
+    /* Tomorrow Purple */
+    &-keyword,
+    &-selector-tag {
+        color: #ebbbff;
+    }
+    &-emphasis {
+        font-style: italic;
+    }
+    &-strong {
+        font-weight: bold;
+    }
+}

@@ -20,6 +20,18 @@
             }
         }
     }
+    &__title {
+        font-size: 24px;
+    }
+    &__description {
+        font-size: 16px;
+        margin: 30px 0 10px;
+        font-weight: 500;
+        span {
+            display: inline-block;
+            vertical-align: middle;
+        }
+    }
 }
 
 #{$pluginName} {
@@ -102,5 +114,55 @@
             padding-left: 0;
             width: 100%;
         }
+    }
+    &-options {
+        margin-top: 10px;
+        padding: 15px;
+        border-radius: 5px;
+        background-color: #fff;
+        &__name {
+            display: inline-block;
+            vertical-align: middle;
+            font-weight: 700;
+        }
+        &__title {
+            margin-bottom: 10px;
+            font-size: 17px;
+            font-weight: 700;
+        }
+        &__ul {
+            margin-left: 10px;
+        }
+        &__li {
+            font-size: 15px;
+            font-weight: 400;
+            &:before {
+                margin-right: 5px;
+                width: 4px;
+                height: 4px;
+                border-radius: 100%;
+                display: inline-block;
+                vertical-align: middle;
+                background-color: $point-color-hover;
+                content: '';
+            }
+            li {
+                font-weight: 400;
+                &:before {
+                    box-sizing: border-box;
+                    border: 1px solid $point-color-hover;
+                    background-color: $white;
+                }
+                &:last-child {
+                    margin-bottom: 10px;
+                }
+            }
+        }
+    }
+    &-result {
+        padding: 15px;
+        min-height: 150px;
+        box-sizing: border-box;
+        background-color: $white;
     }
 }

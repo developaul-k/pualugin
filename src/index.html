@@ -35,15 +35,19 @@
             </nav>
         </header>
         <div class="pualugin__contents">
-            @@include('components/toggle.html')
-            @@include('components/tab.html')
-            @@include('components/modal.html')
+            <!--#include file="components/toggle.html" -->
+            <!--#include file="components/tab.html" -->
+            <!--#include file="components/accordion.html" -->
+            <!--#include file="components/sticky.html" -->
+            <!--#include file="components/modal.html" -->
         </div>
     </section>
 
     <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="/assets/js/lib/highlight.pack.js"></script>
     <script src="/assets/js/pualugin.js"></script>
     <script>
+        hljs.initHighlightingOnLoad();
         $('[data-js="nav__status"]').on('click', function() {
             $('[data-js="nav__ul"]').toggleClass('is-active');
         })
@@ -52,41 +56,6 @@
             callComponent( $(this).attr('href') )
             $('[data-js="nav__ul"]').removeClass('is-active');
         })
-
-        function callComponent( target ) {
-            var componentUrl = '/src/components/'
-            var url = componentUrl + target + '.html';
-
-            $.ajax({
-                url: url,
-                success:function( html ){
-                    $(".pualugin__contents").html(html);
-
-                    switch (target) {
-                        case 'toggle':
-                            $('[data-js=toggle]').toggle();
-                            break;
-                        case 'tab':
-                            $('[data-js=tab]').tab();
-                            break;
-                        case 'accordion':
-                            $('[data-js=accordion]').accordion();
-                            break;
-                        case 'sticky':
-                            $('[data-js=sticky]').sticky();
-                            break;
-                        case 'modal':
-                            $('[data-js=modal]').modal();
-                            break;
-                        default:
-                            ;
-                    }
-                },
-                error: function(error){
-                    console.log(error)
-                }
-            });
-        }
     </script>
 </body>
 </html>

@@ -1,7 +1,191 @@
 <div id="toggle" class="plugin">
-    <h1>Plugin - toggle</h1>
-    <div data-js="toggle">
-        <button class="pualugin__button" data-js="toggle__anchor">toggle_anchor</button>
-        <div data-js="toggle__panel">toggle_panel</div>
-    </div>
+  <h1 class="plugin__title">Toggle</h1>
+<!-- CODE -->
+<p class="plugin__description">
+  - CODE - 기본
+</p>
+<div class="code code--html">
+<span class="code__language">HTML</span>
+<pre>
+<code class="html">
+  &lt;div data-js="toggle"&gt;
+    &lt;button class="pualugin__button" data-js="toggle__anchor"&gt;toggle_anchor&lt;/button&gt;
+    &lt;div data-js="toggle__panel"&gt;toggle_panel&lt;/div&gt;
+  &lt;/div&gt;
+</code>
+</pre>
+</div>
+<!-- //CODE -->
+<!-- RESULT -->
+<p class="plugin__description">
+  - RESULT
+</p>
+<div class="pualugin-result">
+  <div data-js="toggle">
+    <button class="pualugin__button" data-js="toggle__anchor">toggle_anchor</button>
+    <div data-js="toggle__panel">toggle_panel</div>
+  </div>
+</div>
+<!-- //RESULT -->
+
+<!-- CODE -->
+<p class="plugin__description">
+  - CODE / 옵션 : isOpened: true, onChangeBeforeText: 열기, onChangeAfterText: 닫기
+</p>
+<div class="code code--html">
+<span class="code__language">HTML</span>
+<pre>
+<code class="html">
+  &lt;div data-js="toggle" data-options='{ "isOpened": true, "onChangeBeforeText": "열기", "onChangeAfterText": "닫기" }'&gt;
+    &lt;button class="pualugin__button" data-js="toggle__anchor"&gt;toggle_anchor&lt;/button&gt;
+    &lt;div data-js="toggle__panel"&gt;toggle_panel&lt;/div&gt;
+  &lt;/div&gt;
+</code>
+</pre>
+</div>
+<!-- //CODE -->
+
+<!-- RESULT -->
+<p class="plugin__description">
+  - RESULT
+</p>
+<div class="pualugin-result">
+  <div data-js="toggle" data-options='{ "isOpened": true, "onChangeBeforeText": "열기", "onChangeAfterText": "닫기" }'>
+    <button class="pualugin__button" data-js="toggle__anchor">toggle_anchor</button>
+    <div data-js="toggle__panel">toggle_panel</div>
+  </div>
+</div>
+<!-- //RESULT -->
+
+<!-- Initialzied -->
+<p class="plugin__description">
+  - <span>모든 플러그인은 기본적으로 페이지 렌더링시 Initialized 됩니다.</span> <span>개별적(비동기 마크업 구현) Initialize 필요한 경우 아래와 같이 진행합니다.</span>
+</p>
+<div class="code code--html">
+<span class="code__language">JAVASCRIPT</span>
+<pre>
+<code class="javascript">
+  $('.your-element').toggle(); // Initialize
+</code>
+</pre>
+</div>
+<!-- Initialzied -->
+
+<!-- Options -->
+<div class="pualugin-options">
+  <div class="pualugin-options__title">Options</div>
+  <ul class="pualugin-options__ul">
+    <li class="pualugin-options__li">
+      <div class="pualugin-options__name">
+        mode
+      </div>
+      <ul class="pualugin-options__ul">
+        <li class="pualugin-options__li">
+            type: String
+        </li>
+        <li class="pualugin-options__li">
+          default: static
+        </li>
+        <li class="pualugin-options__li">
+          description: static, slide, fade 중 선택
+        </li>
+      </ul>
+    </li>
+    <li class="pualugin-options__li">
+      <div class="pualugin-options__name">
+        isOpened
+      </div>
+      <ul class="pualugin-options__ul">
+        <li class="pualugin-options__li">
+          type: Boolean
+        </li>
+        <li class="pualugin-options__li">
+          default: false
+        </li>
+        <li class="pualugin-options__li">
+          description: 초기에 toggle__panel 노출 여부를 설정
+        </li>
+      </ul>
+    </li>
+    <li class="pualugin-options__li">
+      <div class="pualugin-options__name">
+        event
+      </div>
+      <ul class="pualugin-options__ul">
+        <li class="pualugin-options__li">
+          type: String
+        </li>
+        <li class="pualugin-options__li">
+          default: click
+        </li>
+        <li class="pualugin-options__li">
+          description: click, focusin 중 선택
+        </li>
+      </ul>
+    </li>
+    <li class="pualugin-options__li">
+      <div class="pualugin-options__name">
+        easing
+      </div>
+      <ul class="pualugin-options__ul">
+        <li class="pualugin-options__li">
+          type: String
+        </li>
+        <li class="pualugin-options__li">
+          default: swing
+        </li>
+      </ul>
+    </li>
+    <li class="pualugin-options__li">
+      <div class="pualugin-options__name">
+        activeClassName
+      </div>
+      <ul class="pualugin-options__ul">
+        <li class="pualugin-options__li">
+          type: String
+        </li>
+        <li class="pualugin-options__li">
+          default: is-active
+        </li>
+        <li class="pualugin-options__li">
+          description: 토글 활성화 클래스
+        </li>
+      </ul>
+    </li>
+    <li class="pualugin-options__li">
+      <div class="pualugin-options__name">
+        onChangeBeforeText
+      </div>
+      <ul class="pualugin-options__ul">
+        <li class="pualugin-options__li">
+          type: String
+        </li>
+        <li class="pualugin-options__li">
+          default: null
+        </li>
+        <li class="pualugin-options__li">
+          description: panel 오픈 전 노출될 anchor 텍스트
+        </li>
+      </ul>
+    </li>
+    <li class="pualugin-options__li">
+      <div class="pualugin-options__name">
+        onChangeAfterText
+      </div>
+      <ul class="pualugin-options__ul">
+        <li class="pualugin-options__li">
+          type: String
+        </li>
+        <li class="pualugin-options__li">
+          default: null
+        </li>
+        <li class="pualugin-options__li">
+          description: panel 오픈 후 노출될 anchor 텍스트
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+<!-- //Options -->
+
 </div>
