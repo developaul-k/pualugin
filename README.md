@@ -122,8 +122,8 @@ $('.your-element').toggle(); // Initialized
 
 ## Tooltip & Popover
 
-### Tooltip - Basic Code
-
+### Tooltip
+### - Basic Code
 ``` html
 <div class="pualugin-tooltip" data-element="tooltip">
   <button class="pualugin__button" type="button" data-element="tooltip__button">Hover to right!</button>
@@ -133,7 +133,7 @@ $('.your-element').toggle(); // Initialized
 </div>
 ```
 
-### Tooltip - Basic Code +  Options
+### - Basic Code +  Options
 
 ``` html
 <div class="pualugin-tooltip" data-element="tooltip" data-options='{ "position": "left" }'>
@@ -144,8 +144,8 @@ $('.your-element').toggle(); // Initialized
 </div>
 ```
 
-### Popover - Basic Code
-
+### Popover
+### - Basic Code
 ``` html
 <div class="pualugin-tooltip" data-element="tooltip" data-options='{"mode": "popover"}'>
   <button class="pualugin__button" type="button" data-element="tooltip__button">Click to right!</button>
