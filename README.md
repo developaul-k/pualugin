@@ -123,6 +123,8 @@ $('.your-element').toggle(); // Initialized
 ## Tooltip & Popover
 
 ### Tooltip
+* * *
+
 ### - Basic Code
 ``` html
 <div class="pualugin-tooltip" data-element="tooltip">
@@ -145,6 +147,7 @@ $('.your-element').toggle(); // Initialized
 ```
 
 ### Popover
+* * *
 ### - Basic Code
 ``` html
 <div class="pualugin-tooltip" data-element="tooltip" data-options='{"mode": "popover"}'>
