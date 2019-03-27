@@ -529,20 +529,13 @@ yourVariable.on('afterChange', function( event, plugin, target ){
 ### Method
 
 ``` javascript
-var yourVariable = $('.your-element').data('plugin_accordion');
-
-yourVariable.go(1); //OR
-yourVariable.go(2, true); //OR
-yourVariable.go(0, false); //OR
+var yourVariable = $('.your-element').data('plugin_sticky');
 
 yourVariable.destroy();
 
 yourVariable.reInit();
 ```
 
-* **go**
-    * **Arguments**: index, withScroll(Boolean): 선택된 탭의 상단으로 스크롤 이동 여부
-    * **description**: 입력한 index 패널 오픈
 * **destroy**
     * **Arguments**: none
     * **description**: 플러그인 초기화
