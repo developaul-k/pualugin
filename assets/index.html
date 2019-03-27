@@ -14,22 +14,22 @@
                 Pualugin
             </div>
             <nav class="pualugin__nav">
-                <span class="pualugin__nav-status" data-js="nav__status" role="button">메뉴열림</span>
-                <ul class="pualugin__nav-ul" data-js="nav__ul">
+                <span class="pualugin__nav-status" data-element="nav__status" role="button">메뉴열림</span>
+                <ul class="pualugin__nav-ul" data-element="nav__ul">
                     <li class="pualugin__nav-li">
-                        <a href="toggle" class="pualugin__nav-anchor" data-js="nav__anchor">toggle</a>
+                        <a href="toggle" class="pualugin__nav-anchor" data-element="nav__anchor">toggle</a>
                     </li>
                     <li class="pualugin__nav-li">
-                        <a href="tab" class="pualugin__nav-anchor" data-js="nav__anchor">tab</a>
+                        <a href="tab" class="pualugin__nav-anchor" data-element="nav__anchor">tab</a>
                     </li>
                     <li class="pualugin__nav-li">
-                        <a href="accordion" class="pualugin__nav-anchor" data-js="nav__anchor">accordion</a>
+                        <a href="accordion" class="pualugin__nav-anchor" data-element="nav__anchor">accordion</a>
                     </li>
                     <li class="pualugin__nav-li">
-                        <a href="sticky" class="pualugin__nav-anchor" data-js="nav__anchor">sticky</a>
+                        <a href="sticky" class="pualugin__nav-anchor" data-element="nav__anchor">sticky</a>
                     </li>
                     <li class="pualugin__nav-li">
-                        <a href="modal" class="pualugin__nav-anchor" data-js="nav__anchor">modal</a>
+                        <a href="modal" class="pualugin__nav-anchor" data-element="nav__anchor">modal</a>
                     </li>
                 </ul>
             </nav>
@@ -39,15 +39,15 @@
   <h1 class="plugin__title">Toggle</h1>
 <!-- CODE -->
 <p class="plugin__description">
-  - CODE - 기본
+  - CODE: 기본
 </p>
-<div class="code code--html">
+<div class="code">
 <span class="code__language">HTML</span>
 <pre>
 <code class="html">
-  &lt;div data-js="toggle"&gt;
-    &lt;button class="pualugin__button" data-js="toggle__anchor"&gt;toggle_anchor&lt;/button&gt;
-    &lt;div data-js="toggle__panel"&gt;toggle_panel&lt;/div&gt;
+  &lt;div data-element="toggle"&gt;
+    &lt;button class="pualugin__button" data-element="toggle__anchor"&gt;toggle_anchor&lt;/button&gt;
+    &lt;div data-element="toggle__panel"&gt;toggle_panel&lt;/div&gt;
   &lt;/div&gt;
 </code>
 </pre>
@@ -58,24 +58,24 @@
   - RESULT
 </p>
 <div class="pualugin-result">
-  <div data-js="toggle">
-    <button class="pualugin__button" data-js="toggle__anchor">toggle_anchor</button>
-    <div data-js="toggle__panel">toggle_panel</div>
+  <div data-element="toggle">
+    <button class="pualugin__button" data-element="toggle__anchor">toggle_anchor</button>
+    <div data-element="toggle__panel">toggle_panel</div>
   </div>
 </div>
 <!-- //RESULT -->
 
 <!-- CODE -->
 <p class="plugin__description">
-  - CODE / 옵션 : isOpened: true, onChangeBeforeText: 열기, onChangeAfterText: 닫기
+  - CODE: 옵션 추가
 </p>
-<div class="code code--html">
+<div class="code">
 <span class="code__language">HTML</span>
 <pre>
 <code class="html">
-  &lt;div data-js="toggle" data-options='{ "isOpened": true, "onChangeBeforeText": "열기", "onChangeAfterText": "닫기" }'&gt;
-    &lt;button class="pualugin__button" data-js="toggle__anchor"&gt;toggle_anchor&lt;/button&gt;
-    &lt;div data-js="toggle__panel"&gt;toggle_panel&lt;/div&gt;
+  &lt;div data-element="toggle" data-options='{ "isOpened": true, "onChangeBeforeText": "열기", "onChangeAfterText": "닫기" }'&gt;
+    &lt;button class="pualugin__button" data-element="toggle__anchor"&gt;toggle_anchor&lt;/button&gt;
+    &lt;div data-element="toggle__panel"&gt;toggle_panel&lt;/div&gt;
   &lt;/div&gt;
 </code>
 </pre>
@@ -87,26 +87,12 @@
   - RESULT
 </p>
 <div class="pualugin-result">
-  <div data-js="toggle" data-options='{ "isOpened": true, "onChangeBeforeText": "열기", "onChangeAfterText": "닫기" }'>
-    <button class="pualugin__button" data-js="toggle__anchor">toggle_anchor</button>
-    <div data-js="toggle__panel">toggle_panel</div>
+  <div data-element="toggle" data-options='{ "isOpened": true, "onChangeBeforeText": "열기", "onChangeAfterText": "닫기" }'>
+    <button class="pualugin__button" data-element="toggle__anchor">toggle_anchor</button>
+    <div data-element="toggle__panel">toggle_panel</div>
   </div>
 </div>
 <!-- //RESULT -->
-
-<!-- Initialzied -->
-<p class="plugin__description">
-  - <span>모든 플러그인은 기본적으로 페이지 렌더링시 Initialized 됩니다.</span> <span>개별적(비동기 마크업 구현) Initialize 필요한 경우 아래와 같이 진행합니다.</span>
-</p>
-<div class="code code--html">
-<span class="code__language">JAVASCRIPT</span>
-<pre>
-<code class="javascript">
-  $('.your-element').toggle(); // Initialize
-</code>
-</pre>
-</div>
-<!-- Initialzied -->
 
 <!-- Options -->
 <div class="pualugin-options">
@@ -225,11 +211,11 @@
 </div>
 <!-- //Options -->
 
-<!-- Events -->
+<!-- Event -->
 <p class="plugin__description">
-  - Events
+  - Event
 </p>
-<div class="code code--html">
+<div class="code">
 <span class="code__language">JAVASCRIPT</span>
 <pre>
 <code class="javascript">
@@ -253,7 +239,7 @@
       </div>
       <ul class="pualugin-options__ul">
         <li class="pualugin-options__li">
-          Arguments: event, plugin, anchor, panel
+          arguments: event, plugin, anchor, panel
         </li>
         <li class="pualugin-options__li">
           description: 패널 오픈 전 실행될 함수
@@ -266,7 +252,7 @@
       </div>
       <ul class="pualugin-options__ul">
         <li class="pualugin-options__li">
-          Arguments: event, plugin, anchor, panel
+          arguments: event, plugin, anchor, panel
         </li>
         <li class="pualugin-options__li">
           description: 패널 오픈 후 실행될 함수
@@ -275,24 +261,24 @@
     </li>
   </ul>
 </div>
-<!-- //Events -->
+<!-- //Event -->
 
 <!-- Method -->
 <p class="plugin__description">
   - Method
 </p>
-<div class="code code--html">
+<div class="code">
 <span class="code__language">JAVASCRIPT</span>
 <pre>
 <code class="javascript">
   var yourVariable = $('.your-element').data('plugin_toggle');
 
   yourVariable.show();
-  
+
   yourVariable.hide();
-  
+
   yourVariable.destroy();
-  
+
   yourVariable.reInit();
 </code>
 </pre>
@@ -305,7 +291,7 @@
       </div>
       <ul class="pualugin-options__ul">
         <li class="pualugin-options__li">
-          Arguments: none
+          arguments: none
         </li>
         <li class="pualugin-options__li">
           description: 패널 열기
@@ -318,7 +304,7 @@
       </div>
       <ul class="pualugin-options__ul">
         <li class="pualugin-options__li">
-          Arguments: none
+          arguments: none
         </li>
         <li class="pualugin-options__li">
           description: 패널 닫기
@@ -331,7 +317,7 @@
       </div>
       <ul class="pualugin-options__ul">
         <li class="pualugin-options__li">
-          Arguments: none
+          arguments: none
         </li>
         <li class="pualugin-options__li">
           description: 플러그인 제거
@@ -344,7 +330,7 @@
       </div>
       <ul class="pualugin-options__ul">
         <li class="pualugin-options__li">
-          Arguments: none
+          arguments: none
         </li>
         <li class="pualugin-options__li">
           description: 플러그인 제거 후 생성
@@ -353,8 +339,340 @@
     </li>
   </ul>
 </div>
-<!-- //Events -->
+<!-- //Method -->
 
+<!-- Initialzied -->
+<p class="plugin__description">
+  - <span>모든 플러그인은 기본적으로 페이지 렌더링시 Initialized 됩니다.</span> <span>개별적(비동기 마크업 구현) Initialize 필요한 경우 아래와 같이 진행합니다.</span>
+</p>
+<div class="code">
+<span class="code__language">JAVASCRIPT</span>
+<pre>
+<code class="javascript">
+  $('.your-element').toggle(); // Initialize
+</code>
+</pre>
+</div>
+<!-- Initialzied -->
+
+</div>
+            <div id="tooltip" class="plugin">
+<h1 class="plugin__title">Tooltip & Popover</h1>
+<!-- CODE -->
+<h2 class="plugin__sub-title">Tooltip</h2>
+<p class="plugin__description">
+  - CODE: 기본 및 옵션 추가
+</p>
+<div class="code">
+<span class="code__language">HTML</span>
+<pre>
+<code class="html">
+  &lt;div class="pualugin-tooltip" data-element="tooltip"&gt;
+    &lt;button class="pualugin__button" type="button" data-element="tooltip__button"&gt;Tooltip - right&lt;/button&gt;
+    &lt;div class="pualugin-tooltip__panel" data-element="tooltip__panel"&gt;
+        to right.
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;div class="pualugin-tooltip" data-element="tooltip" data-options='{ "position": "left" }'&gt;
+    &lt;button class="pualugin__button" type="button" data-element="tooltip__button"&gt;Tooltip - left&lt;/button&gt;
+    &lt;div class="pualugin-tooltip__panel" data-element="tooltip__panel"&gt;
+        to left.
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;div class="pualugin-tooltip" data-element="tooltip" data-options='{ "position": "top" }'&gt;
+    &lt;button class="pualugin__button" type="button" data-element="tooltip__button"&gt;Tooltip - top&lt;/button&gt;
+    &lt;div class="pualugin-tooltip__panel" data-element="tooltip__panel"&gt;
+        to top.
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;div class="pualugin-tooltip" data-element="tooltip" data-options='{ "position": "bottom" }'&gt;
+      &lt;button class="pualugin__button" type="button" data-element="tooltip__button"&gt;Tooltip - bottom&lt;/button&gt;
+      &lt;div class="pualugin-tooltip__panel" data-element="tooltip__panel"&gt;
+          to bottom.
+      &lt;/div&gt;
+  &lt;/div&gt;
+</code>
+</pre>
+</div>
+<!-- //CODE -->
+
+<!-- RESULT -->
+<p class="plugin__description">
+  - RESULT
+</p>
+<div class="pualugin-result">
+  <div class="pualugin-tooltip" data-element="tooltip">
+    <button class="pualugin__button" type="button" data-element="tooltip__button">Hover to right!</button>
+    <div class="pualugin-tooltip__panel" data-element="tooltip__panel">
+      to right.
+    </div>
+  </div>
+
+  <div class="pualugin-tooltip" data-element="tooltip" data-options='{ "position": "left" }'>
+    <button class="pualugin__button" type="button" data-element="tooltip__button">Hover to left!</button>
+    <div class="pualugin-tooltip__panel" data-element="tooltip__panel">
+      to left.
+    </div>
+  </div>
+
+  <div class="pualugin-tooltip" data-element="tooltip" data-options='{ "position": "top" }'>
+    <button class="pualugin__button" type="button" data-element="tooltip__button">Hover to top!</button>
+    <div class="pualugin-tooltip__panel" data-element="tooltip__panel">
+      to top.
+    </div>
+  </div>
+
+  <div class="pualugin-tooltip" data-element="tooltip" data-options='{ "position": "bottom" }'>
+    <button class="pualugin__button" type="button" data-element="tooltip__button">Hover to bottom!</button>
+    <div class="pualugin-tooltip__panel" data-element="tooltip__panel">
+      to bottom.
+    </div>
+  </div>
+</div>
+<!-- //RESULT -->
+
+<!-- CODE -->
+<h2 class="plugin__sub-title">Popover</h2>
+<p class="plugin__description">
+  - CODE: 기본 및 옵션 추가
+</p>
+<div class="code">
+<span class="code__language">HTML</span>
+<pre>
+<code class="html">
+  &lt;div class="pualugin-tooltip" data-element="tooltip" data-options='{"mode": "popover"}'&gt;
+    &lt;button class="pualugin__button" type="button" data-element="tooltip__button"&gt;Tooltip - right&lt;/button&gt;
+    &lt;div class="pualugin-tooltip__panel" data-element="tooltip__panel"&gt;
+        to right.
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;div class="pualugin-tooltip" data-element="tooltip" data-options='{ "position": "left" }'&gt;
+    &lt;button class="pualugin__button" type="button" data-element="tooltip__button"&gt;Tooltip - left&lt;/button&gt;
+    &lt;div class="pualugin-tooltip__panel" data-element="tooltip__panel"&gt;
+        to left.
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;div class="pualugin-tooltip" data-element="tooltip" data-options='{ "position": "top" }'&gt;
+    &lt;button class="pualugin__button" type="button" data-element="tooltip__button"&gt;Tooltip - top&lt;/button&gt;
+    &lt;div class="pualugin-tooltip__panel" data-element="tooltip__panel"&gt;
+        to top.
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;div class="pualugin-tooltip" data-element="tooltip" data-options='{ "position": "bottom" }'&gt;
+      &lt;button class="pualugin__button" type="button" data-element="tooltip__button"&gt;Tooltip - bottom&lt;/button&gt;
+      &lt;div class="pualugin-tooltip__panel" data-element="tooltip__panel"&gt;
+          to bottom.
+      &lt;/div&gt;
+  &lt;/div&gt;
+</code>
+</pre>
+</div>
+<!-- //CODE -->
+
+<!-- RESULT -->
+<p class="plugin__description">
+  - RESULT
+</p>
+<div class="pualugin-result">
+  <div class="pualugin-tooltip" data-element="tooltip" data-options='{"mode": "popover"}'>
+    <button class="pualugin__button" type="button" data-element="tooltip__button">Click to right!</button>
+    <div class="pualugin-tooltip__panel" data-element="tooltip__panel">
+      to right.
+    </div>
+  </div>
+
+  <div class="pualugin-tooltip" data-element="tooltip" data-options='{ "mode": "popover", "position": "left" }'>
+    <button class="pualugin__button" type="button" data-element="tooltip__button">Click to left!</button>
+    <div class="pualugin-tooltip__panel" data-element="tooltip__panel">
+      to left.
+    </div>
+  </div>
+
+  <div class="pualugin-tooltip" data-element="tooltip" data-options='{ "mode": "popover", "position": "top" }'>
+    <button class="pualugin__button" type="button" data-element="tooltip__button">Click to top!</button>
+    <div class="pualugin-tooltip__panel" data-element="tooltip__panel">
+      to top.
+    </div>
+  </div>
+
+  <div class="pualugin-tooltip" data-element="tooltip" data-options='{ "mode": "popover", "position": "bottom" }'>
+    <button class="pualugin__button" type="button" data-element="tooltip__button">Click to bottom!</button>
+    <div class="pualugin-tooltip__panel" data-element="tooltip__panel">
+      to bottom.
+    </div>
+  </div>
+</div>
+<!-- //RESULT -->
+
+<!-- Options -->
+<div class="pualugin-options">
+  <div class="pualugin-options__title">Options</div>
+  <ul class="pualugin-options__ul">
+    <li class="pualugin-options__li">
+      <div class="pualugin-options__name">
+        mode
+      </div>
+      <ul class="pualugin-options__ul">
+        <li class="pualugin-options__li">
+          type: String
+        </li>
+        <li class="pualugin-options__li">
+          default: tooltip
+        </li>
+        <li class="pualugin-options__li">
+          description: tooltip, popover 중 선택
+        </li>
+      </ul>
+    </li>
+    <li class="pualugin-options__li">
+      <div class="pualugin-options__name">
+        position
+      </div>
+      <ul class="pualugin-options__ul">
+        <li class="pualugin-options__li">
+          type: String
+        </li>
+        <li class="pualugin-options__li">
+          default: right
+        </li>
+        <li class="pualugin-options__li">
+          description: right, left, top, bottom 중 선택
+        </li>
+      </ul>
+    </li>
+    <li class="pualugin-options__li">
+      <div class="pualugin-options__name">
+        indent
+      </div>
+      <ul class="pualugin-options__ul">
+        <li class="pualugin-options__li">
+          type: Number
+        </li>
+        <li class="pualugin-options__li">
+          default: 10
+        </li>
+        <li class="pualugin-options__li">
+          description: Button 과 Panel의 간격
+        </li>
+      </ul>
+    </li>
+    <li class="pualugin-options__li">
+      <div class="pualugin-options__name">
+        activeClassName
+      </div>
+      <ul class="pualugin-options__ul">
+        <li class="pualugin-options__li">
+          type: String
+        </li>
+        <li class="pualugin-options__li">
+          default: is-active
+        </li>
+        <li class="pualugin-options__li">
+          description: 토글 활성화 클래스
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+<!-- //Options -->
+
+<!-- Method -->
+<p class="plugin__description">
+  - Method
+</p>
+<div class="code">
+<span class="code__language">JAVASCRIPT</span>
+<pre>
+<code class="javascript">
+  var yourVariable = $('.your-element').data('plugin_tooltip');
+
+  yourVariable.show();
+
+  yourVariable.hide();
+
+  yourVariable.destroy();
+
+  yourVariable.reInit();
+</code>
+</pre>
+</div>
+<div class="pualugin-options">
+  <ul class="pualugin-options__ul">
+    <li class="pualugin-options__li">
+      <div class="pualugin-options__name">
+        show
+      </div>
+      <ul class="pualugin-options__ul">
+        <li class="pualugin-options__li">
+          arguments: none
+        </li>
+        <li class="pualugin-options__li">
+          description: 패널 열기
+        </li>
+      </ul>
+    </li>
+    <li class="pualugin-options__li">
+      <div class="pualugin-options__name">
+        hide
+      </div>
+      <ul class="pualugin-options__ul">
+        <li class="pualugin-options__li">
+          arguments: none
+        </li>
+        <li class="pualugin-options__li">
+          description: 패널 닫기
+        </li>
+      </ul>
+    </li>
+    <li class="pualugin-options__li">
+      <div class="pualugin-options__name">
+        destroy
+      </div>
+      <ul class="pualugin-options__ul">
+        <li class="pualugin-options__li">
+          arguments: none
+        </li>
+        <li class="pualugin-options__li">
+          description: 플러그인 제거
+        </li>
+      </ul>
+    </li>
+    <li class="pualugin-options__li">
+      <div class="pualugin-options__name">
+        reInit
+      </div>
+      <ul class="pualugin-options__ul">
+        <li class="pualugin-options__li">
+          arguments: none
+        </li>
+        <li class="pualugin-options__li">
+          description: 플러그인 제거 후 생성
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+<!-- //Method -->
+
+<!-- Initialzied -->
+<p class="plugin__description">
+  - <span>모든 플러그인은 기본적으로 페이지 렌더링시 Initialized 됩니다.</span> <span>개별적(비동기 마크업 구현) Initialize 필요한 경우 아래와 같이 진행합니다.</span>
+</p>
+<div class="code">
+<span class="code__language">JAVASCRIPT</span>
+<pre>
+<code class="javascript">
+  $('.your-element').tooltip(); // Initialize
+</code>
+</pre>
+</div>
+<!-- Initialzied -->
 </div>
             <div id="tab" class="plugin">
   <h1>Tab</h1>
@@ -362,25 +680,25 @@
 <p class="plugin__description">
   - CODE / 기본
 </p>
-<div class="code code--html">
+<div class="code">
 <span class="code__language">HTML</span>
 <pre>
 <code class="html">
-  &lt;div class="pualugin-tab" data-js="tab"&gt;
+  &lt;div class="pualugin-tab" data-element="tab"&gt;
     &lt;ul class="pualugin-tab__ul"&gt;
-      &lt;li class="pualugin-tab__list" data-js="tab__list"&gt;
-          &lt;a href="#" class="pualugin-tab__anchor" data-js="tab__anchor"&gt;tab-anchor1&lt;/a&gt;
+      &lt;li class="pualugin-tab__list" data-element="tab__list"&gt;
+          &lt;a href="#" class="pualugin-tab__anchor" data-element="tab__anchor"&gt;tab-anchor1&lt;/a&gt;
       &lt;/li&gt;
-      &lt;li class="pualugin-tab__list" data-js="tab__list"&gt;
-          &lt;a href="#" class="pualugin-tab__anchor" data-js="tab__anchor"&gt;tab-anchor2&lt;/a&gt;
+      &lt;li class="pualugin-tab__list" data-element="tab__list"&gt;
+          &lt;a href="#" class="pualugin-tab__anchor" data-element="tab__anchor"&gt;tab-anchor2&lt;/a&gt;
       &lt;/li&gt;
-      &lt;li class="pualugin-tab__list" data-js="tab__list"&gt;
-          &lt;a href="#" class="pualugin-tab__anchor" data-js="tab__anchor"&gt;tab-anchor3&lt;/a&gt;
+      &lt;li class="pualugin-tab__list" data-element="tab__list"&gt;
+          &lt;a href="#" class="pualugin-tab__anchor" data-element="tab__anchor"&gt;tab-anchor3&lt;/a&gt;
       &lt;/li&gt;
     &lt;/ul&gt;
-    &lt;div class="pualugin-tab__panel" data-js="tab__panel"&gt; tab-panel1 &lt;/div&gt;
-    &lt;div class="pualugin-tab__panel" data-js="tab__panel"&gt; tab-panel2 &lt;/div&gt;
-    &lt;div class="pualugin-tab__panel" data-js="tab__panel"&gt; tab-panel3 &lt;/div&gt;
+    &lt;div class="pualugin-tab__panel" data-element="tab__panel"&gt; tab-panel1 &lt;/div&gt;
+    &lt;div class="pualugin-tab__panel" data-element="tab__panel"&gt; tab-panel2 &lt;/div&gt;
+    &lt;div class="pualugin-tab__panel" data-element="tab__panel"&gt; tab-panel3 &lt;/div&gt;
   &lt;/div&gt;
 </code>
 </pre>
@@ -391,21 +709,21 @@
   - RESULT
 </p>
 <div class="pualugin-result">
-  <div class="pualugin-tab" data-js="tab">
+  <div class="pualugin-tab" data-element="tab">
     <ul class="pualugin-tab__ul">
-      <li class="pualugin-tab__list" data-js="tab__list">
-          <a href="#" class="pualugin-tab__anchor" data-js="tab__anchor">tab-anchor1</a>
+      <li class="pualugin-tab__list" data-element="tab__list">
+          <a href="#" class="pualugin-tab__anchor" data-element="tab__anchor">tab-anchor1</a>
       </li>
-      <li class="pualugin-tab__list" data-js="tab__list">
-          <a href="#" class="pualugin-tab__anchor" data-js="tab__anchor">tab-anchor2</a>
+      <li class="pualugin-tab__list" data-element="tab__list">
+          <a href="#" class="pualugin-tab__anchor" data-element="tab__anchor">tab-anchor2</a>
       </li>
-      <li class="pualugin-tab__list" data-js="tab__list">
-          <a href="#" class="pualugin-tab__anchor" data-js="tab__anchor">tab-anchor3</a>
+      <li class="pualugin-tab__list" data-element="tab__list">
+          <a href="#" class="pualugin-tab__anchor" data-element="tab__anchor">tab-anchor3</a>
       </li>
     </ul>
-    <div class="pualugin-tab__panel" data-js="tab__panel"> tab-panel1 </div>
-    <div class="pualugin-tab__panel" data-js="tab__panel"> tab-panel2 </div>
-    <div class="pualugin-tab__panel" data-js="tab__panel"> tab-panel3 </div>
+    <div class="pualugin-tab__panel" data-element="tab__panel"> tab-panel1 </div>
+    <div class="pualugin-tab__panel" data-element="tab__panel"> tab-panel2 </div>
+    <div class="pualugin-tab__panel" data-element="tab__panel"> tab-panel3 </div>
   </div>
 </div>
 <!-- //RESULT -->
@@ -413,25 +731,25 @@
 <p class="plugin__description">
   - CODE / 옵션 : initIndex: 1
 </p>
-<div class="code code--html">
+<div class="code">
 <span class="code__language">HTML</span>
 <pre>
 <code class="html">
-  &lt;div class="pualugin-tab" data-js="tab" data-options='{ "initIndex": 1 }'&gt;
+  &lt;div class="pualugin-tab" data-element="tab" data-options='{ "initIndex": 1 }'&gt;
     &lt;ul class="pualugin-tab__ul"&gt;
-      &lt;li class="pualugin-tab__list" data-js="tab__list"&gt;
-          &lt;a href="#" class="pualugin-tab__anchor" data-js="tab__anchor"&gt;tab-anchor1&lt;/a&gt;
+      &lt;li class="pualugin-tab__list" data-element="tab__list"&gt;
+          &lt;a href="#" class="pualugin-tab__anchor" data-element="tab__anchor"&gt;tab-anchor1&lt;/a&gt;
       &lt;/li&gt;
-      &lt;li class="pualugin-tab__list" data-js="tab__list"&gt;
-          &lt;a href="#" class="pualugin-tab__anchor" data-js="tab__anchor"&gt;tab-anchor2&lt;/a&gt;
+      &lt;li class="pualugin-tab__list" data-element="tab__list"&gt;
+          &lt;a href="#" class="pualugin-tab__anchor" data-element="tab__anchor"&gt;tab-anchor2&lt;/a&gt;
       &lt;/li&gt;
-      &lt;li class="pualugin-tab__list" data-js="tab__list"&gt;
-          &lt;a href="#" class="pualugin-tab__anchor" data-js="tab__anchor"&gt;tab-anchor3&lt;/a&gt;
+      &lt;li class="pualugin-tab__list" data-element="tab__list"&gt;
+          &lt;a href="#" class="pualugin-tab__anchor" data-element="tab__anchor"&gt;tab-anchor3&lt;/a&gt;
       &lt;/li&gt;
     &lt;/ul&gt;
-    &lt;div class="pualugin-tab__panel" data-js="tab__panel"&gt; tab-panel1 &lt;/div&gt;
-    &lt;div class="pualugin-tab__panel" data-js="tab__panel"&gt; tab-panel2 &lt;/div&gt;
-    &lt;div class="pualugin-tab__panel" data-js="tab__panel"&gt; tab-panel3 &lt;/div&gt;
+    &lt;div class="pualugin-tab__panel" data-element="tab__panel"&gt; tab-panel1 &lt;/div&gt;
+    &lt;div class="pualugin-tab__panel" data-element="tab__panel"&gt; tab-panel2 &lt;/div&gt;
+    &lt;div class="pualugin-tab__panel" data-element="tab__panel"&gt; tab-panel3 &lt;/div&gt;
   &lt;/div&gt;
 </code>
 </pre>
@@ -442,38 +760,24 @@
   - RESULT
 </p>
 <div class="pualugin-result">
-  <div class="pualugin-tab" data-js="tab" data-options='{ "initIndex": 1 }'>
+  <div class="pualugin-tab" data-element="tab" data-options='{ "initIndex": 1 }'>
     <ul class="pualugin-tab__ul">
-      <li class="pualugin-tab__list" data-js="tab__list">
-          <a href="#" class="pualugin-tab__anchor" data-js="tab__anchor">tab-anchor1</a>
+      <li class="pualugin-tab__list" data-element="tab__list">
+          <a href="#" class="pualugin-tab__anchor" data-element="tab__anchor">tab-anchor1</a>
       </li>
-      <li class="pualugin-tab__list" data-js="tab__list">
-          <a href="#" class="pualugin-tab__anchor" data-js="tab__anchor">tab-anchor2</a>
+      <li class="pualugin-tab__list" data-element="tab__list">
+          <a href="#" class="pualugin-tab__anchor" data-element="tab__anchor">tab-anchor2</a>
       </li>
-      <li class="pualugin-tab__list" data-js="tab__list">
-          <a href="#" class="pualugin-tab__anchor" data-js="tab__anchor">tab-anchor3</a>
+      <li class="pualugin-tab__list" data-element="tab__list">
+          <a href="#" class="pualugin-tab__anchor" data-element="tab__anchor">tab-anchor3</a>
       </li>
     </ul>
-    <div class="pualugin-tab__panel" data-js="tab__panel"> tab-panel1 </div>
-    <div class="pualugin-tab__panel" data-js="tab__panel"> tab-panel2 </div>
-    <div class="pualugin-tab__panel" data-js="tab__panel"> tab-panel3 </div>
+    <div class="pualugin-tab__panel" data-element="tab__panel"> tab-panel1 </div>
+    <div class="pualugin-tab__panel" data-element="tab__panel"> tab-panel2 </div>
+    <div class="pualugin-tab__panel" data-element="tab__panel"> tab-panel3 </div>
   </div>
 </div>
 <!-- //RESULT -->
-
-<!-- Initialzied -->
-<p class="plugin__description">
-  - <span>모든 플러그인은 기본적으로 페이지 렌더링시 Initialized 됩니다.</span> <span>개별적(비동기 마크업 구현) Initialize 필요한 경우 아래와 같이 진행합니다.</span>
-</p>
-<div class="code code--html">
-<span class="code__language">JAVASCRIPT</span>
-<pre>
-<code class="javascript">
-  $('.your-element').tab(); // Initialize
-</code>
-</pre>
-</div>
-<!-- Initialzied -->
 
 <!-- Options -->
 <div class="pualugin-options">
@@ -605,11 +909,11 @@
 </div>
 <!-- //Options -->
 
-<!-- Events -->
+<!-- Event -->
 <p class="plugin__description">
-  - Events
+  - Event
 </p>
-<div class="code code--html">
+<div class="code">
 <span class="code__language">JAVASCRIPT</span>
 <pre>
 <code class="javascript">
@@ -655,13 +959,13 @@
     </li>
   </ul>
 </div>
-<!-- //Events -->
+<!-- //Event -->
 
 <!-- Method -->
 <p class="plugin__description">
   - Method
 </p>
-<div class="code code--html">
+<div class="code">
 <span class="code__language">JAVASCRIPT</span>
 <pre>
 <code class="javascript">
@@ -720,113 +1024,168 @@
     </li>
   </ul>
 </div>
-<!-- //Events -->
+<!-- //Method -->
+
+<!-- Initialzied -->
+<p class="plugin__description">
+  - <span>모든 플러그인은 기본적으로 페이지 렌더링시 Initialized 됩니다.</span> <span>개별적(비동기 마크업 구현) Initialize 필요한 경우 아래와 같이 진행합니다.</span>
+</p>
+<div class="code">
+<span class="code__language">JAVASCRIPT</span>
+<pre>
+<code class="javascript">
+  $('.your-element').tab(); // Initialize
+</code>
+</pre>
+</div>
+<!-- Initialzied -->
 
 </div>
             <div id="accordion" class="plugin">
-    <h1>Plugin - accordion</h1>
-    <div class="plugin__flex">
-        <div class="plugin__flex-column">
-            <h2 class="plugin__column-title">Default</h2>
-            <ul class="pualugin-accordion" data-js="accordion">
-                <li class="pualugin-accordion__item" data-js="accordion__item">
-                    <a href="#" class="pualugin-accordion__anchor" data-js="accordion__anchor">accordion__anchor1</a>
-                    <div class="pualugin-accordion__panel" data-js="accordion__panel">
-                        아코디언 내용입니다. 아코디언 내용입니다. 아코디언 내용입니다. 아코디언 내용입니다.
-                        아코디언 내용입니다. 아코디언 내용입니다. 아코디언 내용입니다. 아코디언 내용입니다.
-                        아코디언 내용입니다. 아코디언 내용입니다. 아코디언 내용입니다. 아코디언 내용입니다.
-                        아코디언 내용입니다. 아코디언 내용입니다. 아코디언 내용입니다. 아코디언 내용입니다.
-                        아코디언 내용입니다. 아코디언 내용입니다. 아코디언 내용입니다. 아코디언 내용입니다.
-                        아코디언 내용입니다. 아코디언 내용입니다. 아코디언 내용입니다. 아코디언 내용입니다.
-                    </div>
-                </li>
-                <li class="pualugin-accordion__item" data-js="accordion__item">
-                    <a href="#" class="pualugin-accordion__anchor" data-js="accordion__anchor">accordion__anchor2</a>
-                    <div class="pualugin-accordion__panel" data-js="accordion__panel">
-                        아코디언 내용입니다. 아코디언 내용입니다. 아코디언 내용입니다. 아코디언 내용입니다.
-                        아코디언 내용입니다. 아코디언 내용입니다. 아코디언 내용입니다. 아코디언 내용입니다.
-                        아코디언 내용입니다. 아코디언 내용입니다. 아코디언 내용입니다. 아코디언 내용입니다.
-                        아코디언 내용입니다. 아코디언 내용입니다. 아코디언 내용입니다. 아코디언 내용입니다.
-                        아코디언 내용입니다. 아코디언 내용입니다. 아코디언 내용입니다. 아코디언 내용입니다.
-                        아코디언 내용입니다. 아코디언 내용입니다. 아코디언 내용입니다. 아코디언 내용입니다.
-                    </div>
-                </li>
-                <li class="pualugin-accordion__item" data-js="accordion__item">
-                    <a href="#" class="pualugin-accordion__anchor" data-js="accordion__anchor">accordion__anchor3</a>
-                    <div class="pualugin-accordion__panel" data-js="accordion__panel">
-                        아코디언 내용입니다. 아코디언 내용입니다. 아코디언 내용입니다. 아코디언 내용입니다.
-                        아코디언 내용입니다. 아코디언 내용입니다. 아코디언 내용입니다. 아코디언 내용입니다.
-                        아코디언 내용입니다. 아코디언 내용입니다. 아코디언 내용입니다. 아코디언 내용입니다.
-                        아코디언 내용입니다. 아코디언 내용입니다. 아코디언 내용입니다. 아코디언 내용입니다.
-                        아코디언 내용입니다. 아코디언 내용입니다. 아코디언 내용입니다. 아코디언 내용입니다.
-                        아코디언 내용입니다. 아코디언 내용입니다. 아코디언 내용입니다. 아코디언 내용입니다.
-                    </div>
-                </li>
-            </ul>
-        </div>
-        <div class="plugin__flex-column">
-            <h2 class="plugin__column-title">Not Autofold</h2>
-            <ul class="pualugin-accordion" data-js="accordion" data-options='{ "autoFold": false }'>
-                <li class="pualugin-accordion__item" data-js="accordion__item">
-                    <a href="#" class="pualugin-accordion__anchor" data-js="accordion__anchor">accordion__anchor1</a>
-                    <div class="pualugin-accordion__panel" data-js="accordion__panel">
-                        아코디언 내용입니다. 아코디언 내용입니다. 아코디언 내용입니다. 아코디언 내용입니다.
-                        아코디언 내용입니다. 아코디언 내용입니다. 아코디언 내용입니다. 아코디언 내용입니다.
-                        아코디언 내용입니다. 아코디언 내용입니다. 아코디언 내용입니다. 아코디언 내용입니다.
-                        아코디언 내용입니다. 아코디언 내용입니다. 아코디언 내용입니다. 아코디언 내용입니다.
-                        아코디언 내용입니다. 아코디언 내용입니다. 아코디언 내용입니다. 아코디언 내용입니다.
-                        아코디언 내용입니다. 아코디언 내용입니다. 아코디언 내용입니다. 아코디언 내용입니다.
-                    </div>
-                </li>
-                <li class="pualugin-accordion__item" data-js="accordion__item">
-                    <a href="#" class="pualugin-accordion__anchor" data-js="accordion__anchor">accordion__anchor2</a>
-                    <div class="pualugin-accordion__panel" data-js="accordion__panel">
-                        아코디언 내용입니다. 아코디언 내용입니다. 아코디언 내용입니다. 아코디언 내용입니다.
-                        아코디언 내용입니다. 아코디언 내용입니다. 아코디언 내용입니다. 아코디언 내용입니다.
-                        아코디언 내용입니다. 아코디언 내용입니다. 아코디언 내용입니다. 아코디언 내용입니다.
-                        아코디언 내용입니다. 아코디언 내용입니다. 아코디언 내용입니다. 아코디언 내용입니다.
-                        아코디언 내용입니다. 아코디언 내용입니다. 아코디언 내용입니다. 아코디언 내용입니다.
-                        아코디언 내용입니다. 아코디언 내용입니다. 아코디언 내용입니다. 아코디언 내용입니다.
-                    </div>
-                </li>
-                <li class="pualugin-accordion__item" data-js="accordion__item">
-                    <a href="#" class="pualugin-accordion__anchor" data-js="accordion__anchor">accordion__anchor3</a>
-                    <div class="pualugin-accordion__panel" data-js="accordion__panel">
-                        아코디언 내용입니다. 아코디언 내용입니다. 아코디언 내용입니다. 아코디언 내용입니다.
-                        아코디언 내용입니다. 아코디언 내용입니다. 아코디언 내용입니다. 아코디언 내용입니다.
-                        아코디언 내용입니다. 아코디언 내용입니다. 아코디언 내용입니다. 아코디언 내용입니다.
-                        아코디언 내용입니다. 아코디언 내용입니다. 아코디언 내용입니다. 아코디언 내용입니다.
-                        아코디언 내용입니다. 아코디언 내용입니다. 아코디언 내용입니다. 아코디언 내용입니다.
-                        아코디언 내용입니다. 아코디언 내용입니다. 아코디언 내용입니다. 아코디언 내용입니다.
-                    </div>
-                </li>
-            </ul>
-        </div>
-    </div>
+<h1 class="plugin__title">Accordion</h1>
+<!-- CODE -->
+<p class="plugin__description">- CODE / 기본</p>
+<div class="code">
+<div class="code__language">HTML</div>
+<pre>
+<code class="html">
+  &lt;ul class="pualugin-accordion" data-element="accordion"&gt;
+    &lt;li class="pualugin-accordion__item" data-element="accordion__item"&gt;
+      &lt;a href="#" class="pualugin-accordion__anchor" data-element="accordion__anchor"&gt;
+        accordion__anchor1
+      &lt;/a&gt;
+      &lt;div class="pualugin-accordion__panel" data-element="accordion__panel"&gt;
+        아코디언 내용입니다.
+      &lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li class="pualugin-accordion__item" data-element="accordion__item"&gt;
+      &lt;a href="#" class="pualugin-accordion__anchor" data-element="accordion__anchor"&gt;
+        accordion__anchor2
+      &lt;/a&gt;
+      &lt;div class="pualugin-accordion__panel" data-element="accordion__panel"&gt;
+        아코디언 내용입니다.
+      &lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li class="pualugin-accordion__item" data-element="accordion__item"&gt;
+      &lt;a href="#" class="pualugin-accordion__anchor" data-element="accordion__anchor"&gt;
+        accordion__anchor3
+      &lt;/a&gt;
+      &lt;div class="pualugin-accordion__panel" data-element="accordion__panel"&gt;
+        아코디언 내용입니다.
+      &lt;/div&gt;
+    &lt;/li&gt;
+  &lt;/ul&gt;
+</code>
+</pre>
+</div>
+<!-- CODE -->
+
+<!-- RESULT -->
+<p class="plugin__description">- RESULT</p>
+<div class="pualugin-result">
+  <ul class="pualugin-accordion" data-element="accordion">
+    <li class="pualugin-accordion__item" data-element="accordion__item">
+      <a href="#" class="pualugin-accordion__anchor" data-element="accordion__anchor">accordion__anchor1</a>
+      <div class="pualugin-accordion__panel" data-element="accordion__panel">
+          아코디언 내용입니다.
+      </div>
+    </li>
+    <li class="pualugin-accordion__item" data-element="accordion__item">
+      <a href="#" class="pualugin-accordion__anchor" data-element="accordion__anchor">accordion__anchor2</a>
+      <div class="pualugin-accordion__panel" data-element="accordion__panel">
+          아코디언 내용입니다.
+      </div>
+    </li>
+    <li class="pualugin-accordion__item" data-element="accordion__item">
+      <a href="#" class="pualugin-accordion__anchor" data-element="accordion__anchor">accordion__anchor3</a>
+      <div class="pualugin-accordion__panel" data-element="accordion__panel">
+          아코디언 내용입니다.
+      </div>
+    </li>
+  </ul>
+</div>
+<!-- //RESULT -->
+
+<!-- CODE -->
+<p class="plugin__description">- CODE / 옵션 추가</p>
+<div class="code">
+<div class="code__language">HTML</div>
+<pre>
+<code class="html">
+  &lt;ul class="pualugin-accordion" data-element="accordion" data-options='{ "autoFold": false }'&gt;
+    &lt;li class="pualugin-accordion__item" data-element="accordion__item"&gt;
+      &lt;a href="#" class="pualugin-accordion__anchor" data-element="accordion__anchor"&gt;accordion__anchor1&lt;/a&gt;
+      &lt;div class="pualugin-accordion__panel" data-element="accordion__panel"&gt;
+        아코디언 내용입니다.
+      &lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li class="pualugin-accordion__item" data-element="accordion__item"&gt;
+      &lt;a href="#" class="pualugin-accordion__anchor" data-element="accordion__anchor"&gt;accordion__anchor2&lt;/a&gt;
+      &lt;div class="pualugin-accordion__panel" data-element="accordion__panel"&gt;
+        아코디언 내용입니다.
+      &lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li class="pualugin-accordion__item" data-element="accordion__item"&gt;
+      &lt;a href="#" class="pualugin-accordion__anchor" data-element="accordion__anchor"&gt;accordion__anchor3&lt;/a&gt;
+      &lt;div class="pualugin-accordion__panel" data-element="accordion__panel"&gt;
+        아코디언 내용입니다.
+      &lt;/div&gt;
+    &lt;/li>
+  &lt;/ul>
+</code>
+</pre>
+</div>
+<!-- //CODE -->
+
+<!-- RESULT -->
+<div class="pualugin-result">
+  <p class="plugin__description">- RESULT</p>
+  <ul class="pualugin-accordion" data-element="accordion" data-options='{ "autoFold": false }'>
+    <li class="pualugin-accordion__item" data-element="accordion__item">
+      <a href="#" class="pualugin-accordion__anchor" data-element="accordion__anchor">accordion__anchor1</a>
+      <div class="pualugin-accordion__panel" data-element="accordion__panel">
+        아코디언 내용입니다.
+      </div>
+    </li>
+    <li class="pualugin-accordion__item" data-element="accordion__item">
+      <a href="#" class="pualugin-accordion__anchor" data-element="accordion__anchor">accordion__anchor2</a>
+      <div class="pualugin-accordion__panel" data-element="accordion__panel">
+        아코디언 내용입니다.
+      </div>
+    </li>
+    <li class="pualugin-accordion__item" data-element="accordion__item">
+      <a href="#" class="pualugin-accordion__anchor" data-element="accordion__anchor">accordion__anchor3</a>
+      <div class="pualugin-accordion__panel" data-element="accordion__panel">
+        아코디언 내용입니다.
+      </div>
+    </li>
+  </ul>
+</div>
+<!-- //RESULT -->
 </div>
             <div id="sticky" class="plugin">
     <h1>Plugin - Sticky</h1>
     <section class="section">
 
         <div class="pualugin-sticky">
-            <section class="pualugin-sticky__section" data-js="sticky">
-                <div class="pualugin-sticky__header" data-js="sticky__target-parent">
-                    <h1 class="pualugin-sticky__target" data-js="sticky__target">Section1</h1>
+            <section class="pualugin-sticky__section" data-element="sticky">
+                <div class="pualugin-sticky__header" data-element="sticky__target-parent">
+                    <h1 class="pualugin-sticky__target" data-element="sticky__target">Section1</h1>
                 </div>
             </section>
-            <section class="pualugin-sticky__section" data-js="sticky">
-                <div class="pualugin-sticky__header" data-js="sticky__target-parent">
-                    <h1 class="pualugin-sticky__target" data-js="sticky__target">Section2</h1>
+            <section class="pualugin-sticky__section" data-element="sticky">
+                <div class="pualugin-sticky__header" data-element="sticky__target-parent">
+                    <h1 class="pualugin-sticky__target" data-element="sticky__target">Section2</h1>
                 </div>
             </section>
-            <section class="pualugin-sticky__section" data-js="sticky">
-                <div class="pualugin-sticky__header" data-js="sticky__target-parent">
-                    <h1 class="pualugin-sticky__target" data-js="sticky__target">Section3</h1>
+            <section class="pualugin-sticky__section" data-element="sticky">
+                <div class="pualugin-sticky__header" data-element="sticky__target-parent">
+                    <h1 class="pualugin-sticky__target" data-element="sticky__target">Section3</h1>
                 </div>
             </section>
-            <section class="pualugin-sticky__section" data-js="sticky">
-                <div class="pualugin-sticky__header" data-js="sticky__target-parent">
-                    <h1 class="pualugin-sticky__target" data-js="sticky__target">Section4</h1>
+            <section class="pualugin-sticky__section" data-element="sticky">
+                <div class="pualugin-sticky__header" data-element="sticky__target-parent">
+                    <h1 class="pualugin-sticky__target" data-element="sticky__target">Section4</h1>
                 </div>
             </section>
         </div>
@@ -841,13 +1200,13 @@
     <script src="/assets/js/pualugin.js"></script>
     <script>
         hljs.initHighlightingOnLoad();
-        $('[data-js="nav__status"]').on('click', function() {
-            $('[data-js="nav__ul"]').toggleClass('is-active');
+        $('[data-element="nav__status"]').on('click', function() {
+            $('[data-element="nav__ul"]').toggleClass('is-active');
         })
-        $('[data-js=nav__anchor]').on('click', function(e) {
+        $('[data-element=nav__anchor]').on('click', function(e) {
             e.preventDefault();
             callComponent( $(this).attr('href') )
-            $('[data-js="nav__ul"]').removeClass('is-active');
+            $('[data-element="nav__ul"]').removeClass('is-active');
         })
     </script>
 </body>

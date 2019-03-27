@@ -18,18 +18,18 @@ Toggle Plugin은 toggle__anchor를 클릭 시 toggle__panel이 나타났다 사�
 ### Basic Code
 
 ``` html
-<div class="your-element" data-js="toggle">
-    <a href="#" data-js="toggle__anchor">toggle__anchor</a>
-    <div data-js="toggle__panel">toggle__panel</div>
+<div class="your-element" data-element="toggle">
+    <a href="#" data-element="toggle__anchor">toggle__anchor</a>
+    <div data-element="toggle__panel">toggle__panel</div>
 </div>
 ```
 
 ### Basic Code + Options
 
 ``` html
-<div class="your-element" data-js="toggle" data-options='{ "isOpened": true }'>
-    <a href="#" data-js="toggle__anchor">toggle__anchor</a>
-    <div data-js="toggle__panel">toggle__panel</div>
+<div class="your-element" data-element="toggle" data-options='{ "isOpened": true }'>
+    <a href="#" data-element="toggle__anchor">toggle__anchor</a>
+    <div data-element="toggle__panel">toggle__panel</div>
 </div>
 ```
 
@@ -128,44 +128,44 @@ Tab Plugin은 tab__anchor 클릭 시 해당하는 tab__panel 노출됨.
 ### Basic Code
 
 ``` html
-<div class="your-element" data-js="tab">
+<div class="your-element" data-element="tab">
     <ul>
-        <li data-js="tab__list">
-            <a href="#" data-js="tab__anchor">tab-anchor1</a>
+        <li data-element="tab__list">
+            <a href="#" data-element="tab__anchor">tab-anchor1</a>
         </li>
-        <li data-js="tab__list">
-            <a href="#" data-js="tab__anchor">tab-anchor2</a>
+        <li data-element="tab__list">
+            <a href="#" data-element="tab__anchor">tab-anchor2</a>
         </li>
-        <li data-js="tab__list">
-            <a href="#" data-js="tab__anchor">tab-anchor3</a>
+        <li data-element="tab__list">
+            <a href="#" data-element="tab__anchor">tab-anchor3</a>
         </li>
     </ul>
 
-    <div data-js="tab__panel"> tab-panel1 </div>
-    <div data-js="tab__panel"> tab-panel2 </div>
-    <div data-js="tab__panel"> tab-panel3 </div>
+    <div data-element="tab__panel"> tab-panel1 </div>
+    <div data-element="tab__panel"> tab-panel2 </div>
+    <div data-element="tab__panel"> tab-panel3 </div>
 </div>
 ```
 
 ### Basic Code + Options
 
 ``` html
-<div class="your-element" data-js="tab" data-options='{ "mode": "slide" }'>
+<div class="your-element" data-element="tab" data-options='{ "mode": "slide" }'>
     <ul>
-        <li data-js="tab__list">
-            <a href="#" data-js="tab__anchor">tab-anchor1</a>
+        <li data-element="tab__list">
+            <a href="#" data-element="tab__anchor">tab-anchor1</a>
         </li>
-        <li data-js="tab__list">
-            <a href="#" data-js="tab__anchor">tab-anchor2</a>
+        <li data-element="tab__list">
+            <a href="#" data-element="tab__anchor">tab-anchor2</a>
         </li>
-        <li data-js="tab__list">
-            <a href="#" data-js="tab__anchor">tab-anchor3</a>
+        <li data-element="tab__list">
+            <a href="#" data-element="tab__anchor">tab-anchor3</a>
         </li>
     </ul>
 
-    <div data-js="tab__panel"> tab-panel1 </div>
-    <div data-js="tab__panel"> tab-panel2 </div>
-    <div data-js="tab__panel"> tab-panel3 </div>
+    <div data-element="tab__panel"> tab-panel1 </div>
+    <div data-element="tab__panel"> tab-panel2 </div>
+    <div data-element="tab__panel"> tab-panel3 </div>
 </div>
 ```
 
@@ -263,18 +263,18 @@ Accordion은 tab__anchor 클릭 시 해당하는 tab__panel 노출됨.
 ### Basic Code
 
 ``` html
-<ul data-js="accordion">
-    <li data-js="accordion__item">
-        <a href="#" data-js="accordion__anchor">accordion__anchor1</a>
-        <div data-js="accordion__panel">accordion__panel1</div>
+<ul data-element="accordion">
+    <li data-element="accordion__item">
+        <a href="#" data-element="accordion__anchor">accordion__anchor1</a>
+        <div data-element="accordion__panel">accordion__panel1</div>
     </li>
-    <li data-js="accordion__item">
-        <a href="#" data-js="accordion__anchor">accordion__anchor2</a>
-        <div data-js="accordion__panel">accordion__panel2</div>
+    <li data-element="accordion__item">
+        <a href="#" data-element="accordion__anchor">accordion__anchor2</a>
+        <div data-element="accordion__panel">accordion__panel2</div>
     </li>
-    <li data-js="accordion__item">
-        <a href="#" data-js="accordion__anchor">accordion__anchor3</a>
-        <div data-js="accordion__panel">accordion__panel3</div>
+    <li data-element="accordion__item">
+        <a href="#" data-element="accordion__anchor">accordion__anchor3</a>
+        <div data-element="accordion__panel">accordion__panel3</div>
     </li>
 </ul>
 ```
@@ -282,18 +282,18 @@ Accordion은 tab__anchor 클릭 시 해당하는 tab__panel 노출됨.
 ### Basic Code + Options
 
 ``` html
-<ul data-js="accordion" data-options='{"autoFold":false}'>
-    <li data-js="accordion__item">
-        <a href="#" data-js="accordion__anchor">accordion__anchor1</a>
-        <div data-js="accordion__panel">accordion__panel1</div>
+<ul data-element="accordion" data-options='{"autoFold":false}'>
+    <li data-element="accordion__item">
+        <a href="#" data-element="accordion__anchor">accordion__anchor1</a>
+        <div data-element="accordion__panel">accordion__panel1</div>
     </li>
-    <li data-js="accordion__item">
-        <a href="#" data-js="accordion__anchor">accordion__anchor2</a>
-        <div data-js="accordion__panel">accordion__panel2</div>
+    <li data-element="accordion__item">
+        <a href="#" data-element="accordion__anchor">accordion__anchor2</a>
+        <div data-element="accordion__panel">accordion__panel2</div>
     </li>
-    <li data-js="accordion__item">
-        <a href="#" data-js="accordion__anchor">accordion__anchor3</a>
-        <div data-js="accordion__panel">accordion__panel3</div>
+    <li data-element="accordion__item">
+        <a href="#" data-element="accordion__anchor">accordion__anchor3</a>
+        <div data-element="accordion__panel">accordion__panel3</div>
     </li>
 </ul>
 ```
@@ -393,9 +393,9 @@ Sticky는 지정한 target에 스크롤 시 브라우저 상단에 고정된 상
 ### Basic Code
 
 ``` html
-<section class="pualugin-sticky__section" data-js="sticky">
-    <div class="pualugin-sticky__header" data-js="sticky__target-parent">
-        <h1 class="pualugin-sticky__target" data-js="sticky__target">Section1</h1>
+<section class="pualugin-sticky__section" data-element="sticky">
+    <div class="pualugin-sticky__header" data-element="sticky__target-parent">
+        <h1 class="pualugin-sticky__target" data-element="sticky__target">Section1</h1>
     </div>
 </section>
 ```
@@ -403,9 +403,9 @@ Sticky는 지정한 target에 스크롤 시 브라우저 상단에 고정된 상
 ### Basic Code + Options
 
 ``` html
-<section class="pualugin-sticky__section" data-js="sticky" data-options='{ "position": "bottom" }'>
-    <div class="pualugin-sticky__header" data-js="sticky__target-parent">
-        <h1 class="pualugin-sticky__target" data-js="sticky__target">Section1</h1>
+<section class="pualugin-sticky__section" data-element="sticky" data-options='{ "position": "bottom" }'>
+    <div class="pualugin-sticky__header" data-element="sticky__target-parent">
+        <h1 class="pualugin-sticky__target" data-element="sticky__target">Section1</h1>
     </div>
 </section>
 ```

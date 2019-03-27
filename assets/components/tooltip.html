@@ -1,33 +1,318 @@
 <div id="tooltip" class="plugin">
-    <h1>Plugin - Tooltip & Popover</h1>
-    <h2>Tooltip</h2>
-    <section class="section">
-        <div class="pualugin-tooltip" data-js="tooltip">
-            <button class="pualugin__button" type="button" data-js="tooltip__button">Tooltip - right</button>
-            <div class="pualugin-tooltip__panel" data-js="tooltip__panel">
-                xnfxlq sodyddlqslek.
-            </div>
-        </div>
+<h1 class="plugin__title">Tooltip & Popover</h1>
+<!-- CODE -->
+<h2 class="plugin__sub-title">Tooltip</h2>
+<p class="plugin__description">
+  - CODE: 기본 및 옵션 추가
+</p>
+<div class="code">
+<span class="code__language">HTML</span>
+<pre>
+<code class="html">
+  &lt;div class="pualugin-tooltip" data-element="tooltip"&gt;
+    &lt;button class="pualugin__button" type="button" data-element="tooltip__button"&gt;Tooltip - right&lt;/button&gt;
+    &lt;div class="pualugin-tooltip__panel" data-element="tooltip__panel"&gt;
+        to right.
+    &lt;/div&gt;
+  &lt;/div&gt;
 
-        <div class="pualugin-tooltip" data-js="tooltip" data-options='{ "position": "left" }'>
-            <button class="pualugin__button" type="button" data-js="tooltip__button">Tooltip - left</button>
-            <div class="pualugin-tooltip__panel" data-js="tooltip__panel">
-                xnfxlq sodyddlqslek.
-            </div>
-        </div>
+  &lt;div class="pualugin-tooltip" data-element="tooltip" data-options='{ "position": "left" }'&gt;
+    &lt;button class="pualugin__button" type="button" data-element="tooltip__button"&gt;Tooltip - left&lt;/button&gt;
+    &lt;div class="pualugin-tooltip__panel" data-element="tooltip__panel"&gt;
+        to left.
+    &lt;/div&gt;
+  &lt;/div&gt;
 
-        <div class="pualugin-tooltip" data-js="tooltip" data-options='{ "position": "top" }'>
-            <button class="pualugin__button" type="button" data-js="tooltip__button">Tooltip - top</button>
-            <div class="pualugin-tooltip__panel" data-js="tooltip__panel">
-                xnfxlq sodyddlqslek.
-            </div>
-        </div>
+  &lt;div class="pualugin-tooltip" data-element="tooltip" data-options='{ "position": "top" }'&gt;
+    &lt;button class="pualugin__button" type="button" data-element="tooltip__button"&gt;Tooltip - top&lt;/button&gt;
+    &lt;div class="pualugin-tooltip__panel" data-element="tooltip__panel"&gt;
+        to top.
+    &lt;/div&gt;
+  &lt;/div&gt;
 
-        <div class="pualugin-tooltip" data-js="tooltip" data-options='{ "position": "bottom" }'>
-            <button class="pualugin__button" type="button" data-js="tooltip__button">Tooltip - bottom</button>
-            <div class="pualugin-tooltip__panel" data-js="tooltip__panel">
-                xnfxlq sodyddlqslek.
-            </div>
-        </div>
-    </section>
+  &lt;div class="pualugin-tooltip" data-element="tooltip" data-options='{ "position": "bottom" }'&gt;
+      &lt;button class="pualugin__button" type="button" data-element="tooltip__button"&gt;Tooltip - bottom&lt;/button&gt;
+      &lt;div class="pualugin-tooltip__panel" data-element="tooltip__panel"&gt;
+          to bottom.
+      &lt;/div&gt;
+  &lt;/div&gt;
+</code>
+</pre>
+</div>
+<!-- //CODE -->
+
+<!-- RESULT -->
+<p class="plugin__description">
+  - RESULT
+</p>
+<div class="pualugin-result">
+  <div class="pualugin-tooltip" data-element="tooltip">
+    <button class="pualugin__button" type="button" data-element="tooltip__button">Hover to right!</button>
+    <div class="pualugin-tooltip__panel" data-element="tooltip__panel">
+      to right.
+    </div>
+  </div>
+
+  <div class="pualugin-tooltip" data-element="tooltip" data-options='{ "position": "left" }'>
+    <button class="pualugin__button" type="button" data-element="tooltip__button">Hover to left!</button>
+    <div class="pualugin-tooltip__panel" data-element="tooltip__panel">
+      to left.
+    </div>
+  </div>
+
+  <div class="pualugin-tooltip" data-element="tooltip" data-options='{ "position": "top" }'>
+    <button class="pualugin__button" type="button" data-element="tooltip__button">Hover to top!</button>
+    <div class="pualugin-tooltip__panel" data-element="tooltip__panel">
+      to top.
+    </div>
+  </div>
+
+  <div class="pualugin-tooltip" data-element="tooltip" data-options='{ "position": "bottom" }'>
+    <button class="pualugin__button" type="button" data-element="tooltip__button">Hover to bottom!</button>
+    <div class="pualugin-tooltip__panel" data-element="tooltip__panel">
+      to bottom.
+    </div>
+  </div>
+</div>
+<!-- //RESULT -->
+
+<!-- CODE -->
+<h2 class="plugin__sub-title">Popover</h2>
+<p class="plugin__description">
+  - CODE: 기본 및 옵션 추가
+</p>
+<div class="code">
+<span class="code__language">HTML</span>
+<pre>
+<code class="html">
+  &lt;div class="pualugin-tooltip" data-element="tooltip" data-options='{"mode": "popover"}'&gt;
+    &lt;button class="pualugin__button" type="button" data-element="tooltip__button"&gt;Tooltip - right&lt;/button&gt;
+    &lt;div class="pualugin-tooltip__panel" data-element="tooltip__panel"&gt;
+        to right.
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;div class="pualugin-tooltip" data-element="tooltip" data-options='{ "position": "left" }'&gt;
+    &lt;button class="pualugin__button" type="button" data-element="tooltip__button"&gt;Tooltip - left&lt;/button&gt;
+    &lt;div class="pualugin-tooltip__panel" data-element="tooltip__panel"&gt;
+        to left.
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;div class="pualugin-tooltip" data-element="tooltip" data-options='{ "position": "top" }'&gt;
+    &lt;button class="pualugin__button" type="button" data-element="tooltip__button"&gt;Tooltip - top&lt;/button&gt;
+    &lt;div class="pualugin-tooltip__panel" data-element="tooltip__panel"&gt;
+        to top.
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;div class="pualugin-tooltip" data-element="tooltip" data-options='{ "position": "bottom" }'&gt;
+      &lt;button class="pualugin__button" type="button" data-element="tooltip__button"&gt;Tooltip - bottom&lt;/button&gt;
+      &lt;div class="pualugin-tooltip__panel" data-element="tooltip__panel"&gt;
+          to bottom.
+      &lt;/div&gt;
+  &lt;/div&gt;
+</code>
+</pre>
+</div>
+<!-- //CODE -->
+
+<!-- RESULT -->
+<p class="plugin__description">
+  - RESULT
+</p>
+<div class="pualugin-result">
+  <div class="pualugin-tooltip" data-element="tooltip" data-options='{"mode": "popover"}'>
+    <button class="pualugin__button" type="button" data-element="tooltip__button">Click to right!</button>
+    <div class="pualugin-tooltip__panel" data-element="tooltip__panel">
+      to right.
+    </div>
+  </div>
+
+  <div class="pualugin-tooltip" data-element="tooltip" data-options='{ "mode": "popover", "position": "left" }'>
+    <button class="pualugin__button" type="button" data-element="tooltip__button">Click to left!</button>
+    <div class="pualugin-tooltip__panel" data-element="tooltip__panel">
+      to left.
+    </div>
+  </div>
+
+  <div class="pualugin-tooltip" data-element="tooltip" data-options='{ "mode": "popover", "position": "top" }'>
+    <button class="pualugin__button" type="button" data-element="tooltip__button">Click to top!</button>
+    <div class="pualugin-tooltip__panel" data-element="tooltip__panel">
+      to top.
+    </div>
+  </div>
+
+  <div class="pualugin-tooltip" data-element="tooltip" data-options='{ "mode": "popover", "position": "bottom" }'>
+    <button class="pualugin__button" type="button" data-element="tooltip__button">Click to bottom!</button>
+    <div class="pualugin-tooltip__panel" data-element="tooltip__panel">
+      to bottom.
+    </div>
+  </div>
+</div>
+<!-- //RESULT -->
+
+<!-- Options -->
+<div class="pualugin-options">
+  <div class="pualugin-options__title">Options</div>
+  <ul class="pualugin-options__ul">
+    <li class="pualugin-options__li">
+      <div class="pualugin-options__name">
+        mode
+      </div>
+      <ul class="pualugin-options__ul">
+        <li class="pualugin-options__li">
+          type: String
+        </li>
+        <li class="pualugin-options__li">
+          default: tooltip
+        </li>
+        <li class="pualugin-options__li">
+          description: tooltip, popover 중 선택
+        </li>
+      </ul>
+    </li>
+    <li class="pualugin-options__li">
+      <div class="pualugin-options__name">
+        position
+      </div>
+      <ul class="pualugin-options__ul">
+        <li class="pualugin-options__li">
+          type: String
+        </li>
+        <li class="pualugin-options__li">
+          default: right
+        </li>
+        <li class="pualugin-options__li">
+          description: right, left, top, bottom 중 선택
+        </li>
+      </ul>
+    </li>
+    <li class="pualugin-options__li">
+      <div class="pualugin-options__name">
+        indent
+      </div>
+      <ul class="pualugin-options__ul">
+        <li class="pualugin-options__li">
+          type: Number
+        </li>
+        <li class="pualugin-options__li">
+          default: 10
+        </li>
+        <li class="pualugin-options__li">
+          description: Button 과 Panel의 간격
+        </li>
+      </ul>
+    </li>
+    <li class="pualugin-options__li">
+      <div class="pualugin-options__name">
+        activeClassName
+      </div>
+      <ul class="pualugin-options__ul">
+        <li class="pualugin-options__li">
+          type: String
+        </li>
+        <li class="pualugin-options__li">
+          default: is-active
+        </li>
+        <li class="pualugin-options__li">
+          description: 토글 활성화 클래스
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+<!-- //Options -->
+
+<!-- Method -->
+<p class="plugin__description">
+  - Method
+</p>
+<div class="code">
+<span class="code__language">JAVASCRIPT</span>
+<pre>
+<code class="javascript">
+  var yourVariable = $('.your-element').data('plugin_tooltip');
+
+  yourVariable.show();
+
+  yourVariable.hide();
+
+  yourVariable.destroy();
+
+  yourVariable.reInit();
+</code>
+</pre>
+</div>
+<div class="pualugin-options">
+  <ul class="pualugin-options__ul">
+    <li class="pualugin-options__li">
+      <div class="pualugin-options__name">
+        show
+      </div>
+      <ul class="pualugin-options__ul">
+        <li class="pualugin-options__li">
+          arguments: none
+        </li>
+        <li class="pualugin-options__li">
+          description: 패널 열기
+        </li>
+      </ul>
+    </li>
+    <li class="pualugin-options__li">
+      <div class="pualugin-options__name">
+        hide
+      </div>
+      <ul class="pualugin-options__ul">
+        <li class="pualugin-options__li">
+          arguments: none
+        </li>
+        <li class="pualugin-options__li">
+          description: 패널 닫기
+        </li>
+      </ul>
+    </li>
+    <li class="pualugin-options__li">
+      <div class="pualugin-options__name">
+        destroy
+      </div>
+      <ul class="pualugin-options__ul">
+        <li class="pualugin-options__li">
+          arguments: none
+        </li>
+        <li class="pualugin-options__li">
+          description: 플러그인 제거
+        </li>
+      </ul>
+    </li>
+    <li class="pualugin-options__li">
+      <div class="pualugin-options__name">
+        reInit
+      </div>
+      <ul class="pualugin-options__ul">
+        <li class="pualugin-options__li">
+          arguments: none
+        </li>
+        <li class="pualugin-options__li">
+          description: 플러그인 제거 후 생성
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+<!-- //Method -->
+
+<!-- Initialzied -->
+<p class="plugin__description">
+  - <span>모든 플러그인은 기본적으로 페이지 렌더링시 Initialized 됩니다.</span> <span>개별적(비동기 마크업 구현) Initialize 필요한 경우 아래와 같이 진행합니다.</span>
+</p>
+<div class="code">
+<span class="code__language">JAVASCRIPT</span>
+<pre>
+<code class="javascript">
+  $('.your-element').tooltip(); // Initialize
+</code>
+</pre>
+</div>
+<!-- Initialzied -->
 </div>

@@ -67,8 +67,8 @@
 			event: 'click', // 'focusin'
 			speed: 300,
 			easing: 'swing',
-			anchorEl: '[data-js="toggle__anchor"]',
-			panelEl: '[data-js="toggle__panel"]',
+			anchorEl: '[data-element="toggle__anchor"]',
+			panelEl: '[data-element="toggle__panel"]',
 			onChangeBeforeText: null,
 			onChangeAfterText: null,
 			activeClassName: 'is-active',
@@ -98,9 +98,9 @@
 			buildCache: function () {
 				var plugin = this;
 
-				plugin.$wrap = $(plugin.element);
-				plugin.$anchor = plugin.$wrap.find(plugin.options.anchorEl);
-				plugin.$panel = plugin.$wrap.find(plugin.options.panelEl);
+				plugin.$element = $(plugin.element);
+				plugin.$anchor = plugin.$element.find(plugin.options.anchorEl);
+				plugin.$panel = plugin.$element.find(plugin.options.panelEl);
 
 				var _id = plugin.$panel.attr('id') ? plugin.$panel.attr('id') : UTIL.uuid(pluginName + '-');
 
@@ -120,6 +120,7 @@
 			},
 			bindEvents: function () {
 				var plugin = this;
+
 				var eventName = (function () {
 					var events = plugin.options.event;
 
@@ -136,8 +137,6 @@
 					.on(eventName, function (e) {
 						e.stopPropagation();
 
-						var $this = $(this);
-
 						var key = e.which || e.keyCode;
 
 						if (e.type === 'click' || e.type === 'focusin' || key === 13 || key === 32) {
@@ -147,13 +146,13 @@
 						}
 					});
 
-				plugin.$wrap
+				plugin.$element
 					.off('show.' + pluginName)
 					.on('show.' + pluginName, function (e) {
 						plugin.show();
 					});
 
-				plugin.$wrap
+				plugin.$element
 					.off('hide.' + pluginName)
 					.on('hide.' + pluginName, function (e) {
 						plugin.hide();
@@ -163,17 +162,17 @@
 				var plugin = this;
 
 				plugin.$anchor.off('.' + plugin._name)
-				plugin.$wrap.off('.' + plugin._name)
+				plugin.$element.off('.' + plugin._name)
 			},
 			beforeChange: function ($anchor, $panel) {
 				var plugin = this;
 
-				plugin.$wrap.trigger('beforeChange', [plugin, $anchor, $panel])
+				plugin.$element.trigger('beforeChange', [plugin, $anchor, $panel])
 			},
 			afterChange: function ($anchor, $panel) {
 				var plugin = this;
 
-				plugin.$wrap.trigger('afterChange', [plugin, $anchor, $panel])
+				plugin.$element.trigger('afterChange', [plugin, $anchor, $panel])
 
 				$panel.find('.slick-initialized').length && $panel.find('.slick-initialized').slick('setPosition');
 			},
@@ -247,9 +246,204 @@
 		}
 
 		$(function () {
-			$('[data-js=toggle]').toggle();
+			$('[data-element=toggle]').toggle();
 		});
 
+	})(jQuery, window, document, undefined);
+
+	/*
+	** Plugin - Tooltip
+	*/
+	;
+	(function ($, win, doc, undefined) {
+
+		var pluginName = "tooltip";
+
+		var defaults = {
+			position: 'right', //left, top, bottom
+			mode: 'tooltip', // popover
+			indent: 10,
+			button: '[data-element=tooltip__button]',
+			panel: '[data-element=tooltip__panel]',
+			tooltipContainerClassName: 'pualugin-tooltip-container',
+			activeClassName: 'is-active',
+			zindex: 100
+		};
+
+		function Plugin(element, options) {
+			this.element = element;
+			this._name = pluginName;
+			this._defaults = defaults;
+			this.options = $.extend({}, this._defaults, options);
+			this.flag = false;
+			this.init();
+		}
+
+		$.extend(Plugin.prototype, {
+			init: function() {
+				var plugin = this;
+
+				plugin.buildCache();
+				plugin.bindEvents();
+			},
+			destroy: function() {
+				var plugin = this;
+
+				plugin.$element.removeAttr('style');
+				plugin.$panel.appendTo( plugin.$element ).removeAttr('style');
+				plugin.$container.find( plugin.options.panel ).length === 0 && plugin.$container.remove();
+				plugin.$button.removeAttr('aria-expended');
+				plugin.flag = false;
+				plugin.unbindEvents();
+			},
+			buildCache: function() {
+				var plugin = this;
+				var container = '.' + plugin.options.tooltipContainerClassName;
+
+				plugin.$element = $(plugin.element);
+				plugin.$button = plugin.$element.find(plugin.options.button);
+				plugin.$panel = plugin.$element.find(plugin.options.panel);
+				plugin.$container = $(container).length ? $(container) : $('body').append('<div class=' + plugin.options.tooltipContainerClassName + '></div>')
+				plugin.$win = $(win);
+				plugin.$button.attr('aria-expended', false);
+				plugin.$panel.css('z-index', plugin.options.zindex).hide().appendTo($(container));
+				plugin.$element.css({
+					'display': 'inline-block'
+				});
+			},
+			unbindEvents: function() {
+				var plugin = this;
+
+				plugin.$button.off('.' + plugin._name);
+				plugin.$win.off('.' + plugin._name);
+			},
+			bindEvents: function() {
+				var plugin = this;
+				var eventName = (function () {
+					var events = plugin.options.mode;
+
+					if ( events === 'tooltip' ) {
+						return [ 'focusin.' + plugin._name + ' mouseenter.' + plugin._name, 'focusout.' + plugin._name + ' mouseleave.' + plugin._name ]
+					} else {
+						return [ 'click.' + plugin._name ]
+					}
+				})();
+
+				if ( eventName.length == 1 ) {
+					plugin.$button.on(eventName[0], function(e) {
+						e.preventDefault();
+						plugin.toggle();
+					})
+
+					plugin.$win.on(eventName[0], function(e) {
+						if ( plugin.flag ) {
+							if (!plugin.$element.is(e.target) && plugin.$element.has(e.target).length === 0){
+								plugin.close()
+							}
+						}
+					})
+				} else if (eventName.length == 2) {
+					plugin.$button
+						.on(eventName[0], function(e) {
+							e.preventDefault();
+
+							plugin.open();
+						})
+						.on(eventName[1], function(e) {
+							e.preventDefault();
+
+							plugin.close();
+						});
+				}
+			},
+			toggle: function() {
+				var plugin = this;
+
+				if ( plugin.flag === false ) {
+					plugin.open();
+				} else {
+					plugin.close();
+				}
+			},
+			open: function() {
+				var plugin = this;
+
+				plugin.flag = true;
+				plugin.$button.attr('aria-expended', true);
+				plugin.$panel
+					.css('position', 'absolute')
+					.addClass(plugin.options.activeClassName)
+					.show();
+				plugin.setPosition();
+			},
+			close: function() {
+				var plugin = this;
+
+				plugin.flag = false;
+				plugin.$button.attr('aria-expended', true);
+				plugin.$panel
+					.css('position', '')
+					.removeClass(plugin.options.activeClassName)
+					.hide();
+			},
+			setPosition: function() {
+				var plugin = this;
+
+				var buttonWidth = plugin.$button.outerWidth(),
+					buttonHeight = plugin.$button.outerHeight(),
+					panelWidth = plugin.$panel.outerWidth(),
+					panelHeight = plugin.$panel.outerHeight();
+
+				var buttonOffset = plugin.$button.offset(),
+					buttonTop = buttonOffset.top,
+					buttonLeft = buttonOffset.left;
+
+				switch ( plugin.options.position ) {
+					case 'left':
+						plugin.$panel.css({
+							'top': buttonTop + ( (buttonHeight - panelHeight) / 2 ),
+							'left': ( buttonLeft - panelWidth ) - plugin.options.indent
+						})
+						break;
+					case 'top':
+						plugin.$panel.css({
+							'top': ( buttonTop - panelHeight ) - plugin.options.indent,
+							'left': (Math.abs( buttonLeft + ( buttonWidth / 2 ) )) - ( Math.abs( panelWidth / 2 ) )
+						})
+						break;
+					case 'bottom':
+						plugin.$panel.css({
+							'top': ( buttonTop + buttonHeight ) + plugin.options.indent,
+							'left': (Math.abs( buttonLeft + ( buttonWidth / 2 ) )) - ( Math.abs( panelWidth / 2 ) )
+						})
+						break;
+					default:
+						plugin.$panel.css({
+							'top': buttonTop + ( (buttonHeight - panelHeight) / 2 ),
+							'left': ( buttonLeft + buttonWidth ) + plugin.options.indent
+						})
+				}
+			},
+			reInit: function() {
+				var plugin = this;
+
+				plugin.destroy();
+				plugin.buildCache();
+				plugin.bindEvents();
+			}
+		});
+
+		$.fn[pluginName] = function ( options ) {
+			return this.each(function () {
+				if (!$.data(this, "plugin_" + pluginName)) {
+					$.data(this, "plugin_" + pluginName, new Plugin(this, options || $(this).data('options')));
+				}
+			});
+		}
+
+		$(function () {
+			$('[data-element=tooltip]').tooltip();
+		});
 	})(jQuery, window, document, undefined);
 
 	/*
@@ -265,9 +459,9 @@
 			event: 'click', // 'focusin'
 			speed: 300,
 			easing: 'swing',
-			listEl: '[data-js="tab__list"]',
-			anchorEl: '[data-js="tab__anchor"]',
-			panelEl: '[data-js="tab__panel"]',
+			listEl: '[data-element="tab__list"]',
+			anchorEl: '[data-element="tab__anchor"]',
+			panelEl: '[data-element="tab__panel"]',
 			activeClassName: 'is-active',
 			disabledClassName: 'is-disabled',
 			withScroll: false,
@@ -311,18 +505,10 @@
 				var plugin = this;
 				var tabsId = [];
 
-				plugin.$wrap = $(plugin.element);
-				plugin.$anchor = plugin.$wrap.find(plugin.options.anchorEl);
-				plugin.$panel = plugin.$wrap.find(plugin.options.panelEl);
-
-				plugin.$list = (function () {
-					var byOption = plugin.$wrap.find(plugin.options.listEl);
-					var replace = plugin.$wrap.children('ul, ol');
-
-					return byOption.length ? byOption : replace;
-				}());
-
-				plugin.$list.attr('role', 'tablist');
+				plugin.$element = $(plugin.element);
+				plugin.$anchor = plugin.$element.find(plugin.options.anchorEl);
+				plugin.$panel = plugin.$element.find(plugin.options.panelEl);
+				plugin.$list = plugin.$element.find(plugin.options.listEl);
 
 				plugin.$anchor.each(function (index) {
 					var $this = $(this);
@@ -353,9 +539,12 @@
 						'tabindex': 0
 					});
 				});
+
+				plugin.$list.attr('role', 'tablist');
 			},
 			bindEvents: function () {
 				var plugin = this;
+
 				var eventName = (function () {
 					var events = plugin.options.event;
 
@@ -373,7 +562,7 @@
 						e.stopPropagation();
 						var $this = $(this);
 
-						if ($this.hasClass(plugin.options.activeClassName) || $this.hasClass(plugin.options.disabledClassName) || plugin.flag) return;
+						if ($this.hasClass(plugin.options.activeClassName) || $this.hasClass(plugin.options.disabledClassName) || plugin.flag) return false;
 
 						var key = e.which;
 
@@ -388,17 +577,17 @@
 			unbindEvents: function () {
 				var plugin = this;
 				plugin.$anchor.off('.' + plugin._name).removeData(plugin._name + '_target');
-				plugin.$wrap.off('.' + plugin._name);
+				plugin.$element.off('.' + plugin._name);
 			},
 			beforeChange: function ($anchor, $panel) {
 				var plugin = this;
 
-				plugin.$wrap.trigger('beforeChange', [plugin, $anchor, $panel]);
+				plugin.$element.trigger('beforeChange', [plugin, $anchor, $panel]);
 			},
 			afterChange: function ($anchor, $panel) {
 				var plugin = this;
 
-				plugin.$wrap.trigger('afterChange', [plugin, $anchor, $panel]);
+				plugin.$element.trigger('afterChange', [plugin, $anchor, $panel]);
 
 				$panel.find('.slick-initialized').length && $panel.find('.slick-initialized').slick('setPosition');
 			},
@@ -435,7 +624,7 @@
 				}
 				if (plugin.options.withScroll && plugin.initialized) {
 					$('html, body').stop().animate({
-						scrollTop: plugin.$wrap.offset().top
+						scrollTop: plugin.$element.offset().top
 					}, plugin.options.speed);
 				}
 			},
@@ -468,7 +657,7 @@
 
 				if (withScroll) {
 					$('html, body').stop().animate({
-						scrollTop: plugin.$wrap.offset().top
+						scrollTop: plugin.$element.offset().top
 					}, plugin.options.speed);
 				}
 			},
@@ -491,7 +680,7 @@
 		}
 
 		$(function () {
-			$('[data-js=tab]').tab();
+			$('[data-element=tab]').tab();
 		});
 
 	})(jQuery, window, document, undefined);
@@ -508,9 +697,9 @@
 			mode: 'slide', // static, slide
 			speed: 200,
 			easing: 'linear',
-			itemEl: '[data-js="accordion__item"]',
-			anchorEl: '[data-js="accordion__anchor"]',
-			panelEl: '[data-js="accordion__panel"]',
+			itemEl: '[data-element="accordion__item"]',
+			anchorEl: '[data-element="accordion__anchor"]',
+			panelEl: '[data-element="accordion__panel"]',
 			activeClassName: 'is-active',
 			isInitActive: true,
 			initIndex: 0,
@@ -745,7 +934,7 @@
 		}
 
 		$(function () {
-			$('[data-js=accordion]').accordion();
+			$('[data-element=accordion]').accordion();
 		});
 
 	})(jQuery, window, document, undefined);
@@ -762,9 +951,9 @@
 			allCheckCtrl: false, //true
 			firstCheck: false, //true
 			defaultChecked: false,
-			checkboxEl: '[data-js="checkbox__input"]',
-			hiddenEl: '[data-js="checkbox__hidden"]',
-			allEl: '[data-js="checkbox__all"]'
+			checkboxEl: '[data-element="checkbox__input"]',
+			hiddenEl: '[data-element="checkbox__hidden"]',
+			allEl: '[data-element="checkbox__all"]'
 		};
 
 		function Plugin(element, options) {
@@ -859,7 +1048,7 @@
 				plugin.$checkboxDisabeld = plugin.$element.find(plugin.options.checkboxEl).not('[aria-disabled=true]');
 				plugin.$hidden = plugin.$element.find(plugin.options.hiddenEl);
 				plugin.$allCheckbox = plugin.$element.find(plugin.options.allEl);
-				plugin.$allCtrl = plugin.$element.find('[data-js=checkbox__all-ctrl]');
+				plugin.$allCtrl = plugin.$element.find('[data-element=checkbox__all-ctrl]');
 
 				if (plugin.options.firstCheck) {
 					plugin.$hidden.attr({
@@ -932,15 +1121,15 @@
 					plugin.unchecked(plugin.$allCheckbox)
 					plugin.unchecked(plugin.$checkboxDisabeld)
 
-					if ( $('[data-js=checkbox__all-ctrl]').attr('aria-checked') === 'true' ) {
-						plugin.unchecked( $('[data-js=checkbox__all-ctrl]') )
+					if ( $('[data-element=checkbox__all-ctrl]').attr('aria-checked') === 'true' ) {
+						plugin.unchecked( $('[data-element=checkbox__all-ctrl]') )
 					}
 				} else {
 					plugin.checked(plugin.$allCheckbox)
 					plugin.checked(plugin.$checkboxDisabeld)
 
-					if ( $('[data-js=checkbox__all-ctrl]').attr('aria-checked') === 'false' ) {
-						plugin.checked( $('[data-js=checkbox__all-ctrl]') )
+					if ( $('[data-element=checkbox__all-ctrl]').attr('aria-checked') === 'false' ) {
+						plugin.checked( $('[data-element=checkbox__all-ctrl]') )
 					}
 				}
 			},
@@ -953,11 +1142,11 @@
 				if (checkBoxLeng === checkLeng) {
 					plugin.allChecked = true
 					plugin.checked(plugin.$allCheckbox)
-					plugin.checked( $('[data-js=checkbox__all-ctrl]') )
+					plugin.checked( $('[data-element=checkbox__all-ctrl]') )
 				} else {
 					plugin.allChecked = false
 					plugin.unchecked(plugin.$allCheckbox)
-					plugin.unchecked( $('[data-js=checkbox__all-ctrl]') )
+					plugin.unchecked( $('[data-element=checkbox__all-ctrl]') )
 				}
 
 			},
@@ -1000,7 +1189,7 @@
 			});
 		}
 		$(function () {
-			$('[data-js=checkbox]').checkBox();
+			$('[data-element=checkbox]').checkBox();
 		});
 
 	})(jQuery, window, document, undefined);
@@ -1014,10 +1203,10 @@
 		var pluginName = "radio";
 
 		var defaults = {
-			radioTitle: '[data-js="radio__title"]',
-			radioEl: '[data-js="radio__input"]',
-			hiddenEl: '[data-js="radio__hidden"]',
-			labelEl: '[data-js="radio__label"]',
+			radioTitle: '[data-element="radio__title"]',
+			radioEl: '[data-element="radio__input"]',
+			hiddenEl: '[data-element="radio__hidden"]',
+			labelEl: '[data-element="radio__label"]',
 			initIndex: null,
 			activeClassName: 'is-active'
 		};
@@ -1189,7 +1378,7 @@
 		}
 
 		$(function () {
-			$('[data-js=radio]').radio();
+			$('[data-element=radio]').radio();
 		});
 
 
@@ -1205,9 +1394,9 @@
 		var defaults = {
 			position: "top", //bottom, middle
 			top: 0,
-			sectionEl: '[data-js=sticky__section]',
-			headerEl: '[data-js=sticky__target-parent]',
-			targetEl: '[data-js=sticky__target]',
+			sectionEl: '[data-element=sticky__section]',
+			headerEl: '[data-element=sticky__target-parent]',
+			targetEl: '[data-element=sticky__target]',
 			activeClassName: 'is-floating',
 		};
 
@@ -1367,232 +1556,7 @@
 		}
 
 		$(function () {
-			$('[data-js=sticky]').sticky();
-		});
-
-	})(jQuery, window, document, undefined)
-
-	/*
-	** Plugin - Tooltip
-	*/
-	;
-	(function ($, win, doc, undefined) {
-
-		var pluginName = "tooltip";
-
-		var defaults = {
-			position: 'right', //left, top, bottom
-			event: 'focusin', //click
-			indent: 10,
-			button: '[data-js=tooltip__button]',
-			panel: '[data-js=tooltip__panel]',
-			activeClassName: 'is-active'
-		};
-
-		function Plugin(element, options) {
-			this.element = element;
-			this._name = pluginName;
-			this._defaults = defaults;
-			this.options = $.extend({}, this._defaults, options);
-			this.flag = false;
-			this.init();
-		}
-
-		$.extend(Plugin.prototype, {
-			init: function() {
-				var plugin = this;
-
-				plugin.buildCache();
-				plugin.bindEvents();
-			},
-			buildCache: function() {
-				var plugin = this;
-
-				plugin.$element = $(plugin.element);
-				plugin.$button = plugin.$element.find(plugin.options.button);
-				plugin.$panel = plugin.$element.find(plugin.options.panel);
-				plugin.$win = $(win);
-
-				plugin.$button.attr('aria-expended', false);
-				plugin.$panel.hide();
-				plugin.$element.css('display', 'inline-block');
-			},
-			bindEvents: function() {
-				var plugin = this;
-				var eventName = (function () {
-					var events = plugin.options.event;
-					if ( events === 'focusin' ) {
-						return [ 'focusin.' + plugin._name + ' mouseenter.' + plugin._name, 'focusout.' + plugin._name + ' mouseleave.' + plugin._name ]
-					}
-
-					return [events + '.' + plugin._name];
-				})();
-
-				if ( eventName.length == 1 ) {
-					plugin.$button.on(eventName[0], function(e) {
-						e.preventDefault();
-						plugin.toggle();
-					})
-
-					plugin.$win.on(eventName[0], function(e) {
-						if ( plugin.flag ) {
-							if (!plugin.$element.is(e.target) && plugin.$element.has(e.target).length === 0){
-								plugin.close()
-							}
-						}
-					})
-				} else if (eventName.length == 2) {
-					plugin.$button
-						.on(eventName[0], function(e) {
-							e.preventDefault();
-
-							plugin.open();
-						})
-						.on(eventName[1], function(e) {
-							e.preventDefault();
-
-							plugin.close();
-						});
-				}
-			},
-			toggle: function() {
-				var plugin = this;
-
-				if ( plugin.flag === false ) {
-					plugin.open();
-				} else {
-					plugin.close();
-				}
-			},
-			open: function() {
-				var plugin = this;
-
-				plugin.flag = true;
-				plugin.$button.attr('aria-expended', true);
-				plugin.$panel
-					.css('position', 'absolute')
-					.addClass(plugin.options.activeClassName)
-					.show();
-				plugin.setPosition();
-			},
-			close: function() {
-				var plugin = this;
-
-				plugin.flag = false;
-				plugin.$button.attr('aria-expended', true);
-				plugin.$panel
-					.css('position', '')
-					.removeClass(plugin.options.activeClassName)
-					.hide();
-			},
-			setPosition: function() {
-				var plugin = this;
-
-				var buttonWidth = plugin.$button.outerWidth(),
-					buttonHeight = plugin.$button.outerHeight(),
-					panelWidth = plugin.$panel.outerWidth(),
-					panelHeight = plugin.$panel.outerHeight();
-
-				var buttonOffset = plugin.$button.offset(),
-					buttonTop = buttonOffset.top,
-					buttonLeft = buttonOffset.left;
-
-				switch ( plugin.options.position ) {
-					case 'left':
-						plugin.$panel.css({
-							'top': buttonTop + ( (buttonHeight - panelHeight) / 2 ),
-							'left': ( buttonLeft - panelWidth ) - plugin.options.indent
-						})
-						break;
-					case 'top':
-						plugin.$panel.css({
-							'top': ( buttonTop - panelHeight ) - plugin.options.indent,
-							'left': buttonLeft - ( Math.abs( buttonWidth - panelWidth ) / 2 )
-						})
-						break;
-					case 'bottom':
-						plugin.$panel.css({
-							'top': ( buttonTop + buttonHeight ) + plugin.options.indent,
-							'left': buttonLeft - ( Math.abs( buttonWidth - panelWidth ) / 2 )
-						})
-						break;
-					default:
-						plugin.$panel.css({
-							'top': buttonTop + ( (buttonHeight - panelHeight) / 2 ),
-							'left': ( buttonLeft + buttonWidth ) + plugin.options.indent
-						})
-				}
-			}
-		});
-
-		$.fn[pluginName] = function ( options ) {
-			return this.each(function () {
-				if (!$.data(this, "plugin_" + pluginName)) {
-					$.data(this, "plugin_" + pluginName, new Plugin(this, options || $(this).data('options')));
-				}
-			});
-		}
-
-		$(function () {
-			$('[data-js=tooltip]').tooltip();
-		});
-	})(jQuery, window, document, undefined);
-
-	/*
-	** Plugin - Swiper
-	*/
-	;
-	(function ($, win, doc, undefined) {
-		var pluginName = "swiper"
-
-		var defaults = {
-			wrap: '[data-js=swiper__wrapper]',
-			item: '[data-js=swiper__item]'
-		}
-
-		function Plugin(element, options) {
-			this.element = element;
-			this._name = pluginName;
-			this._defaults = defaults;
-			this.options = $.extend({}, this._defaults, options);
-			this.init();
-		}
-
-		$.extend(Plugin.prototype, {
-			init: function() {
-				var plugin = this;
-
-				plugin.buildCache();
-				plugin.initSwiper();
-			},
-			buildCache: function() {
-				var plugin = this;
-
-				plugin.$element = $(plugin.element);
-				plugin.$wrap = plugin.$element.find( plugin.options.wrap );
-				plugin.$item = plugin.$element.find( plugin.options.item );
-			},
-			initSwiper: function() {
-				var plugin = this;
-				plugin.swiper = new Swiper( plugin.$element , {
-					slidesPerView: 'auto',
-					centeredSlides: true,
-					spaceBetween: 0,
-					loop: true,
-				});
-			}
-		});
-
-		$.fn[pluginName] = function ( options ) {
-			return this.each(function () {
-				if (!$.data(this, "plugin_" + pluginName)) {
-					$.data(this, "plugin_" + pluginName, new Plugin(this, options || $(this).data('options')));
-				}
-			});
-		}
-
-		$(function () {
-			$('[data-js=swiper]').swiper();
+			$('[data-element=sticky]').sticky();
 		});
 
 	})(jQuery, window, document, undefined)
@@ -1605,12 +1569,12 @@
 		var pluginName = "formCtrl"
 
 		var defaults = {
-			input: '[data-js=form-ctrl__input]',
-			textarea: '[data-js=form-ctrl__textarea]',
-			delete: '[data-js=form-ctrl__delete]',
-			count: '[data-js=form-ctrl__count]',
-			countCurrent: '[data-js=form-ctrl__count-current]',
-			countTotal: '[data-js=form-ctrl__count-total]',
+			input: '[data-element=form-ctrl__input]',
+			textarea: '[data-element=form-ctrl__textarea]',
+			delete: '[data-element=form-ctrl__delete]',
+			count: '[data-element=form-ctrl__count]',
+			countCurrent: '[data-element=form-ctrl__count-current]',
+			countTotal: '[data-element=form-ctrl__count-total]',
 			activeClassName: 'is-active',
 			autoHeight: false, //true
 		}
@@ -1719,7 +1683,7 @@
 		}
 
 		$(function () {
-			$('[data-js=form-ctrl]').formCtrl();
+			$('[data-element=form-ctrl]').formCtrl();
 		});
 
 	})(jQuery, window, document, undefined)
@@ -1732,9 +1696,9 @@
 		var pluginName = "modal";
 
 		var defaults = {
-			modal: '[data-js=modal__element]',
-			close: '[data-js=modal__close]',
-			open: '[data-js=modal__open]',
+			modal: '[data-element=modal__element]',
+			close: '[data-element=modal__close]',
+			open: '[data-element=modal__open]',
 			activeClassName: 'is-open'
 		}
 
@@ -1795,12 +1759,12 @@
 					plugin.initialSetting = true;
 
 					$('body')
-						.append('<div class="pualugin-modal" data-js="modal"></div>')
-						.append('<div class="pualugin-modal__mask" data-js="modal__mask"></div>');
+						.append('<div class="pualugin-modal" data-element="modal"></div>')
+						.append('<div class="pualugin-modal__mask" data-element="modal__mask"></div>');
 				}
 
 				$('body').find( plugin.options.modal ).each(function() {
-					$('[data-js=modal]').append( $(this) );
+					$('[data-element=modal]').append( $(this) );
 				})
 			},
 			afterBindEvents: function( focusElementFirst, focusElementLast ) {
@@ -1918,7 +1882,7 @@
 
 		// run by default
 		$(function() {
-			$("[data-js=resize-select]").resizeselect();
+			$("[data-element=resize-select]").resizeselect();
 		})
 
 	})(jQuery, window, document, undefined);

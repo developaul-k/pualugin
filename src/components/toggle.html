@@ -2,15 +2,15 @@
   <h1 class="plugin__title">Toggle</h1>
 <!-- CODE -->
 <p class="plugin__description">
-  - CODE - 기본
+  - CODE: 기본
 </p>
-<div class="code code--html">
+<div class="code">
 <span class="code__language">HTML</span>
 <pre>
 <code class="html">
-  &lt;div data-js="toggle"&gt;
-    &lt;button class="pualugin__button" data-js="toggle__anchor"&gt;toggle_anchor&lt;/button&gt;
-    &lt;div data-js="toggle__panel"&gt;toggle_panel&lt;/div&gt;
+  &lt;div data-element="toggle"&gt;
+    &lt;button class="pualugin__button" data-element="toggle__anchor"&gt;toggle_anchor&lt;/button&gt;
+    &lt;div data-element="toggle__panel"&gt;toggle_panel&lt;/div&gt;
   &lt;/div&gt;
 </code>
 </pre>
@@ -21,24 +21,24 @@
   - RESULT
 </p>
 <div class="pualugin-result">
-  <div data-js="toggle">
-    <button class="pualugin__button" data-js="toggle__anchor">toggle_anchor</button>
-    <div data-js="toggle__panel">toggle_panel</div>
+  <div data-element="toggle">
+    <button class="pualugin__button" data-element="toggle__anchor">toggle_anchor</button>
+    <div data-element="toggle__panel">toggle_panel</div>
   </div>
 </div>
 <!-- //RESULT -->
 
 <!-- CODE -->
 <p class="plugin__description">
-  - CODE / 옵션 : isOpened: true, onChangeBeforeText: 열기, onChangeAfterText: 닫기
+  - CODE: 옵션 추가
 </p>
-<div class="code code--html">
+<div class="code">
 <span class="code__language">HTML</span>
 <pre>
 <code class="html">
-  &lt;div data-js="toggle" data-options='{ "isOpened": true, "onChangeBeforeText": "열기", "onChangeAfterText": "닫기" }'&gt;
-    &lt;button class="pualugin__button" data-js="toggle__anchor"&gt;toggle_anchor&lt;/button&gt;
-    &lt;div data-js="toggle__panel"&gt;toggle_panel&lt;/div&gt;
+  &lt;div data-element="toggle" data-options='{ "isOpened": true, "onChangeBeforeText": "열기", "onChangeAfterText": "닫기" }'&gt;
+    &lt;button class="pualugin__button" data-element="toggle__anchor"&gt;toggle_anchor&lt;/button&gt;
+    &lt;div data-element="toggle__panel"&gt;toggle_panel&lt;/div&gt;
   &lt;/div&gt;
 </code>
 </pre>
@@ -50,26 +50,12 @@
   - RESULT
 </p>
 <div class="pualugin-result">
-  <div data-js="toggle" data-options='{ "isOpened": true, "onChangeBeforeText": "열기", "onChangeAfterText": "닫기" }'>
-    <button class="pualugin__button" data-js="toggle__anchor">toggle_anchor</button>
-    <div data-js="toggle__panel">toggle_panel</div>
+  <div data-element="toggle" data-options='{ "isOpened": true, "onChangeBeforeText": "열기", "onChangeAfterText": "닫기" }'>
+    <button class="pualugin__button" data-element="toggle__anchor">toggle_anchor</button>
+    <div data-element="toggle__panel">toggle_panel</div>
   </div>
 </div>
 <!-- //RESULT -->
-
-<!-- Initialzied -->
-<p class="plugin__description">
-  - <span>모든 플러그인은 기본적으로 페이지 렌더링시 Initialized 됩니다.</span> <span>개별적(비동기 마크업 구현) Initialize 필요한 경우 아래와 같이 진행합니다.</span>
-</p>
-<div class="code code--html">
-<span class="code__language">JAVASCRIPT</span>
-<pre>
-<code class="javascript">
-  $('.your-element').toggle(); // Initialize
-</code>
-</pre>
-</div>
-<!-- Initialzied -->
 
 <!-- Options -->
 <div class="pualugin-options">
@@ -188,11 +174,11 @@
 </div>
 <!-- //Options -->
 
-<!-- Events -->
+<!-- Event -->
 <p class="plugin__description">
-  - Events
+  - Event
 </p>
-<div class="code code--html">
+<div class="code">
 <span class="code__language">JAVASCRIPT</span>
 <pre>
 <code class="javascript">
@@ -216,7 +202,7 @@
       </div>
       <ul class="pualugin-options__ul">
         <li class="pualugin-options__li">
-          Arguments: event, plugin, anchor, panel
+          arguments: event, plugin, anchor, panel
         </li>
         <li class="pualugin-options__li">
           description: 패널 오픈 전 실행될 함수
@@ -229,7 +215,7 @@
       </div>
       <ul class="pualugin-options__ul">
         <li class="pualugin-options__li">
-          Arguments: event, plugin, anchor, panel
+          arguments: event, plugin, anchor, panel
         </li>
         <li class="pualugin-options__li">
           description: 패널 오픈 후 실행될 함수
@@ -238,24 +224,24 @@
     </li>
   </ul>
 </div>
-<!-- //Events -->
+<!-- //Event -->
 
 <!-- Method -->
 <p class="plugin__description">
   - Method
 </p>
-<div class="code code--html">
+<div class="code">
 <span class="code__language">JAVASCRIPT</span>
 <pre>
 <code class="javascript">
   var yourVariable = $('.your-element').data('plugin_toggle');
 
   yourVariable.show();
-  
+
   yourVariable.hide();
-  
+
   yourVariable.destroy();
-  
+
   yourVariable.reInit();
 </code>
 </pre>
@@ -268,7 +254,7 @@
       </div>
       <ul class="pualugin-options__ul">
         <li class="pualugin-options__li">
-          Arguments: none
+          arguments: none
         </li>
         <li class="pualugin-options__li">
           description: 패널 열기
@@ -281,7 +267,7 @@
       </div>
       <ul class="pualugin-options__ul">
         <li class="pualugin-options__li">
-          Arguments: none
+          arguments: none
         </li>
         <li class="pualugin-options__li">
           description: 패널 닫기
@@ -294,7 +280,7 @@
       </div>
       <ul class="pualugin-options__ul">
         <li class="pualugin-options__li">
-          Arguments: none
+          arguments: none
         </li>
         <li class="pualugin-options__li">
           description: 플러그인 제거
@@ -307,7 +293,7 @@
       </div>
       <ul class="pualugin-options__ul">
         <li class="pualugin-options__li">
-          Arguments: none
+          arguments: none
         </li>
         <li class="pualugin-options__li">
           description: 플러그인 제거 후 생성
@@ -316,6 +302,20 @@
     </li>
   </ul>
 </div>
-<!-- //Events -->
+<!-- //Method -->
+
+<!-- Initialzied -->
+<p class="plugin__description">
+  - <span>모든 플러그인은 기본적으로 페이지 렌더링시 Initialized 됩니다.</span> <span>개별적(비동기 마크업 구현) Initialize 필요한 경우 아래와 같이 진행합니다.</span>
+</p>
+<div class="code">
+<span class="code__language">JAVASCRIPT</span>
+<pre>
+<code class="javascript">
+  $('.your-element').toggle(); // Initialize
+</code>
+</pre>
+</div>
+<!-- Initialzied -->
 
 </div>

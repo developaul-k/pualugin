@@ -1,5 +1,13 @@
 #{$plugin} {
     margin: 25px 0 10px;
+    & + &:before {
+        margin-bottom: 20px;
+        display: block;
+        box-sizing: border-box;
+        width: 100%;
+        border-top: 1px dashed #999;
+        content: '';
+    }
     &__flex {
         margin: 0 -20px;
         display: flex;
@@ -23,8 +31,15 @@
     &__title {
         font-size: 24px;
     }
+    &__sub-title {
+        margin-top: 30px;
+        font-size: 19px;
+        & + #{$plugin}__description {
+            margin-top: 15px;
+        }
+    }
     &__description {
-        font-size: 16px;
+        font-size: 15px;
         margin: 30px 0 10px;
         font-weight: 500;
         span {
@@ -157,6 +172,9 @@
                     margin-bottom: 10px;
                 }
             }
+        }
+        &__bold {
+            font-weight: 700;
         }
     }
     &-result {
