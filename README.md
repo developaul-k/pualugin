@@ -33,15 +33,6 @@ Toggle Plugin은 toggle__anchor를 클릭 시 toggle__panel이 나타났다 사�
 </div>
 ```
 
-* * *
-모든 플러그인은 기본적으로 **페이지 렌더링시 Initialized** 됩니다.<br>
-**개별적(비동기 마크업 구현) Initialized** 필요한 경우 아래와 같이 진행합니다.
-* * *
-
-``` javascript
-$('.your-element').toggle(); // Initialized
-```
-
 ### Options
 
 * **mode**
@@ -120,10 +111,90 @@ yourVariable.reInit();
     * **Arguments**: none
     * **description**: 플러그인 초기화 후 재생성
 
+* * *
+모든 플러그인은 기본적으로 **페이지 렌더링시 Initialized** 됩니다.<br>
+**개별적(비동기 마크업 구현) Initialized** 필요한 경우 아래와 같이 진행합니다.
+* * *
+
+``` javascript
+$('.your-element').toggle(); // Initialized
+```
+
+## Tooltip & Popover
+
+### Tooltip - Basic Code
+
+``` html
+<div class="pualugin-tooltip" data-element="tooltip">
+  <button class="pualugin__button" type="button" data-element="tooltip__button">Hover to right!</button>
+  <div class="pualugin-tooltip__panel" data-element="tooltip__panel">
+    to right.
+  </div>
+</div>
+```
+
+### Tooltip - Basic Code +  Options
+
+``` html
+<div class="pualugin-tooltip" data-element="tooltip" data-options='{ "position": "left" }'>
+  <button class="pualugin__button" type="button" data-element="tooltip__button">Hover to left!</button>
+  <div class="pualugin-tooltip__panel" data-element="tooltip__panel">
+    to right.
+  </div>
+</div>
+```
+
+### Popover - Basic Code
+
+``` html
+<div class="pualugin-tooltip" data-element="tooltip" data-options='{"mode": "popover"}'>
+  <button class="pualugin__button" type="button" data-element="tooltip__button">Click to right!</button>
+  <div class="pualugin-tooltip__panel" data-element="tooltip__panel">
+    to right.
+  </div>
+</div>
+```
+
+### Popover - Basic Code + Options
+
+``` html
+<div class="pualugin-tooltip" data-element="tooltip" data-options='{"mode": "popover", "position": "left"}'>
+  <button class="pualugin__button" type="button" data-element="tooltip__button">Click to right!</button>
+  <div class="pualugin-tooltip__panel" data-element="tooltip__panel">
+    to right.
+  </div>
+</div>
+```
+
+### Options
+
+* **mode**
+  * **type**: String
+  * **default**: tooltip
+  description: tooltip, popover 중 선택
+* **position**
+  * **type***: String
+  * **default**: right
+  * *description*: right, left, top, bottom 중 선택
+* **indent**
+  * **type**: Number
+  * **default**: 10
+  * **description**: Button 과 Panel의 간격
+* **activeClassName**
+  * **type**: String
+  * **default**: is-active
+  * **description**: 토글 활성화 클래스
+
+* * *
+모든 플러그인은 기본적으로 **페이지 렌더링시 Initialized** 됩니다.<br>
+**개별적(비동기 마크업 구현) Initialized** 필요한 경우 아래와 같이 진행합니다.
+* * *
+
+``` javascript
+$('.your-element').tooltip(); // Initialized
+```
 
 ## Tab
-
-Tab Plugin은 tab__anchor 클릭 시 해당하는 tab__panel 노출됨.
 
 ### Basic Code
 
@@ -167,15 +238,6 @@ Tab Plugin은 tab__anchor 클릭 시 해당하는 tab__panel 노출됨.
     <div data-element="tab__panel"> tab-panel2 </div>
     <div data-element="tab__panel"> tab-panel3 </div>
 </div>
-```
-
-* * *
-모든 플러그인은 기본적으로 **페이지 렌더링시 Initialized** 됩니다.<br>
-**개별적(비동기 마크업 구현) Initialized** 필요한 경우 아래와 같이 진행합니다.
-* * *
-
-``` javascript
-$('.your-element').tab(); // Initialized
 ```
 
 ### Options
@@ -255,6 +317,15 @@ yourVariable.reInit();
 * **reInit**
     * **Arguments**: none
     * **description**: 플러그인 초기화 후 재생성 **ex) 비동기로 탭이 추가 된 경우 사용**
+
+* * *
+모든 플러그인은 기본적으로 **페이지 렌더링시 Initialized** 됩니다.<br>
+**개별적(비동기 마크업 구현) Initialized** 필요한 경우 아래와 같이 진행합니다.
+* * *
+
+``` javascript
+$('.your-element').tab(); // Initialized
+```
 
 ## Accordion
 
