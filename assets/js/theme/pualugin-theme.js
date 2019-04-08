@@ -25,7 +25,6 @@ $('.pualugin__menu-button').on('click', function(e) {
 */
 function appendClipboard() {
     var bindFunctionName = 'appendClipboard';
-    var $codeContainer = $('.code');
     var $clipboard = $('.code').append('<button class=code__clipboard> <i class="fa fa-clipboard"></i> </button>');
     var $tooltip = $('.code').append('<span class="code__tooltip">클릭시 클럽보드에 복사됩니다.</span>');
 
