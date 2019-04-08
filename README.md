@@ -538,3 +538,107 @@ yourVariable.reInit();
 * **reInit**
     * **Arguments**: none
     * **description**: 플러그인 초기화 후 재생성 **ex) 비동기로 아코디언이 추가 된 경우 사용**
+
+
+## Modal
+
+Sticky는 지정한 target에 스크롤 시 브라우저 상단에 고정된 상태로 따라다니는 플러그인 입니다.
+
+### Basic Code
+
+``` html
+<button class="pualugin__button" data-element="modal__open" data-target="#modalID">모달 오픈</button>
+<div id="modalID" class="pualugin-modal__element" data-element="modal__element">
+  <div class="pualugin-modal__container" data-element="modal__element-container">
+    <div class="pualugin-modal__contents" data-element="modal__element-contetns">
+      모달 내용입니다.
+      <button class="pualugin-modal__close" data-element="modal__close">닫기</button>
+    </div>
+  </div>
+</div>
+```
+
+### Basic Code + Options
+
+``` html
+<button class="pualugin__button" data-element="modal__open" data-target="#modalID" data-options='{"modalWidth": 1000, "modalHeight": 500}'>
+    모달 오픈
+</button>
+<div id="modalID" class="pualugin-modal__element" data-element="modal__element">
+  <div class="pualugin-modal__container" data-element="modal__element-container">
+    <div class="pualugin-modal__contents" data-element="modal__element-contetns">
+      모달 내용입니다.
+      <button class="pualugin-modal__close" data-element="modal__close">닫기</button>
+    </div>
+  </div>
+</div>
+```
+
+* * *
+모든 플러그인은 기본적으로 **페이지 렌더링시 Initialized** 됩니다.<br>
+**개별적(비동기 마크업 구현) Initialized** 필요한 경우 아래와 같이 진행합니다.
+* * *
+
+``` javascript
+$('.your-element').modal(); // Initialized
+```
+
+### Options
+
+* **modalWidth**
+    * **type**: Number
+    * **default**: 500
+* **modalHeight**
+    * **type**: Number
+    * **default**: 500
+* **activeClassName**
+    * **type**: String
+    * **default**: is-open
+
+### Events
+
+``` javascript
+var yourVariable = $('.your-element');
+
+yourVariable.on('beforeChange', function( event, plugin, modal ){
+    /* your code ... */
+})
+
+yourVariable.on('afterChange', function( event, plugin, modal ){
+    /* your code ... */
+})
+```
+
+* **beforeChange**
+    * **Arguments**: event, plugin, modal
+    * **description**: 모달 오픈 전 실행될 함수
+* **afterChange**
+    * **Arguments**: event, plugin, modal
+    * **description**: 모달 오픈 전 실행될 함수
+
+### Method
+
+``` javascript
+var yourVariable = $('.your-element').data('plugin_modal');
+
+yourVariable.open();
+
+yourVariable.close();
+
+yourVariable.destroy();
+
+yourVariable.reInit();
+```
+
+* **open**
+    * **Arguments**: none
+    * **description**: 모달 오픈
+* **close**
+    * **Arguments**: none
+    * **description**: 모달 닫기
+* **destroy**
+    * **Arguments**: none
+    * **description**: 플러그인 초기화
+* **reInit**
+    * **Arguments**: none
+    * **description**: 플러그인 초기화 후 재생성 **ex) 비동기로 모달이 추가 된 경우 사용**
