@@ -10,15 +10,15 @@
 	/*
 	** Local Variables
 	*/
-	var UTIL = {};
+	var COMMON = {};
 
 	/*
-	** UTIL
+	** COMMON
 	*/
 	;
 	(function () {
 
-		UTIL.uuid = (function () {
+		COMMON.uuid = (function () {
 			var _uuid = 0;
 			return function (prefix) {
 				var id = ++_uuid;
@@ -27,10 +27,10 @@
 			}
 		})();
 
-		UTIL.findFocusEl = function (parentElement) {
+		COMMON.findFocusElement = function (element) {
 			var _basket = [];
 
-			$(parentElement).find('*').each(function (i, val) {
+			$(element).find('*').each(function (i, val) {
 				if (val.tagName.match(/^A$|AREA|INPUT|TEXTAREA|SELECT|BUTTON/gim) && parseInt(val.getAttribute("tabIndex")) !== -1) {
 					_basket.push(val);
 				}
@@ -91,7 +91,7 @@
 				plugin.$anchor = plugin.$element.find(plugin.options.anchorEl);
 				plugin.$panel = plugin.$element.find(plugin.options.panelEl);
 
-				var _id = plugin.$panel.attr('id') ? plugin.$panel.attr('id') : UTIL.uuid(plugin._name + '-');
+				var _id = plugin.$panel.attr('id') ? plugin.$panel.attr('id') : COMMON.uuid(plugin._name + '-');
 
 				plugin.$anchor.attr('aria-controls', _id);
 				plugin.$panel.attr('id', _id);
@@ -501,13 +501,8 @@
 
 				plugin.$anchor.each(function (index) {
 					var $this = $(this);
-					var _id = $this.attr('id') ? $this.attr('id') : UTIL.uuid('js-' + plugin._name + '-');
+					var _id = $this.attr('id') ? $this.attr('id') : COMMON.uuid('pualugin-' + plugin._name + '-');
 					var tagName = $this.get(0).tagName.toLowerCase();
-					var isFocusable = false;
-
-					if (tagName === 'a' || tagName === 'button') {
-						isFocusable = true;
-					}
 
 					$this
 						.data(plugin._name + '_target', plugin.$panel.eq(index))
@@ -515,7 +510,6 @@
 						.attr({
 							'id': _id,
 							'role': 'tab',
-							'tabindex': isFocusable ? '' : 0
 						});
 
 					tabsId.push(_id);
@@ -870,7 +864,7 @@
 
 				plugin.$anchor.each(function (index) {
 					var $this = $(this);
-					var _id = $this.attr('id') ? $this.attr('id') : UTIL.uuid('js-' + plugin._name + '-');
+					var _id = $this.attr('id') ? $this.attr('id') : COMMON.uuid('pualugin-' + plugin._name + '-');
 
 					$this
 						.data(plugin._name + '_target', plugin.$panel.eq(index))
@@ -1188,7 +1182,7 @@
 				var plugin = this;
 
 				if ( plugin.$input.attr('class').indexOf('search') != -1 ) {
-					$('.search__util-button-box').hide()
+					$('.search__COMMON-button-box').hide()
 				}
 				plugin.$delete.addClass(plugin.options.activeClassName);
 			},
@@ -1197,7 +1191,7 @@
 
 				plugin.$delete.removeClass(plugin.options.activeClassName);
 				if ( plugin.$input.attr('class').indexOf('search') != -1 ) {
-					$('.search__util-button-box').show()
+					$('.search__COMMON-button-box').show()
 				}
 			},
 			delete: function() {
@@ -1308,7 +1302,7 @@
 			},
 			bindEvents: function() {
 				var plugin = this;
-				var focusEl = UTIL.findFocusEl( plugin.$element );
+				var focusEl = COMMON.findFocusElement( plugin.$element );
 				var focusElFirst = $(focusEl[0]);
 				var focusElLast = $(focusEl[1]);
 
