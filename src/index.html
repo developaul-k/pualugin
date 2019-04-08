@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>UI Component</title>
     <link rel="stylesheet" href="/assets/css/pualugin.css">
@@ -12,24 +12,30 @@
         <header class="pualugin__header">
             <div class="pualugin__logo">
                 Pualugin
+                <button class="pualugin__menu-button">
+                    <i class="fas fa-bars"></i>
+                </button>
             </div>
             <nav class="pualugin__nav">
                 <span class="pualugin__nav-status" data-element="nav__status" role="button">메뉴열림</span>
                 <ul class="pualugin__nav-ul" data-element="nav__ul">
                     <li class="pualugin__nav-li">
-                        <a href="toggle" class="pualugin__nav-anchor" data-element="nav__anchor">toggle</a>
+                        <a href="#toggle" class="pualugin__nav-anchor" data-element="nav__anchor">toggle</a>
                     </li>
                     <li class="pualugin__nav-li">
-                        <a href="tab" class="pualugin__nav-anchor" data-element="nav__anchor">tab</a>
+                        <a href="#tooltip" class="pualugin__nav-anchor" data-element="nav__anchor">tooltip</a>
                     </li>
                     <li class="pualugin__nav-li">
-                        <a href="accordion" class="pualugin__nav-anchor" data-element="nav__anchor">accordion</a>
+                        <a href="#tab" class="pualugin__nav-anchor" data-element="nav__anchor">tab</a>
                     </li>
                     <li class="pualugin__nav-li">
-                        <a href="sticky" class="pualugin__nav-anchor" data-element="nav__anchor">sticky</a>
+                        <a href="#accordion" class="pualugin__nav-anchor" data-element="nav__anchor">accordion</a>
                     </li>
                     <li class="pualugin__nav-li">
-                        <a href="modal" class="pualugin__nav-anchor" data-element="nav__anchor">modal</a>
+                        <a href="#sticky" class="pualugin__nav-anchor" data-element="nav__anchor">sticky</a>
+                    </li>
+                    <li class="pualugin__nav-li">
+                        <a href="#modal" class="pualugin__nav-anchor" data-element="nav__anchor">modal</a>
                     </li>
                 </ul>
             </nav>
@@ -40,22 +46,13 @@
             <!--#include file="components/tab.html" -->
             <!--#include file="components/accordion.html" -->
             <!--#include file="components/sticky.html" -->
+            <!--#include file="components/modal.html" -->
         </div>
     </section>
 
-    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="/assets/js/lib/jquery-1.11.1.min.js"></script>
     <script src="/assets/js/lib/highlight.pack.js"></script>
     <script src="/assets/js/pualugin.js"></script>
-    <script>
-        hljs.initHighlightingOnLoad();
-        $('[data-element="nav__status"]').on('click', function() {
-            $('[data-element="nav__ul"]').toggleClass('is-active');
-        })
-        $('[data-element=nav__anchor]').on('click', function(e) {
-            e.preventDefault();
-            callComponent( $(this).attr('href') )
-            $('[data-element="nav__ul"]').removeClass('is-active');
-        })
-    </script>
+    <script src="/assets/js/theme/pualugin-theme.js"></script>
 </body>
 </html>

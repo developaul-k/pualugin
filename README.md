@@ -395,18 +395,14 @@ $('.your-element').accordion(); // Initialized
     * **type**: Number
     * **default**: 0
     * **description**: 원하는 탭 순서로 초기화
-* **isInitActive**
-    * **type**: Boolean
-    * **default**: flase
-    * **description**: 초기화 단계에서 initIndex에 입력한 탭 열기
 * **autoFold**
     * **type**: Boolean
     * **default**: true
-    * **description**: 다른 탭 클릭 시 기존에 열려있던 탭은 닫힘
+    * **description**: 탭 클릭 시 기존에 열려있던 탭 닫기
 * **autoScroll**
     * **type**: Boolean
     * **default**: false
-    * **description**: 선택한 탭의 위치로 스크롤 이동
+    * **description**: 선택한 탭의 위치로 자동 스크롤
 * **activeClassName**
     * **type**: String
     * **default**: is-active

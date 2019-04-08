@@ -2,7 +2,7 @@
 
 const gulp = require('gulp'),
       sass = require('gulp-sass'),
-      uglify = require('gulp-uglify'),
+      minify = require('gulp-minify'),
       bs = require('browser-sync').create(),
       bsSSi = require('browsersync-ssi'),
       cleanCSS = require('gulp-clean-css'),
@@ -13,7 +13,7 @@ const src = 'src';
 
 const paths = {
   styles: {
-    src: src + '/scss/**/*.scss',
+    src: src + '/scss/**/**/*.scss',
     dest: 'assets/css'
   },
   scripts: {
@@ -100,7 +100,7 @@ const scripts = () => {
       .src(paths.scripts.src, {
         sourcemaps: true
       })
-      .pipe(uglify())
+      .pipe(minify())
       .pipe(gulp.dest(paths.scripts.dest))
       .pipe(cache.clear())
   )

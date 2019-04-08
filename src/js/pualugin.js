@@ -17,13 +17,7 @@
 	*/
 	;
 	(function () {
-		/*
-		** GET Unique String
-		** @param String 'js'
-		** @return 'js1'
-		** @param null
-		** @return '1'
-		*/
+
 		UTIL.uuid = (function () {
 			var _uuid = 0;
 			return function (prefix) {
@@ -33,11 +27,6 @@
 			}
 		})();
 
-		/*
-		** 전달된 부모엘리먼트 하위에 focus가능한 엘리먼트 반환
-		** @param parentElement
-		** @returns {[*,*]}
-		*/
 		UTIL.findFocusEl = function (parentElement) {
 			var _basket = [];
 
@@ -102,7 +91,7 @@
 				plugin.$anchor = plugin.$element.find(plugin.options.anchorEl);
 				plugin.$panel = plugin.$element.find(plugin.options.panelEl);
 
-				var _id = plugin.$panel.attr('id') ? plugin.$panel.attr('id') : UTIL.uuid(pluginName + '-');
+				var _id = plugin.$panel.attr('id') ? plugin.$panel.attr('id') : UTIL.uuid(plugin._name + '-');
 
 				plugin.$anchor.attr('aria-controls', _id);
 				plugin.$panel.attr('id', _id);
@@ -147,14 +136,14 @@
 					});
 
 				plugin.$element
-					.off('show.' + pluginName)
-					.on('show.' + pluginName, function (e) {
+					.off('show.' + plugin._name)
+					.on('show.' + plugin._name, function (e) {
 						plugin.show();
 					});
 
 				plugin.$element
-					.off('hide.' + pluginName)
-					.on('hide.' + pluginName, function (e) {
+					.off('hide.' + plugin._name)
+					.on('hide.' + plugin._name, function (e) {
 						plugin.hide();
 					})
 			},
@@ -512,7 +501,7 @@
 
 				plugin.$anchor.each(function (index) {
 					var $this = $(this);
-					var _id = $this.attr('id') ? $this.attr('id') : UTIL.uuid('js-' + pluginName + '-');
+					var _id = $this.attr('id') ? $this.attr('id') : UTIL.uuid('js-' + plugin._name + '-');
 					var tagName = $this.get(0).tagName.toLowerCase();
 					var isFocusable = false;
 
@@ -701,7 +690,6 @@
 			anchorEl: '[data-element="accordion__anchor"]',
 			panelEl: '[data-element="accordion__panel"]',
 			activeClassName: 'is-active',
-			isInitActive: true,
 			initIndex: 0,
 			autoFold: true,
 			expandedText: 'collapse',
@@ -728,9 +716,7 @@
 				plugin.buildCache();
 				plugin.bindEvents();
 				plugin.$panel.hide();
-				if (plugin.options.isInitActive) {
-					plugin.open(plugin.$anchor.eq(plugin.options.initIndex));
-				}
+				plugin.open(plugin.$anchor.eq(plugin.options.initIndex));
 				plugin.initialized = true;
 			},
 			destroy: function () {
@@ -795,7 +781,6 @@
 				var plugin = this;
 
 				plugin.flag = true;
-				plugin.beforeChange($targetAnchor);
 
 				if ($targetAnchor.hasClass(plugin.options.activeClassName)) {
 					plugin.close($targetAnchor);
@@ -805,6 +790,8 @@
 			},
 			open: function ($targetAnchor) {
 				var plugin = this;
+
+				plugin.beforeChange($targetAnchor);
 
 				var $panel = $targetAnchor
 					.data(plugin._name + '_isOpen', true)
@@ -833,9 +820,13 @@
 						plugin.close($(this));
 					})
 				}
+
+				plugin.afterChange($targetAnchor);
 			},
 			close: function ($targetAnchor) {
 				var plugin = this;
+
+				plugin.beforeChange($targetAnchor);
 
 				var $panel = $targetAnchor
 					.data(plugin._name + '_isOpen', false)
@@ -853,6 +844,8 @@
 				}
 
 				plugin._changeStatus($targetAnchor, false);
+
+				plugin.afterChange($targetAnchor);
 			},
 			go: function( index, withScroll ) {
 				var plugin = this;
@@ -877,7 +870,7 @@
 
 				plugin.$anchor.each(function (index) {
 					var $this = $(this);
-					var _id = $this.attr('id') ? $this.attr('id') : UTIL.uuid('js-' + pluginName + '-');
+					var _id = $this.attr('id') ? $this.attr('id') : UTIL.uuid('js-' + plugin._name + '-');
 
 					$this
 						.data(plugin._name + '_target', plugin.$panel.eq(index))
@@ -940,451 +933,6 @@
 	})(jQuery, window, document, undefined);
 
 	/*
-	** Plugin - Checkbox
-	*/
-	;
-	(function ($, win, doc, undefined) {
-
-		var pluginName = "checkBox";
-
-		var defaults = {
-			allCheckCtrl: false, //true
-			firstCheck: false, //true
-			defaultChecked: false,
-			checkboxEl: '[data-element="checkbox__input"]',
-			hiddenEl: '[data-element="checkbox__hidden"]',
-			allEl: '[data-element="checkbox__all"]'
-		};
-
-		function Plugin(element, options) {
-			this.element = element;
-			this._name = pluginName;
-			this._defaults = defaults;
-			this.options = $.extend({}, this._defaults, options);
-			this.uuid = UTIL.uuid(pluginName);
-			this.allChecked = false;
-			this.init();
-		}
-
-		$.extend(Plugin.prototype, {
-			init: function () {
-				var plugin = this;
-
-				plugin.buildCache();
-				plugin.bindEvents();
-			},
-			bindEvents: function () {
-				var plugin = this;
-
-				plugin.$checkbox.on('click.' + plugin._name + ' keydown.' + plugin._name, function (e) {
-					var keyCode = e.keyCode || e.which;
-					if (e.type === 'click' || keyCode === 32) {
-						e.stopPropagation();
-						e.preventDefault();
-
-						if ($(this).attr('aria-disabled')) return false;
-						plugin.toggle($(this));
-					}
-				})
-
-				plugin.$allCheckbox.on('click.' + plugin._name + ' keydown.' + plugin._name, function (e) {
-					var keyCode = e.keyCode || e.which;
-					if (e.type === 'click' || keyCode === 32) {
-						e.stopPropagation();
-						e.preventDefault();
-
-						if ($(this).attr('aria-disabled')) return false;
-						plugin.allCheck($(this))
-					}
-				})
-
-				plugin.$allCtrl.on('click.' + plugin._name + 'keydown.' + plugin._name, function(e) {
-					var $this = $(this);
-					var keyCode = e.keyCode || e.which;
-
-					if (e.type === 'click' || keyCode === 32) {
-						e.stopPropagation();
-						e.preventDefault();
-
-						if ( $this.attr('aria-checked') === 'false' ) {
-							plugin.checked( $this )
-							$(plugin.options.allEl).each(function() {
-								if ( $(this).attr('aria-checked') === 'false' ) {
-									$(this).trigger('click');
-								}
-							})
-						} else if ( $this.attr('aria-checked') === 'true' ) {
-							plugin.unchecked( $this )
-							$(plugin.options.allEl).each(function() {
-								if ( $(this).attr('aria-checked') === 'true' ) {
-									$(this).trigger('click');
-								}
-							})
-						}
-					}
-				})
-
-				plugin.$checkbox.on('checked.' + plugin._name, function (e) {
-					plugin.checked($(this));
-				})
-
-				plugin.$checkbox.on('unchecked.' + plugin._name, function (e) {
-					plugin.unchecked($(this));
-				})
-			},
-			unbindEvents: function() {
-				var plugin = this;
-
-				plugin.$checkbox.off('.' + plugin._name);
-
-				if ( plugin.$allCheckbox ) plugin.$allCheckbox.off('.' + plugin._name);
-				if ( plugin.$allCtrl ) plugin.$allCtrl.off('.' + plugin._name);
-			},
-			buildCache: function () {
-				var plugin = this;
-
-				plugin.$element = $(plugin.element);
-				plugin.$checkbox = plugin.$element.find(plugin.options.checkboxEl);
-				plugin.$checkboxDisabeld = plugin.$element.find(plugin.options.checkboxEl).not('[aria-disabled=true]');
-				plugin.$hidden = plugin.$element.find(plugin.options.hiddenEl);
-				plugin.$allCheckbox = plugin.$element.find(plugin.options.allEl);
-				plugin.$allCtrl = plugin.$element.find('[data-element=checkbox__all-ctrl]');
-
-				if (plugin.options.firstCheck) {
-					plugin.$hidden.attr({
-						'checked': 'checked',
-						'tabindex': -1
-					});
-				} else {
-					plugin.$hidden.attr('tabindex', -1);
-				}
-
-				plugin.$allCheckbox.attr({
-					'aria-checked': plugin.options.firstCheck,
-					'aria-controls': '',
-					'tabindex': 0
-				})
-
-				var checkboxId = '';
-
-				plugin.$allCheckbox.each(function () {
-					plugin.initialSetting($(this));
-				})
-
-				plugin.$checkbox.each(function (idx) {
-					var $this = $(this);
-
-					if (plugin.options.allCheckCtrl) {
-						var _id = $this.attr('id') ? $this.attr('id') : UTIL.uuid('js-' + pluginName + '-');
-						$this.attr('id', _id);
-						idx > 0 ? checkboxId += ' ' + _id : checkboxId += _id
-					}
-
-					plugin.initialSetting($this);
-
-				})
-
-				plugin.initialSetting( plugin.$allCtrl )
-
-
-				if (plugin.options.allCheckCtrl && plugin.options.defaultChecked) {
-					plugin.checked(plugin.$allCheckbox.not('[aria-disabled=true]'))
-					plugin.checked(plugin.$checkboxDisabeld)
-				}
-
-				plugin.$allCheckbox.attr('aria-controls', checkboxId)
-			},
-			toggle: function ($this) {
-				var plugin = this;
-
-				if ($this.find(plugin.options.hiddenEl).prop('checked')) {
-					plugin.unchecked($this)
-				} else {
-					plugin.checked($this)
-				}
-
-				plugin.stateChecking()
-			},
-			checked: function ($this) {
-				var plugin = this;
-				$this.find(plugin.options.hiddenEl).prop('checked', true).change();
-				$this.attr('aria-checked', true);
-			},
-			unchecked: function ($this) {
-				var plugin = this;
-				$this.find(plugin.options.hiddenEl).prop('checked', false).change();
-				$this.attr('aria-checked', false);
-			},
-			allCheck: function ($this) {
-				var plugin = this;
-				if ($this.find(plugin.options.hiddenEl).prop('checked')) {
-					plugin.unchecked(plugin.$allCheckbox)
-					plugin.unchecked(plugin.$checkboxDisabeld)
-
-					if ( $('[data-element=checkbox__all-ctrl]').attr('aria-checked') === 'true' ) {
-						plugin.unchecked( $('[data-element=checkbox__all-ctrl]') )
-					}
-				} else {
-					plugin.checked(plugin.$allCheckbox)
-					plugin.checked(plugin.$checkboxDisabeld)
-
-					if ( $('[data-element=checkbox__all-ctrl]').attr('aria-checked') === 'false' ) {
-						plugin.checked( $('[data-element=checkbox__all-ctrl]') )
-					}
-				}
-			},
-			stateChecking: function () {
-				var plugin = this;
-
-				var checkBoxLeng = plugin.$checkboxDisabeld.length,
-					checkLeng = plugin.$checkbox.find(plugin.options.hiddenEl + ':checked').not(':disabled').length
-
-				if (checkBoxLeng === checkLeng) {
-					plugin.allChecked = true
-					plugin.checked(plugin.$allCheckbox)
-					plugin.checked( $('[data-element=checkbox__all-ctrl]') )
-				} else {
-					plugin.allChecked = false
-					plugin.unchecked(plugin.$allCheckbox)
-					plugin.unchecked( $('[data-element=checkbox__all-ctrl]') )
-				}
-
-			},
-			initialSetting: function($target) {
-				var plugin = this;
-
-				if ($target.attr('aria-disabled') === "true") {
-					$target.attr({
-						'tabindex': '',
-					}).removeAttr('aria-checked').find(plugin.options.hiddenEl).attr('disabled', true);
-				} else {
-					$target.attr({
-						'aria-checked': plugin.options.firstCheck,
-						'tabindex': 0
-					})
-				}
-			},
-			removeSetting: function() {
-				var plugin = this;
-
-				plugin.$allCheckbox.removeAttr('tabindex aria-checked data-index');
-				plugin.$checkbox.removeAttr('tabindex aria-checked data-index');
-			},
-			destroy: function() {
-				var plugin = this;
-
-				plugin.unbindEvents();
-				plugin.removeSetting();
-			}
-		});
-
-		$.fn[pluginName] = function ( options ) {
-			return this.each(function () {
-				if ($.data(this, "plugin_" + pluginName)) {
-					$.data(this, "plugin_" + pluginName).destroy()
-					$.data(this, "plugin_" + pluginName, new Plugin(this, options || $(this).data('options')));
-				} else {
-					$.data(this, "plugin_" + pluginName, new Plugin(this, options || $(this).data('options')));
-				}
-			});
-		}
-		$(function () {
-			$('[data-element=checkbox]').checkBox();
-		});
-
-	})(jQuery, window, document, undefined);
-
-	/*
-	** Plugin - Radio
-	*/
-	;
-	(function ($, win, doc, undefined) {
-
-		var pluginName = "radio";
-
-		var defaults = {
-			radioTitle: '[data-element="radio__title"]',
-			radioEl: '[data-element="radio__input"]',
-			hiddenEl: '[data-element="radio__hidden"]',
-			labelEl: '[data-element="radio__label"]',
-			initIndex: null,
-			activeClassName: 'is-active'
-		};
-
-		function Plugin(element, options) {
-			this.element = element;
-			this._name = pluginName;
-			this._defaults = defaults;
-			this.options = $.extend({}, this._defaults, options);
-			this.init();
-		}
-
-		$.extend(Plugin.prototype, {
-			init: function () {
-				var plugin = this;
-
-				plugin.buildCache();
-				plugin.bindEvents();
-			},
-			buildCache: function () {
-				var plugin = this;
-				var $focusItem;
-
-				plugin.$element = $(plugin.element);
-				plugin.$radioTitle = plugin.$element.find(plugin.options.radioTitle);
-				plugin.$radio = plugin.$element.find(plugin.options.radioEl);
-				plugin.$hidden = plugin.$element.find(plugin.options.hiddenEl);
-				plugin.$label = plugin.$element.find(plugin.options.labelEl);
-
-				plugin.initialSetting();
-			},
-			bindEvents: function () {
-				var plugin = this;
-
-				plugin.$radio.on('click.' + plugin._name + ' keydown.' + plugin._name, function (e) {
-					var $this = $(this);
-					var keyCode = e.keyCode || e.which;
-					var idx = parseInt($this.data('index'));
-
-					if ($(this).attr('aria-disabled')) return false;
-
-					if (e.type === 'click' || keyCode === 32) {
-						plugin.checked($this);
-						plugin.defaultEventKill(e)
-					} else if (keyCode === 37 || keyCode === 38) {
-						if (idx === 0 && $this.attr('aria-checked') === 'true') {
-							plugin.checked(plugin.$element.find('[data-index=' + (plugin.$radio.length - 1) + ']'));
-						} else {
-							plugin.checked(plugin.$element.find('[data-index=' + (idx - 1) + ']'));
-						}
-
-						plugin.defaultEventKill(e)
-					} else if (keyCode === 39 || keyCode === 40) {
-						if (idx === (plugin.$radio.length - 1) && $this.attr('aria-checked') === 'true') {
-							plugin.checked(plugin.$radio.eq(0));
-						} else {
-							plugin.checked(plugin.$radio.eq(idx + 1))
-						}
-						plugin.defaultEventKill(e)
-					}
-				})
-
-				plugin.$radio.on('checked.' + plugin._name, function (e) {
-					var $this = $(this);
-					plugin.checked($this);
-				})
-			},
-			unbindEvents: function() {
-				var plugin = this;
-
-				plugin.$radio.off('.' + plugin._name);
-			},
-			checked: function ($self) {
-				var plugin = this;
-
-				if ( $self.data('target') ) {
-					$( $self.data('target') ).addClass( plugin.options.activeClassName );
-
-					$( plugin.$radio ).each(function() {
-						$( $(this).not($self).data('target') ).removeClass( plugin.options.activeClassName );
-					})
-				}
-
-				$self.attr({
-					'tabindex': 0,
-					'aria-checked': true
-				})
-				.focus()
-				.find( plugin.options.hiddenEl )
-				.prop('checked', true)
-				.change();
-
-				plugin.$radio.not($self).each(function () {
-					$(this).attr({
-						'tabindex': -1,
-						'aria-checked': false
-					})
-					$(this).find( plugin.options.hiddenEl ).prop('checked', false).change();
-				})
-			},
-			initialSetting: function() {
-				var plugin = this;
-
-				var uuid = UTIL.uuid(plugin._name);
-
-				plugin.$radio.each(function (idx) {
-					var $this = $(this);
-
-					$this.not('[aria-disabled=true]').attr({
-						'aria-checked': false,
-						'tabindex': $this.index() === 0 ? 0 : -1,
-						'data-index': idx
-					})
-					$this.not('[aria-disabled=true]').find(plugin.options.hiddenEl).attr({
-						'checked': false,
-						'tabindex': -1
-					});
-
-					if ( $this.attr('aria-disabled') === 'true' ) {
-						$(this).attr({
-							'tabindex': -1
-						})
-						.find(plugin.options.hiddenEl)
-						.attr({
-							'tabindex': -1,
-							'disabled': 'disabled'
-						})
-					}
-
-					if ( idx == plugin.options.initIndex ) {
-						plugin.checked( $this );
-					}
-				});
-				plugin.$element.attr('aria-labelledby', uuid);
-				plugin.$radioTitle.attr('id', uuid);
-			},
-			removeSetting: function() {
-				var plugin = this;
-
-				plugin.$radio.each(function (idx) {
-					var $this = $(this);
-
-					$this.removeAttr('aria-checked tabindex data-index')
-					$this.find(plugin.options.hiddenEl).removeAttr('aria-checked tabindex');
-				});
-				plugin.$element.removeAttr('aria-labelledby');
-				plugin.$radioTitle.removeAttr('id');
-			},
-			defaultEventKill: function (e) {
-				e.stopPropagation();
-				e.preventDefault();
-			},
-			destroy: function() {
-				var plugin = this;
-				plugin.removeSetting();
-				plugin.unbindEvents();
-			}
-		});
-
-		$.fn[pluginName] = function ( options ) {
-			return this.each(function () {
-				if ($.data(this, "plugin_" + pluginName)) {
-					$.data(this, "plugin_" + pluginName).destroy()
-					$.data(this, "plugin_" + pluginName, new Plugin(this, options || $(this).data('options')));
-				} else {
-					$.data(this, "plugin_" + pluginName, new Plugin(this, options || $(this).data('options')));
-				}
-			});
-		}
-
-		$(function () {
-			$('[data-element=radio]').radio();
-		});
-
-
-	})(jQuery, window, document, undefined);
-
-	/*
 	** Plugin - Sticky
 	*/
 	;
@@ -1397,7 +945,7 @@
 			sectionEl: '[data-element=sticky__section]',
 			headerEl: '[data-element=sticky__target-parent]',
 			targetEl: '[data-element=sticky__target]',
-			activeClassName: 'is-floating',
+			activeClassName: 'is-sticky'
 		};
 
 		function Plugin(element, options) {
@@ -1435,30 +983,32 @@
 			buildCache: function() {
 				var plugin = this;
 
-				plugin.$wrap = $( plugin.element );
-				plugin.$header = plugin.$wrap.find( plugin.options.headerEl );
-				plugin.$target = plugin.$wrap.find( plugin.options.targetEl );
+				plugin.$element = $( plugin.element );
+				plugin.$header = plugin.$element.find( plugin.options.headerEl );
+				plugin.$target = plugin.$element.find( plugin.options.targetEl );
 				plugin.$win = $( win );
-
 				plugin.headerHeight = plugin.$header.outerHeight();
-
-				plugin.top = plugin.$wrap.offset().top;
-				plugin.bottom = plugin.top + ( plugin.$wrap.outerHeight() - plugin.headerHeight );
 			},
 			bindEvents: function() {
 				var plugin = this;
 
-				plugin.$win.on('scroll.' + plugin._name, function() {
-					var scrTop = $(this).scrollTop();
+				plugin.$win
+					.on('scroll.' + plugin._name, function() {
+						var scrTop = $(this).scrollTop();
 
-					plugin.toggle( scrTop );
-				})
+						plugin.toggle( scrTop );
+					})
+					.on('resize.' + plugin._name, function() {
+						$(this).trigger('scroll');
+					})
 			},
 			unbindEvents: function() {
-				plugin.$win.off(plugin._name);
+				plugin.$win.off( '.' + plugin._name);
 			},
 			toggle: function( scrTop ) {
 				var plugin = this;
+
+				plugin.getPosition();
 
 				if ( scrTop > plugin.bottom ) {
 					plugin.unFixed();
@@ -1477,7 +1027,7 @@
 				plugin.$header.css('height', plugin.headerHeight);
 				plugin.$target.css({
 					'position': 'fixed',
-					'top': 0,
+					'top': plugin.options.top,
 					'left': plugin.$header.offset().left,
 					'width': plugin.$header.outerWidth()
 				})
@@ -1497,7 +1047,7 @@
 			bottomFixed: function() {
 				var plugin = this;
 
-				plugin.$wrap.css({
+				plugin.$element.css({
 					position: ''
 				})
 
@@ -1510,7 +1060,7 @@
 			bottomRelative: function() {
 				var plugin = this;
 
-				plugin.$wrap.css('position', 'relative');
+				plugin.$element.css('position', 'relative');
 				plugin.$target.css({
 					position: 'absolute',
 					bottom: '0',
@@ -1520,13 +1070,13 @@
 			},
 			getOffsetTop: function( target ) {
 				var plugin = this;
-				var wrapTop = plugin.$wrap.offset().top;
+				var wrapTop = plugin.$element.offset().top;
 				var headerHeight = plugin.$header.height();
 				var position = plugin.options.position;
 				var topValue = plugin.options.top;
 
 				if ( target ) {
-					return ($(target).offset().top);
+					return ($(target).offset().top - topValue);
 				} else if ( position === 'bottom' ) {
 					return ( wrapTop + headerHeight ) - topValue;
 				} else if (  position === 'middle' ) {
@@ -1535,22 +1085,27 @@
 					return wrapTop - topValue;
 				}
 			},
+			getPosition: function() {
+				var plugin = this;
+				plugin.top = plugin.getOffsetTop( plugin.$element );
+				plugin.bottom = plugin.top + ( plugin.$element.outerHeight() - plugin.headerHeight );
+			},
 			beforeChange: function () {
 				var plugin = this;
 
-				plugin.$wrap.trigger('beforeChange', [plugin, plugin.$target]);
+				plugin.$element.trigger('beforeChange', [plugin, plugin.$target]);
 			},
 			afterChange: function () {
 				var plugin = this;
 
-				plugin.$wrap.trigger('afterChange', [plugin, plugin.$target]);
-			},
+				plugin.$element.trigger('afterChange', [plugin, plugin.$target]);
+			}
 		})
 
 		$.fn[pluginName] = function ( options ) {
 			return this.each(function () {
 				if (!$.data(this, "plugin_" + pluginName)) {
-					$.data(this, "plugin_" + pluginName, new Plugin(this, options || $(this).data('options')));
+					$.data(this, "plugin_" + pluginName, new Plugin(this, $.extend( {}, options, $(this).data('options')) ));
 				}
 			});
 		}
@@ -1606,16 +1161,16 @@
 			bindEvents: function() {
 				var plugin = this;
 
-				plugin.$input.on('keyup.' + pluginName, function(e) {
+				plugin.$input.on('keyup.' + plugin._name, function(e) {
 					plugin.toggle( this );
 				}).keyup();
 
-				plugin.$delete.on('click.' + pluginName, function(e) {
+				plugin.$delete.on('click.' + plugin._name, function(e) {
 					e.preventDefault();
 					plugin.delete();
 				});
 
-				plugin.$textarea.on('keyup.' + pluginName + ' input.' + pluginName, function(e) {
+				plugin.$textarea.on('keyup.' + plugin._name + ' input.' + plugin._name, function(e) {
 					plugin.count( e );
 					if (plugin.options.autoHeight) {
 						plugin.resize();
@@ -1696,9 +1251,14 @@
 		var pluginName = "modal";
 
 		var defaults = {
+			container: '[data-element=modal]',
 			modal: '[data-element=modal__element]',
+			innerContainer: '[data-element=modal__element-container]',
+			mask: '[data-element=modal__mask]',
 			close: '[data-element=modal__close]',
 			open: '[data-element=modal__open]',
+			modalWidth: 500,
+			modalHeight: 500,
 			activeClassName: 'is-open'
 		}
 
@@ -1709,132 +1269,194 @@
 			this.options = $.extend({}, this._defaults, options);
 			this.stackLevel = 0;
 			this.initialSetting = false;
+			this.flag = false;
 			this.init();
 		}
 
 		$.extend(Plugin.prototype, {
 			init: function() {
 				var plugin = this;
-				plugin.appendModal();
 				plugin.buildCache();
 				plugin.bindEvents();
 			},
 			buildCache: function() {
 				var plugin = this;
 
+				// InitialSettings ( modal-container + modal-mask )
 				plugin.$element = $(plugin.element);
-				plugin.$modal = plugin.$element.find(plugin.options.modal)
-				plugin.$open = $( plugin.options.open )
-				plugin.$close = $( plugin.options.close )
+				plugin.$container = $(plugin.options.container).length ? $(plugin.options.container) : $('<div class="pualugin-modal" data-element="modal"></div>').appendTo('body');
+				plugin.$mask = $( plugin.options.mask ).length ? $( plugin.options.mask ) : $('<div class="pualugin-modal__mask" data-element="modal__mask"></div>').appendTo('body');
+
+				plugin.appendModal();
+
+				plugin.$innerContainer = plugin.$element.find(plugin.options.innerContainer);
+				plugin.$close = plugin.$element.find( plugin.options.close );
+				plugin.$open = $('[data-target=#' + plugin.$element.attr('id') + ']') || null;
 				plugin.$win = $(win);
+				plugin.$doc = $(doc);
+				plugin.$body = $('body');
 				plugin.$html = $('html');
-				plugin.$body = $('html, body');
-				plugin.$wrap = $('#wrap');
+
+				plugin.$element.attr({
+					'role': 'dialog',
+					'aria-modal': true
+				})
+				plugin.$innerContainer.css({
+					'width': plugin.options.modalWidth,
+					'height': plugin.options.modalHeight
+				})
 			},
 			bindEvents: function() {
 				var plugin = this;
+				var focusEl = UTIL.findFocusEl( plugin.$element );
+				var focusElFirst = $(focusEl[0]);
+				var focusElLast = $(focusEl[1]);
 
-				plugin.$element.on('open.' + pluginName, function(e, target) {
+				plugin.$element.on('open.' + plugin._name, function(e, target) {
 					plugin.open( target );
 				})
 
-				plugin.$element.on('close.' + pluginName, function(e, target) {
+				plugin.$element.on('close.' + plugin._name, function(e, target) {
 					plugin.close( target );
 				})
 
-				plugin.$close.on('click.' + pluginName, function(e) {
-					plugin.close( $(this).closest( plugin.options.modal ) )
+				plugin.$close.on('click.' + plugin._name, function(e) {
+					e.preventDefault();
+					e.stopPropagation();
+
+					plugin.close( plugin.$element );
 				})
 
-				$(doc).on('click.' + pluginName, plugin.options.open, function(e) {
+				plugin.$open !== null && plugin.$open.on('click.' + plugin._name, function(e) {
 					e.preventDefault();
+					e.stopPropagation();
 
-					plugin.open( $($(this).data('target')) );
+					plugin.open( plugin.$element );
+				})
+
+				plugin.$doc.on('click.' + plugin._name, function(e) {
+					var target = e.target;
+
+					if ( plugin.flag && plugin.$open[0] !== target ) {
+						if (!plugin.$innerContainer.is(target) && plugin.$innerContainer.has(target).length === 0 ){
+							plugin.close( plugin.$element );
+						}
+					}
+				})
+
+				focusElFirst.on('keydown.' + plugin._name, function(e) {
+					var keyCode = e.keyCode || e.which;
+					if ( e.shiftKey && keyCode === 9 ) {
+						e.preventDefault();
+						focusElLast.focus();
+					}
+				})
+
+				focusElLast.on('keydown.' + plugin._name, function(e) {
+					var keyCode = e.keyCode || e.which;
+					if ( keyCode == 9 && !e.shiftKey ) {
+						e.preventDefault();
+						focusElFirst.focus();
+					}
 				})
 			},
 			appendModal: function() {
 				var plugin = this;
-
-				if ( !plugin.initialSetting ) {
-					plugin.initialSetting = true;
-
-					$('body')
-						.append('<div class="pualugin-modal" data-element="modal"></div>')
-						.append('<div class="pualugin-modal__mask" data-element="modal__mask"></div>');
-				}
-
-				$('body').find( plugin.options.modal ).each(function() {
-					$('[data-element=modal]').append( $(this) );
-				})
+				plugin.$container.append( plugin.$element );
 			},
-			afterBindEvents: function( focusElementFirst, focusElementLast ) {
-				focusElementFirst.on('keydown.' + pluginName, function(e) {
-					var keyCode = e.keyCode || e.which;
-					if ( e.shiftKey && keyCode === 9 ) {
-						e.preventDefault();
-						focusElementLast.focus();
-					}
-				})
-
-				focusElementLast.on('keydown.' + pluginName, function(e) {
-					var keyCode = e.keyCode || e.which;
-					if ( keyCode == 9 && !e.shiftKey ) {
-						e.preventDefault();
-						focusElementFirst.focus();
-					}
-				})
-			},
-			open: function( target ) {
+			open: function() {
 				var plugin = this;
-				console.log( target )
-				var $target = $(target);
-				var targetId = $target.attr('id');
-				var _focusElements = UTIL.findFocusEl( $target );
 
-				// plugin.afterBindEvents( $(_focusElements[0]), $(_focusElements[1]) )
+				if ( plugin.flag ) return;
+				plugin.flag = true;
 
-				plugin.makeDimd();
+				plugin.beforeChange( plugin.$element );
 
-				$target
+				plugin.setStyle();
+				plugin.touchBindEvent();
+				plugin.$element
+					.attr('tabindex', 0)
 					.addClass(plugin.options.activeClassName)
-					.css('z-index',  300 + plugin.stackLevel )
-					.attr({
-						'role': 'dialog',
-						'aria-modal': true
-					})
 					.focus();
+
+				plugin.afterChange( plugin.$element );
+
 			},
-			close: function( target ) {
+			close: function() {
 				var plugin = this;
-				var $target = $(target);
-				var targetId = $target.attr('id');
 
-				$target.removeClass(plugin.options.activeClassName);
+				if (!plugin.flag) return;
+				plugin.flag = false;
 
-				/* if ( $target.attr('id').indexOf('Date') == -1 ) {
-					$('[data-modal-target="#' + $target.attr('id') + '"]').focus();
-				} */
+				plugin.beforeChange( plugin.$element );
+
+				plugin.$element.attr('tabindex', -1).removeClass(plugin.options.activeClassName);
+				plugin.removeStyle();
+				plugin.$open.focus();
+
+				plugin.afterChange( plugin.$element );
 			},
-			removeStyles: function( $target ) {
-				$target.css({
-					'position': '',
-					'overflow': '',
-					'top': '',
-					'left': '',
-					'right': '',
-					'bottom': '',
+			setStyle: function() {
+				var plugin = this;
+0
+				plugin.$mask.addClass(plugin.options.activeClassName);
+				plugin.$html.addClass('pualugin-modal__is-locked');
+				$('[data-element=modal]').css({
+					'z-index': 1001 + plugin.stackLevel
+				})
+			},
+			removeStyle: function() {
+				var plugin = this;
+
+				plugin.$mask.removeClass(plugin.options.activeClassName);
+				plugin.$html.removeClass('pualugin-modal__is-locked');
+				$('.pualugin').removeClass('pualugin-modal__is-locked');
+				$('[data-element=modal]').css({
 					'z-index': ''
 				})
 			},
-			setStyles: function( $target ) {
-				$target.css({
-					'position': 'fixed',
-					'overflow': 'hidden',
-					'top': 0,
-					'left': 0,
-					'right': 0,
-					'bottom': 0
+			touchBindEvent: function() {
+				var plugin = this;
+
+				plugin.$container.on('touchmove.' + plugin._name, function(e) {
+					e.preventDefault();
 				})
+			},
+			touchUnbindEvent: function() {
+				var plugin = this;
+
+				plugin.$container.off( '.' + plugin._name);
+			},
+			destroy: function() {
+				var plugin = this;
+
+				plugin.unbindEvents();
+				plugin.removeStyle();
+				plugin.$innerContainer.removeAttr('style');
+				plugin.$element.removeAttr('role aria-modal');
+			},
+			unbindEvents: function () {
+				var plugin = this;
+
+				plugin.$element.off('.' + plugin._name);
+				plugin.$open !== null && plugin.$open.off('.' + plugin._name);
+				plugin.$doc.off('.' + plugin._name);
+				plugin.$container.off('.' + plugin._name);
+			},
+			beforeChange: function ($modal) {
+				var plugin = this;
+				plugin.$element.trigger('beforeChange', [plugin, $modal]);
+			},
+			afterChange: function ($modal) {
+				var plugin = this;
+				plugin.$element.trigger('afterChange', [plugin, $modal]);
+			},
+			reInit: function() {
+				var plugin = this;
+
+				plugin.destroy();
+				plugin.buildCache();
+				plugin.bindEvents();
 			}
 		});
 
@@ -1847,45 +1469,10 @@
 		}
 
 		$(function () {
-			$('body').modal();
+			$('[data-element=modal__element]').modal();
 		});
 
 	})(jQuery, window, document, undefined)
-
-	/*
-	** Plugin - Resize Select
-	*/
-	;(function($, win, doc, undefined){
-		var pluginName = "resizeselect"
-		var arrowWidth = 0;
-
-		$.fn[pluginName] = function(settings) {
-			return this.each(function() {
-
-				$(this).change(function(){
-					var $this = $(this);
-
-					var text = $this.find("option:selected").text();
-					console.log( $this.css("font-size") )
-					var $test = $("<span>").html(text).css({
-						"font-size": $this.css("font-size"),
-						"visibility": "hidden"
-					});
-					$test.appendTo('body');
-					$this.width( $test.width() );
-					$test.remove();
-
-					}).change();
-
-			});
-		};
-
-		// run by default
-		$(function() {
-			$("[data-element=resize-select]").resizeselect();
-		})
-
-	})(jQuery, window, document, undefined);
 
 	/*
 	** Plugin - Override Slick

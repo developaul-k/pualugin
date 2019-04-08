@@ -1,29 +1,218 @@
 <div id="sticky" class="plugin">
-    <h1>Plugin - Sticky</h1>
-    <section class="section">
+<h1>Plugin - Sticky</h1>
 
-        <div class="pualugin-sticky">
-            <section class="pualugin-sticky__section" data-element="sticky">
-                <div class="pualugin-sticky__header" data-element="sticky__target-parent">
-                    <h1 class="pualugin-sticky__target" data-element="sticky__target">Section1</h1>
-                </div>
-            </section>
-            <section class="pualugin-sticky__section" data-element="sticky">
-                <div class="pualugin-sticky__header" data-element="sticky__target-parent">
-                    <h1 class="pualugin-sticky__target" data-element="sticky__target">Section2</h1>
-                </div>
-            </section>
-            <section class="pualugin-sticky__section" data-element="sticky">
-                <div class="pualugin-sticky__header" data-element="sticky__target-parent">
-                    <h1 class="pualugin-sticky__target" data-element="sticky__target">Section3</h1>
-                </div>
-            </section>
-            <section class="pualugin-sticky__section" data-element="sticky">
-                <div class="pualugin-sticky__header" data-element="sticky__target-parent">
-                    <h1 class="pualugin-sticky__target" data-element="sticky__target">Section4</h1>
-                </div>
-            </section>
-        </div>
+<!-- CODE -->
+<p class="plugin__description">- CODE / 기본</p>
+<div class="code">
+<div class="code__language">HTML</div>
+<pre>
+<code class="html">
+  &lt;div class="pualugin-sticky"&gt;
+    &lt;section class="pualugin-sticky__section" data-element="sticky"&gt;
+      &lt;div class="pualugin-sticky__header" data-element="sticky__target-parent"&gt;
+          &lt;h1 class="pualugin-sticky__target" data-element="sticky__target">Section1&lt;/h1&gt;
+      &lt;/div&gt;
+    &lt;/section&gt;
+  &lt;/div&gt;
+</code>
+</pre>
+</div>
+<!-- CODE -->
 
-    </section>
+<!-- RESULT -->
+<p class="plugin__description">- RESULT</p>
+<div class="pualugin-sticky">
+  <section class="pualugin-sticky__section" data-element="sticky">
+    <div class="pualugin-sticky__header" data-element="sticky__target-parent">
+        <h1 class="pualugin-sticky__target" data-element="sticky__target">Section1</h1>
+    </div>
+  </section>
+</div>
+<!-- //RESULT -->
+
+<!-- CODE -->
+<p class="plugin__description">- CODE / 기본 + 섹션 2개 이상</p>
+<div class="code">
+<div class="code__language">HTML</div>
+<pre>
+<code class="html">
+  &lt;div class="pualugin-sticky"&gt;
+    &lt;section class="pualugin-sticky__section" data-element="sticky"&gt;
+      &lt;div class="pualugin-sticky__header" data-element="sticky__target-parent"&gt;
+          &lt;h1 class="pualugin-sticky__target" data-element="sticky__target">Section1&lt;/h1&gt;
+      &lt;/div&gt;
+    &lt;/section&gt;
+    &lt;section class="pualugin-sticky__section" data-element="sticky"&gt;
+        &lt;div class="pualugin-sticky__header" data-element="sticky__target-parent"&gt;
+            &lt;h1 class="pualugin-sticky__target" data-element="sticky__target">Section2&lt;/h1&gt;
+        &lt;/div&gt;
+    &lt;/section&gt;
+  &lt;/div&gt;
+</code>
+</pre>
+</div>
+<!-- CODE -->
+
+<!-- RESULT -->
+<p class="plugin__description">- RESULT</p>
+<div class="pualugin-sticky">
+  <section class="pualugin-sticky__section" data-element="sticky">
+    <div class="pualugin-sticky__header" data-element="sticky__target-parent">
+        <h1 class="pualugin-sticky__target" data-element="sticky__target">Section1</h1>
+    </div>
+  </section>
+  <section class="pualugin-sticky__section" data-element="sticky">
+    <div class="pualugin-sticky__header" data-element="sticky__target-parent">
+        <h1 class="pualugin-sticky__target" data-element="sticky__target">Section2</h1>
+    </div>
+  </section>
+</div>
+<!-- //RESULT -->
+
+<!-- CODE -->
+<p class="plugin__description">- CODE / 기본 + 섹션 2개 이상 + 옵션</p>
+<div class="code">
+<div class="code__language">HTML</div>
+<pre>
+<code class="html">
+  &lt;div class="pualugin-sticky"&gt;
+    &lt;section class="pualugin-sticky__section" data-element="sticky" data-options='{ "top": 50 }'&gt;
+      &lt;div class="pualugin-sticky__header" data-element="sticky__target-parent"&gt;
+          &lt;h1 class="pualugin-sticky__target" data-element="sticky__target">Section1&lt;/h1&gt;
+      &lt;/div&gt;
+    &lt;/section&gt;
+    &lt;section class="pualugin-sticky__section" data-element="sticky" data-options='{ "top": 100 }'&gt;
+        &lt;div class="pualugin-sticky__header" data-element="sticky__target-parent"&gt;
+            &lt;h1 class="pualugin-sticky__target" data-element="sticky__target">Section2&lt;/h1&gt;
+        &lt;/div&gt;
+    &lt;/section&gt;
+  &lt;/div&gt;
+</code>
+</pre>
+</div>
+<!-- CODE -->
+
+<!-- RESULT -->
+<p class="plugin__description">- RESULT</p>
+<div class="pualugin-sticky">
+  <section class="pualugin-sticky__section" data-element="sticky">
+    <div class="pualugin-sticky__header" data-element="sticky__target-parent">
+        <h1 class="pualugin-sticky__target" data-element="sticky__target">Section1</h1>
+    </div>
+  </section>
+  <section class="pualugin-sticky__section" data-element="sticky">
+    <div class="pualugin-sticky__header" data-element="sticky__target-parent">
+        <h1 class="pualugin-sticky__target" data-element="sticky__target">Section2</h1>
+    </div>
+  </section>
+</div>
+<!-- //RESULT -->
+
+<!-- Options -->
+<div class="pualugin-options">
+  <div class="pualugin-options__title">Options</div>
+  <ul class="pualugin-options__ul">
+    <li class="pualugin-options__li">
+      <div class="pualugin-options__name">
+        position
+      </div>
+      <ul class="pualugin-options__ul">
+        <li class="pualugin-options__li">
+          type: String
+        </li>
+        <li class="pualugin-options__li">
+          default: top
+        </li>
+        <li class="pualugin-options__li">
+          description: top, bottom, middle 중 선택
+        </li>
+      </ul>
+    </li>
+    <li class="pualugin-options__li">
+      <div class="pualugin-options__name">
+        top
+      </div>
+      <ul class="pualugin-options__ul">
+        <li class="pualugin-options__li">
+          type: Number
+        </li>
+        <li class="pualugin-options__li">
+          default: 0
+        </li>
+        <li class="pualugin-options__li">
+          description: sticky 활성화 위치
+        </li>
+      </ul>
+    </li>
+    <li class="pualugin-options__li">
+      <div class="pualugin-options__name">
+        activeClassName
+      </div>
+      <ul class="pualugin-options__ul">
+        <li class="pualugin-options__li">
+          type: String
+        </li>
+        <li class="pualugin-options__li">
+          default: is-sticky
+        </li>
+        <li class="pualugin-options__li">
+          description: sticky 활성화 클래스
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+<!-- //Options -->
+
+<!-- Event -->
+<p class="plugin__description">
+  - Event
+</p>
+<div class="code">
+<span class="code__language"><i class="fas fa-code"></i>JAVASCRIPT</span>
+<pre>
+<code class="javascript">
+  var yourVariable = $('.your-element');
+
+  yourVariable.on('beforeChange', function( event, plugin, anchor, panel ){
+      /* your code ... */
+  })
+  
+  yourVariable.on('afterChange', function( event, plugin, anchor, panel ){
+      /* your code ... */
+  })
+</code>
+</pre>
+</div>
+<div class="pualugin-options">
+  <ul class="pualugin-options__ul">
+    <li class="pualugin-options__li">
+      <div class="pualugin-options__name">
+        beforeChange
+      </div>
+      <ul class="pualugin-options__ul">
+        <li class="pualugin-options__li">
+          arguments: event, plugin, anchor, panel
+        </li>
+        <li class="pualugin-options__li">
+          description: 스티키 활성 전 실행될 함수
+        </li>
+      </ul>
+    </li>
+    <li class="pualugin-options__li">
+      <div class="pualugin-options__name">
+        afterChange
+      </div>
+      <ul class="pualugin-options__ul">
+        <li class="pualugin-options__li">
+          arguments: event, plugin, anchor, panel
+        </li>
+        <li class="pualugin-options__li">
+          description: 스티키 활성 후 실행될 함수
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+<!-- //Event -->
 </div>

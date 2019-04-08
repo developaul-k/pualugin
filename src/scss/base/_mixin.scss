@@ -1,3 +1,4 @@
+// Browser size
 @mixin screenSizeMobile() {
     @media only screen and (max-width: 960px) {
         @content;
@@ -14,4 +15,25 @@
     @media only screen and (min-width: 1280px) {
         @content;
     }
+}
+
+
+// transform, transition
+@mixin transform( $value ) {
+    -webkit-transform: $value ;
+    -moz-transform: $value ;
+    transform: $value ;
+}
+
+@mixin transition( $value ) {
+    -webkit-transition: $value;
+    -moz-transition: $value;
+    transition: $value;
+}
+
+// Reset Style Button
+@mixin resetButton() {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
 }
