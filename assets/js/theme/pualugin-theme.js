@@ -33,7 +33,7 @@ function appendClipboard() {
         e.stopPropagation();
         e.preventDefault();
 
-        var code = $(this).closest('.code').find('code').text();
+        var code = $.trim($(this).closest('.code').find('code').text());
         var _doc = document;
 
         var textarea = _doc.createElement("textarea");
