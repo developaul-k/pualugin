@@ -201,9 +201,9 @@
 <code class="javascript">
   var yourVariable = $('.your-element').data('plugin_modal');
 
-  yourVariable.open();
+  yourVariable.open( '#your-element' );
 
-  yourVariable.close();
+  yourVariable.close( '#your-element' );
 
   yourVariable.destroy();
 
@@ -219,7 +219,7 @@
       </div>
       <ul class="pualugin-options__ul">
         <li class="pualugin-options__li">
-          arguments: none
+          arguments: element (오픈할 모달의 id, class)
         </li>
         <li class="pualugin-options__li">
           description: 모달 열기

@@ -864,19 +864,6 @@
     </li>
     <li class="pualugin-options__li">
       <div class="pualugin-options__name">
-        easing
-      </div>
-      <ul class="pualugin-options__ul">
-        <li class="pualugin-options__li">
-          type: String
-        </li>
-        <li class="pualugin-options__li">
-          default: swing
-        </li>
-      </ul>
-    </li>
-    <li class="pualugin-options__li">
-      <div class="pualugin-options__name">
         initIndex
       </div>
       <ul class="pualugin-options__ul">
@@ -888,6 +875,19 @@
         </li>
         <li class="pualugin-options__li">
           description: 원하는 탭 순서 노출
+        </li>
+      </ul>
+    </li>
+    <li class="pualugin-options__li">
+      <div class="pualugin-options__name">
+        easing
+      </div>
+      <ul class="pualugin-options__ul">
+        <li class="pualugin-options__li">
+          type: String
+        </li>
+        <li class="pualugin-options__li">
+          default: swing
         </li>
       </ul>
     </li>
@@ -1356,7 +1356,7 @@
       </div>
       <ul class="pualugin-options__ul">
         <li class="pualugin-options__li">
-          arguments: event, plugin, anchor, panel
+          arguments: event, plugin, anchor
         </li>
         <li class="pualugin-options__li">
           description: 패널 오픈 전 실행될 함수
@@ -1369,7 +1369,7 @@
       </div>
       <ul class="pualugin-options__ul">
         <li class="pualugin-options__li">
-          arguments: event, plugin, anchor, panel
+          arguments: event, plugin, anchor
         </li>
         <li class="pualugin-options__li">
           description: 패널 오픈 후 실행될 함수
@@ -1388,11 +1388,11 @@
 <span class="code__language"><i class="fas fa-code"></i>JAVASCRIPT</span>
 <pre>
 <code class="javascript">
-  var yourVariable = $('.your-element').data('plugin_toggle');
+  var yourVariable = $('.your-element').data('plugin_accordion');
 
-  yourVariable.show();
-
-  yourVariable.hide();
+  yourVariable.go(1); //OR
+  yourVariable.go(2, true); //OR
+  yourVariable.go(0, false); //OR
 
   yourVariable.destroy();
 
@@ -1404,27 +1404,14 @@
   <ul class="pualugin-options__ul">
     <li class="pualugin-options__li">
       <div class="pualugin-options__name">
-        show
+        go
       </div>
       <ul class="pualugin-options__ul">
         <li class="pualugin-options__li">
-          arguments: none
+          arguments: index, withScroll(Boolean): 선택된 탭의 상단으로 스크롤 이동 여부
         </li>
         <li class="pualugin-options__li">
           description: 패널 열기
-        </li>
-      </ul>
-    </li>
-    <li class="pualugin-options__li">
-      <div class="pualugin-options__name">
-        hide
-      </div>
-      <ul class="pualugin-options__ul">
-        <li class="pualugin-options__li">
-          arguments: none
-        </li>
-        <li class="pualugin-options__li">
-          description: 패널 닫기
         </li>
       </ul>
     </li>
@@ -1466,7 +1453,7 @@
 <span class="code__language"><i class="fas fa-code"></i>JAVASCRIPT</span>
 <pre>
 <code class="javascript">
-  $('.your-element').toggle(); // Initialize
+  $('.your-element').accordion(); // Initialize
 </code>
 </pre>
 </div>
@@ -1893,9 +1880,9 @@
 <code class="javascript">
   var yourVariable = $('.your-element').data('plugin_modal');
 
-  yourVariable.open();
+  yourVariable.open( '#your-element' );
 
-  yourVariable.close();
+  yourVariable.close( '#your-element' );
 
   yourVariable.destroy();
 
@@ -1911,7 +1898,7 @@
       </div>
       <ul class="pualugin-options__ul">
         <li class="pualugin-options__li">
-          arguments: none
+          arguments: element (오픈할 모달의 id, class)
         </li>
         <li class="pualugin-options__li">
           description: 모달 열기
