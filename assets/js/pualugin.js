@@ -1435,8 +1435,10 @@
 				})
 
 				plugin.$doc.on('click.' + plugin._name, function(e) {
-					if (!plugin.$modalInner.is(e.target) && plugin.$modalInner.has(e.target).length === 0){
-						plugin.close( e.target );
+					if ( plugin.$modal.is('.is-open') ) {
+						if (!plugin.$modalInner.is(e.target) && plugin.$modalInner.has(e.target).length === 0){
+							plugin.close( e.target );
+						}
 					}
 				})
 
