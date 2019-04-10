@@ -186,6 +186,33 @@ $('.your-element').toggle(); // Initialized
   * **default**: is-active
   * **description**: 토글 활성화 클래스
 
+### Method
+
+``` javascript
+var yourVariable = $('.your-element').data('plugin_tooltip');
+
+yourVariable.show();
+
+yourVariable.hide();
+
+yourVariable.destroy();
+
+yourVariable.reInit();
+```
+
+* **show**
+    * **Arguments**: none
+    * **description**: 패널 열기
+* **hide**
+    * **Arguments**: none
+    * **description**: 패널 닫기
+* **destroy**
+    * **Arguments**: none
+    * **description**: 플러그인 초기화
+* **reInit**
+    * **Arguments**: none
+    * **description**: 플러그인 초기화 후 재생성
+
 * * *
 모든 플러그인은 기본적으로 **페이지 렌더링시 Initialized** 됩니다.<br>
 **개별적(비동기 마크업 구현) Initialized** 필요한 경우 아래와 같이 진행합니다.
@@ -194,6 +221,8 @@ $('.your-element').toggle(); // Initialized
 ``` javascript
 $('.your-element').tooltip(); // Initialized
 ```
+
+
 
 ## Tab
 
@@ -310,7 +339,7 @@ yourVariable.reInit();
 ```
 
 * **go**
-    * **Arguments**: index, withScroll(Boolean): 선택된 탭의 상단으로 스크롤 이동 여부
+    * **Arguments**: index(Number), withScroll(Boolean): 선택된 탭의 상단으로 스크롤 이동 여부
     * **description**: 원하는 탭 오픈
 * **destroy**
     * **Arguments**: none
@@ -448,7 +477,7 @@ yourVariable.reInit();
 ```
 
 * **go**
-    * **Arguments**: index, withScroll(Boolean): 선택된 탭의 상단으로 스크롤 이동 여부
+    * **Arguments**: index(Number), withScroll(Boolean): 선택된 탭의 상단으로 스크롤 이동 여부
     * **description**: 입력한 index 패널 오픈
 * **destroy**
     * **Arguments**: none
@@ -639,9 +668,9 @@ yourVariable.on('modalClose', function( event, plugin, modal ){
 ``` javascript
 var yourVariable = $('.your-element').data('plugin_modal');
 
-yourVariable.open();
+yourVariable.open('#your-element');
 
-yourVariable.close();
+yourVariable.close('#your-element');
 
 yourVariable.destroy();
 
@@ -649,10 +678,10 @@ yourVariable.reInit();
 ```
 
 * **open**
-    * **Arguments**: none
+    * **Arguments**: modal(String)
     * **description**: 모달 오픈
 * **close**
-    * **Arguments**: none
+    * **Arguments**: modal(String)
     * **description**: 모달 닫기
 * **destroy**
     * **Arguments**: none
