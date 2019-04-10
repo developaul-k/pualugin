@@ -1337,6 +1337,7 @@
 		var defaults = {
 			closeExisting: true,
 			stackLevel: 10,
+			mobileResolution: 1280,
 			activeClassName: 'is-open',
 			contentsWrapClassName: 'pualugin-wrap',
 			modalClassName: 'pualugin-modal',
@@ -1356,8 +1357,8 @@
 			this.options = $.extend({}, this._defaults, options);
 			this.flag = false;
 			this.stackLevel = this.options.stackLevel;
-			this.fullSize = false;
 			this.currentScrollTop = 0;
+			this.isMobile = false;
 			this.init();
 		}
 
@@ -1478,6 +1479,8 @@
 				var plugin = this;
 				var $target = $(target);
 
+				plugin.isMobile = plugin.$element.width() < plugin.options.mobileResolution && true;
+
 				if ( plugin.options.closeExisting ) {
 					plugin.$modal.not( $target ).each(function() {
 						plugin.close( this );
@@ -1533,7 +1536,9 @@
 								"position": "fixed",
 								"width": "100%",
 								"height": "100%",
-								"overflow": "hidden"
+								"overflow": "hidden",
+								"box-sizing": "border-box",
+								"padding-right": plugin.isMobile ? '' : 20
 							});
 					plugin.$html
 						.find('body > *')

@@ -1,5 +1,6 @@
 # Pualugin.js
-Pualugin.js 는 boilerplate code로 작성한 jQuery UI 플러그인 모음입니다.
+Pualugin.js 는 boilerplate code로 작성한 jQuery UI 플러그인 모음입니다.<br>
+모든 플러그인은 접근성 및 반응형을 지원합니다.
 
 ## Getting started
 시작하려면 [jQuery](http://code.jquery.com)를 다운받고 아래와 같이 작성합니다.
@@ -596,6 +597,10 @@ $('.your-element').modal(); // Initialized
     * **type**: Number
     * **default**: 10
     * **description**: closeExisting 옵션이 true인 경우(default) 열린 모달에 z-index를 추가합니다. closeExisting 옵션이 false인 경우 스택이 쌓일 때 설정한 값의 +10씩 모달의 z-index에 추가합니다.
+* **mobileResolution**
+    * **type**: Number
+    * **default**: 1280
+    * **description**: 모바일 디바이스의 기준 해상도를 정의합니다. 기본적으로 1280px 이하는 모바일로 분류됩니다.
 * **modalClassName**
     * **type**: String
     * **default**: pualugin-modal
