@@ -564,7 +564,7 @@ Sticky는 지정한 target에 스크롤 시 브라우저 상단에 고정된 상
 ### Basic Code + Options
 
 ``` html
-<button class="pualugin__button" data-element="modal__open" data-target="#modalID" data-options='{"modalWidth": 1000, "modalHeight": 500}'>
+<button class="pualugin__button" data-element="modal__open" data-target="#modalID" data-options='{"closeExisting": false}'>
     모달 오픈
 </button>
 <div id="modalID" class="pualugin-modal__element" data-element="modal__element">
@@ -588,12 +588,22 @@ $('.your-element').modal(); // Initialized
 
 ### Options
 
-* **modalWidth**
+* **closeExisting**
+    * **type**: Boolean
+    * **default**: true
+    * **description**: 기본적으로 1개의 모달만 열립니다, 그러나 동시에 여러 모달의 스택이 필요한 경우 closeExisting 옵션을 false로 설정하면 됩니다.
+* **stackLevel**
     * **type**: Number
-    * **default**: 500
-* **modalHeight**
-    * **type**: Number
-    * **default**: 500
+    * **default**: 10
+    * **description**: closeExisting 옵션이 true인 경우(default) 열린 모달에 z-index를 추가합니다. closeExisting 옵션이 false인 경우 스택이 쌓일 때 설정한 값의 +10씩 모달의 z-index에 추가합니다.
+* **modalClassName**
+    * **type**: String
+    * **default**: pualugin-modal
+    * **description**: 모달을 감싸고 있는 컨테이너의 class를 설정합니다.
+* **modalMaskClassName**
+    * **type**: String
+    * **default**: pualugin-modal__mask
+    * **description**: 모달안의 마스크(dimd) class를 설정합니다.
 * **activeClassName**
     * **type**: String
     * **default**: is-open
@@ -603,21 +613,21 @@ $('.your-element').modal(); // Initialized
 ``` javascript
 var yourVariable = $('.your-element');
 
-yourVariable.on('beforeChange', function( event, plugin, modal ){
+yourVariable.on('modalOpen', function( event, plugin, modal ){
     /* your code ... */
 })
 
-yourVariable.on('afterChange', function( event, plugin, modal ){
+yourVariable.on('modalClose', function( event, plugin, modal ){
     /* your code ... */
 })
 ```
 
-* **beforeChange**
+* **modalOpen**
     * **Arguments**: event, plugin, modal
-    * **description**: 모달 오픈 전 실행될 함수
-* **afterChange**
+    * **description**: 모달이 열린 후 실행될 함수
+* **modalClose**
     * **Arguments**: event, plugin, modal
-    * **description**: 모달 오픈 전 실행될 함수
+    * **description**: 모달이 닫힌 후 실행될 함수
 
 ### Method
 
