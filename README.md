@@ -11,7 +11,6 @@ Pualugin.js 는 boilerplate code로 작성한 jQuery UI 플러그인 모음입�
 
 ## Toggle
 
-Toggle Plugin은 toggle__anchor를 클릭 시 toggle__panel이 나타났다 사라졌다를 반복합니다.
 * toggle__anchor는 모든 태그로 사용가능합니다. ( ex: button, div, span ..... )
 * 초기값은 toggle_panel이 숨겨진 상태입니다.
 
@@ -391,10 +390,14 @@ $('.your-element').accordion(); // Initialized
 * **easing**
     * **type**: String
     * **default**: swing
+* **isInitActive**
+    * **type**: Boolean
+    * **default**: true
+    * **description**: 초기화시 패널 오픈여부
 * **initIndex**
     * **type**: Number
     * **default**: 0
-    * **description**: 원하는 탭 순서로 초기화
+    * **description**: 초기화시 오픈될 패널 index
 * **autoFold**
     * **type**: Boolean
     * **default**: true

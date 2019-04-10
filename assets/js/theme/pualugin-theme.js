@@ -9,8 +9,15 @@ hljs.initHighlightingOnLoad();
 ** 네비게이션 컨트롤
 */
 $('[data-element=nav__anchor]').on('click', function(e) {
-    e.stopPropagation();
-    $(this).closest('.pualugin__header').removeClass('is-active');
+    e.preventDefault();
+
+    var $this = $(this);
+    var location = $this.attr('href');
+
+    $('html, body').stop().animate({ scrollTop: $(location).offset().top }, 300);
+    $this
+        .closest('.pualugin__header')
+        .removeClass('is-active');
 });
 $('.pualugin__menu-button').on('click', function(e) {
     e.preventDefault();

@@ -73,6 +73,34 @@
 
 <!-- CODE -->
 <p class="plugin__description">
+  - CODE: DIV 버튼 (DIV태그를 이용한 버튼생성은 추천하지 않으나 필요한 경우 사용)
+</p>
+<div class="code">
+<div class="code__language"><i class="fas fa-code"></i> HTML</div>
+<pre>
+<code class="html">
+  &lt;div data-element="toggle"&gt;
+    &lt;div class="pualugin__button" data-element="toggle__anchor"&gt;toggle_anchor&lt;/div&gt;
+    &lt;div data-element="toggle__panel"&gt;toggle_panel&lt;/div&gt;
+  &lt;/div&gt;
+</code>
+</pre>
+</div>
+<!-- //CODE -->
+<!-- RESULT -->
+<p class="plugin__description">
+  - RESULT
+</p>
+<div class="pualugin-result">
+  <div data-element="toggle">
+    <div class="pualugin__button" data-element="toggle__anchor">toggle_anchor</div>
+    <div data-element="toggle__panel">toggle_panel</div>
+  </div>
+</div>
+<!-- //RESULT -->
+
+<!-- CODE -->
+<p class="plugin__description">
   - CODE: 옵션 추가
 </p>
 <div class="code">
@@ -375,30 +403,30 @@
 <code class="html">
   &lt;div class="pualugin-tooltip" data-element="tooltip"&gt;
     &lt;button class="pualugin__button" type="button" data-element="tooltip__button"&gt;Tooltip - right&lt;/button&gt;
-    &lt;div class="pualugin-tooltip__panel" data-element="tooltip__panel"&gt;
+    &lt;span class="pualugin-tooltip__panel" data-element="tooltip__panel"&gt;
         to right.
-    &lt;/div&gt;
+    &lt;/span&gt;
   &lt;/div&gt;
 
   &lt;div class="pualugin-tooltip" data-element="tooltip" data-options='{ "position": "left" }'&gt;
     &lt;button class="pualugin__button" type="button" data-element="tooltip__button"&gt;Tooltip - left&lt;/button&gt;
-    &lt;div class="pualugin-tooltip__panel" data-element="tooltip__panel"&gt;
+    &lt;span class="pualugin-tooltip__panel" data-element="tooltip__panel"&gt;
         to left.
-    &lt;/div&gt;
+    &lt;/span&gt;
   &lt;/div&gt;
 
   &lt;div class="pualugin-tooltip" data-element="tooltip" data-options='{ "position": "top" }'&gt;
     &lt;button class="pualugin__button" type="button" data-element="tooltip__button"&gt;Tooltip - top&lt;/button&gt;
-    &lt;div class="pualugin-tooltip__panel" data-element="tooltip__panel"&gt;
+    &lt;span class="pualugin-tooltip__panel" data-element="tooltip__panel"&gt;
         to top.
-    &lt;/div&gt;
+    &lt;/span&gt;
   &lt;/div&gt;
 
   &lt;div class="pualugin-tooltip" data-element="tooltip" data-options='{ "position": "bottom" }'&gt;
       &lt;button class="pualugin__button" type="button" data-element="tooltip__button"&gt;Tooltip - bottom&lt;/button&gt;
-      &lt;div class="pualugin-tooltip__panel" data-element="tooltip__panel"&gt;
+      &lt;span class="pualugin-tooltip__panel" data-element="tooltip__panel"&gt;
           to bottom.
-      &lt;/div&gt;
+      &lt;/span&gt;
   &lt;/div&gt;
 </code>
 </pre>
@@ -412,30 +440,30 @@
 <div class="pualugin-result">
   <div class="pualugin-tooltip" data-element="tooltip">
     <button class="pualugin__button" type="button" data-element="tooltip__button">Hover to right!</button>
-    <div class="pualugin-tooltip__panel" data-element="tooltip__panel">
+    <span class="pualugin-tooltip__panel" data-element="tooltip__panel">
       to right.
-    </div>
+    </span>
   </div>
 
   <div class="pualugin-tooltip" data-element="tooltip" data-options='{ "position": "left" }'>
     <button class="pualugin__button" type="button" data-element="tooltip__button">Hover to left!</button>
-    <div class="pualugin-tooltip__panel" data-element="tooltip__panel">
+    <span class="pualugin-tooltip__panel" data-element="tooltip__panel">
       to left.
-    </div>
+    </span>
   </div>
 
   <div class="pualugin-tooltip" data-element="tooltip" data-options='{ "position": "top" }'>
     <button class="pualugin__button" type="button" data-element="tooltip__button">Hover to top!</button>
-    <div class="pualugin-tooltip__panel" data-element="tooltip__panel">
+    <span class="pualugin-tooltip__panel" data-element="tooltip__panel">
       to top.
-    </div>
+    </span>
   </div>
 
   <div class="pualugin-tooltip" data-element="tooltip" data-options='{ "position": "bottom" }'>
     <button class="pualugin__button" type="button" data-element="tooltip__button">Hover to bottom!</button>
-    <div class="pualugin-tooltip__panel" data-element="tooltip__panel">
+    <span class="pualugin-tooltip__panel" data-element="tooltip__panel">
       to bottom.
-    </div>
+    </span>
   </div>
 </div>
 <!-- //RESULT -->
@@ -451,30 +479,30 @@
 <code class="html">
   &lt;div class="pualugin-tooltip" data-element="tooltip" data-options='{"mode": "popover"}'&gt;
     &lt;button class="pualugin__button" type="button" data-element="tooltip__button"&gt;Tooltip - right&lt;/button&gt;
-    &lt;div class="pualugin-tooltip__panel" data-element="tooltip__panel"&gt;
+    &lt;span class="pualugin-tooltip__panel" data-element="tooltip__panel"&gt;
         to right.
-    &lt;/div&gt;
+    &lt;/span&gt;
   &lt;/div&gt;
 
   &lt;div class="pualugin-tooltip" data-element="tooltip" data-options='{ "position": "left" }'&gt;
     &lt;button class="pualugin__button" type="button" data-element="tooltip__button"&gt;Tooltip - left&lt;/button&gt;
-    &lt;div class="pualugin-tooltip__panel" data-element="tooltip__panel"&gt;
+    &lt;span class="pualugin-tooltip__panel" data-element="tooltip__panel"&gt;
         to left.
-    &lt;/div&gt;
+    &lt;/span&gt;
   &lt;/div&gt;
 
   &lt;div class="pualugin-tooltip" data-element="tooltip" data-options='{ "position": "top" }'&gt;
     &lt;button class="pualugin__button" type="button" data-element="tooltip__button"&gt;Tooltip - top&lt;/button&gt;
-    &lt;div class="pualugin-tooltip__panel" data-element="tooltip__panel"&gt;
+    &lt;span class="pualugin-tooltip__panel" data-element="tooltip__panel"&gt;
         to top.
-    &lt;/div&gt;
+    &lt;/span&gt;
   &lt;/div&gt;
 
   &lt;div class="pualugin-tooltip" data-element="tooltip" data-options='{ "position": "bottom" }'&gt;
       &lt;button class="pualugin__button" type="button" data-element="tooltip__button"&gt;Tooltip - bottom&lt;/button&gt;
-      &lt;div class="pualugin-tooltip__panel" data-element="tooltip__panel"&gt;
+      &lt;span class="pualugin-tooltip__panel" data-element="tooltip__panel"&gt;
           to bottom.
-      &lt;/div&gt;
+      &lt;/span&gt;
   &lt;/div&gt;
 </code>
 </pre>
@@ -488,30 +516,30 @@
 <div class="pualugin-result">
   <div class="pualugin-tooltip" data-element="tooltip" data-options='{"mode": "popover"}'>
     <button class="pualugin__button" type="button" data-element="tooltip__button">Click to right!</button>
-    <div class="pualugin-tooltip__panel" data-element="tooltip__panel">
+    <span class="pualugin-tooltip__panel" data-element="tooltip__panel">
       to right.
-    </div>
+    </span>
   </div>
 
   <div class="pualugin-tooltip" data-element="tooltip" data-options='{ "mode": "popover", "position": "left" }'>
     <button class="pualugin__button" type="button" data-element="tooltip__button">Click to left!</button>
-    <div class="pualugin-tooltip__panel" data-element="tooltip__panel">
+    <span class="pualugin-tooltip__panel" data-element="tooltip__panel">
       to left.
-    </div>
+    </span>
   </div>
 
   <div class="pualugin-tooltip" data-element="tooltip" data-options='{ "mode": "popover", "position": "top" }'>
     <button class="pualugin__button" type="button" data-element="tooltip__button">Click to top!</button>
-    <div class="pualugin-tooltip__panel" data-element="tooltip__panel">
+    <span class="pualugin-tooltip__panel" data-element="tooltip__panel">
       to top.
-    </div>
+    </span>
   </div>
 
   <div class="pualugin-tooltip" data-element="tooltip" data-options='{ "mode": "popover", "position": "bottom" }'>
     <button class="pualugin__button" type="button" data-element="tooltip__button">Click to bottom!</button>
-    <div class="pualugin-tooltip__panel" data-element="tooltip__panel">
+    <span class="pualugin-tooltip__panel" data-element="tooltip__panel">
       to bottom.
-    </div>
+    </span>
   </div>
 </div>
 <!-- //RESULT -->
@@ -1219,6 +1247,21 @@
     </li>
     <li class="pualugin-options__li">
       <div class="pualugin-options__name">
+        isInitActive
+      </div>
+      <ul class="pualugin-options__ul">
+        <li class="pualugin-options__li">
+          type: Boolean
+        </li>
+        <li class="pualugin-options__li">
+          default: true
+        </li>
+        <li class="pualugin-options__li">
+          description: 초기화시 패널 오픈여부
+        </li>
+      </ul>
+    <li class="pualugin-options__li">
+      <div class="pualugin-options__name">
         initIndex
       </div>
       <ul class="pualugin-options__ul">
@@ -1229,7 +1272,7 @@
           default: 0
         </li>
         <li class="pualugin-options__li">
-          description: 원하는 탭 오픈
+          description: 초기화시 오픈될 패널의 index
         </li>
       </ul>
     </li>
@@ -1658,7 +1701,7 @@
   &lt;!-- 모달 버튼 --&gt;
   &lt;button class="pualugin__button" data-element="modal__open" data-target="#modal"&gt;모달 오픈&lt;/button&gt;
   &lt;!-- 모달 --&gt;
-  &lt;div id="modal" class="pualugin-modal__element" data-element="modal__element"&gt;
+  &lt;div id="m1" class="pualugin-modal__element" data-element="modal__element"&gt;
     &lt;div class="pualugin-modal__container" data-element="modal__element-container"&gt;
       &lt;div class="pualugin-modal__contents" data-element="modal__element-contetns"&gt;
         모달 내용입니다.
@@ -1673,10 +1716,10 @@
 
 <!-- RESULT -->
 <p class="plugin__description">- RESULT</p>
-<button class="pualugin__button" data-element="modal__open" data-target="#modalID">모달 오픈</button>
-<div id="modalID" class="pualugin-modal__element" data-element="modal__element">
+<button class="pualugin__button" data-element="modal__open" data-target="#m1">모달 오픈</button>
+<div id="m1" class="pualugin-modal__element" data-element="modal__element">
   <div class="pualugin-modal__container" data-element="modal__element-container">
-    <div class="pualugin-modal__contents" data-element="modal__element-contetns">
+    <div class="pualugin-modal__contents" data-element="modal__element-contetns" style="height: 2000px;">
       모달 내용입니다.
       <button class="pualugin-modal__close" data-element="modal__close">닫기</button>
     </div>
@@ -1690,27 +1733,68 @@
   <ul class="pualugin-options__ul">
     <li class="pualugin-options__li">
       <div class="pualugin-options__name">
-        modalWidth
+        closeExisting
       </div>
       <ul class="pualugin-options__ul">
         <li class="pualugin-options__li">
-          type: Number
+          type: Boolean
         </li>
         <li class="pualugin-options__li">
-          default: 500
+          default: true
+        </li>
+        <li class="pualugin-options__li">
+          description:
+          기본적으로 1개의 모달만 열립니다, 그러나 동시에 여러 모달의 스택이 필요한 경우 closeExisting 옵션을 false로 설정하면 됩니다.
         </li>
       </ul>
     </li>
     <li class="pualugin-options__li">
       <div class="pualugin-options__name">
-        modalHeight
+        stackLevel
       </div>
       <ul class="pualugin-options__ul">
         <li class="pualugin-options__li">
           type: Number
         </li>
         <li class="pualugin-options__li">
-          default: 500
+          default: 10
+        </li>
+        <li class="pualugin-options__li">
+          description:
+          <br>&nbsp;&nbsp;&nbsp;closeExisting 옵션이 true인 경우(default) 열린 모달에 z-index를 추가합니다.
+          <br>&nbsp;&nbsp;&nbsp;closeExisting 옵션이 false인 경우 스택이 쌓일 때 설정한 값의 +10씩 모달의 z-index에 추가합니다.
+        </li>
+      </ul>
+    </li>
+    <li class="pualugin-options__li">
+      <div class="pualugin-options__name">
+        modalClassName
+      </div>
+      <ul class="pualugin-options__ul">
+        <li class="pualugin-options__li">
+          type: String
+        </li>
+        <li class="pualugin-options__li">
+          default: pualugin-modal
+        </li>
+        <li class="pualugin-options__li">
+          description: 모달을 감싸고 있는 컨테이너의 class를 설정합니다.
+        </li>
+      </ul>
+    </li>
+    <li class="pualugin-options__li">
+      <div class="pualugin-options__name">
+        modalMaskClassName
+      </div>
+      <ul class="pualugin-options__ul">
+        <li class="pualugin-options__li">
+          type: String
+        </li>
+        <li class="pualugin-options__li">
+          default: pualugin-modal__mask
+        </li>
+        <li class="pualugin-options__li">
+          description: 모달안의 마스크(dimd) class를 설정합니다.
         </li>
       </ul>
     </li>
@@ -1741,11 +1825,11 @@
 <code class="javascript">
   var yourVariable = $('.your-element');
 
-  yourVariable.on('beforeChange', function( event, plugin, modal ){
+  yourVariable.on('modalOpen', function( event, plugin, modal ){
       /* your code ... */
   })
 
-  yourVariable.on('afterChange', function( event, plugin, modal ){
+  yourVariable.on('modalClose', function( event, plugin, modal ){
       /* your code ... */
   })
 </code>
@@ -1755,7 +1839,7 @@
   <ul class="pualugin-options__ul">
     <li class="pualugin-options__li">
       <div class="pualugin-options__name">
-        beforeChange
+        modalOpen
       </div>
       <ul class="pualugin-options__ul">
         <li class="pualugin-options__li">
@@ -1768,7 +1852,7 @@
     </li>
     <li class="pualugin-options__li">
       <div class="pualugin-options__name">
-        afterChange
+        modalClose
       </div>
       <ul class="pualugin-options__ul">
         <li class="pualugin-options__li">
@@ -1878,6 +1962,8 @@
 </section>
         </div>
     </section>
+
+    <style></style>
 
     <script src="/assets/js/lib/jquery-1.11.1.min.js"></script>
     <script src="/assets/js/lib/highlight.pack.js"></script>

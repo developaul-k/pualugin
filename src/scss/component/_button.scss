@@ -5,6 +5,8 @@
         border-radius: 3px;
         background-color: $point-color-default;
         transition: color .15s ease-inout, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+        display: inline-block;
+        cursor: pointer;
         font-size: 14px;
         color: #fff;
         &:hover {

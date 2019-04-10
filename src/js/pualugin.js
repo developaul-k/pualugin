@@ -27,7 +27,7 @@
 			}
 		})();
 
-		COMMON.findFocusElement = function (element) {
+		COMMON.findFocusElement = function( element ) {
 			var _basket = [];
 
 			$(element).find('*').each(function (i, val) {
@@ -41,6 +41,21 @@
 
 			return [_basket[0], _basket[_basket.length - 1]];
 		};
+
+		COMMON.checkPrevId = function( $element, pluginName ) {
+			return $element.attr('id').indexOf(pluginName) !== -1 ? false : true;
+		}
+
+		COMMON.checkFocusibleElement = function( $element ) {
+			var tagName = $element.get(0).tagName.toLowerCase();
+
+			if ( tagName === 'a' || tagName === 'button' ) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+
 	})()
 
 	/*
@@ -70,19 +85,30 @@
 			this._defaults = defaults;
 			this.options = $.extend({}, this._defaults, options);
 			this.flag = false;
+			this.textFlag = false;
 			this.init();
 		}
 
 		$.extend(Plugin.prototype, {
 			init: function () {
 				var plugin = this;
+
 				plugin.buildCache();
 				plugin.bindEvents();
+
+				plugin.options.isOpened ? plugin.open() : plugin.close();
 			},
-			reInit: function() {
+			destroy: function () {
 				var plugin = this;
+
 				plugin.flag = false;
-				plugin.init();
+				plugin.textFlag = false;
+
+				plugin
+					.unbindEvents()
+					.removeCache();
+
+				plugin.$element.removeData('plugin_' + plugin._name);
 			},
 			buildCache: function () {
 				var plugin = this;
@@ -91,21 +117,25 @@
 				plugin.$anchor = plugin.$element.find(plugin.options.anchorEl);
 				plugin.$panel = plugin.$element.find(plugin.options.panelEl);
 
+				!COMMON.checkFocusibleElement(plugin.$anchor)
+					&& plugin.$anchor.attr({'role': 'button', 'tabindex': 0 });
+
 				var _id = plugin.$panel.attr('id') ? plugin.$panel.attr('id') : COMMON.uuid(plugin._name + '-');
 
 				plugin.$anchor.attr('aria-controls', _id);
 				plugin.$panel.attr('id', _id);
 
-				if ( !plugin.options.isOpened ) {
-					plugin.options.onChangeBeforeText !== null && plugin.$anchor.text(plugin.options.onChangeBeforeText)
-					plugin.$anchor.attr('aria-expended', false);
-					plugin.$panel.hide();
-				} else {
-					plugin.flag = true;
-					plugin.options.onChangeAfterText !== null && plugin.$anchor.text(plugin.options.onChangeAfterText)
-					plugin.$anchor.attr('aria-expended', true);
-					plugin.$panel.show()
+				if ( plugin.options.onChangeAfterText !== null && plugin.options.onChangeBeforeText !== null ) {
+					plugin.textFlag = true;
 				}
+			},
+			removeCache: function() {
+				var plugin = this;
+
+				plugin.$anchor.removeAttr('aria-expended aria-controls tabindex role');
+				plugin.$panel.removeAttr('aria-expended style');
+
+				!COMMON.checkPrevId( plugin.$panel, plugin._name ) && plugin.$panel.removeAttr('id');
 			},
 			bindEvents: function () {
 				var plugin = this;
@@ -168,20 +198,20 @@
 			toggle: function () {
 				var plugin = this;
 
-				plugin.flag === false ? plugin.show() : plugin.hide()
+				plugin.flag ? plugin.close() : plugin.open();
 			},
-			show: function () {
+			open: function () {
 				var plugin = this;
 
 				plugin.flag = true;
 
 				plugin.beforeChange(plugin.$anchor, plugin.$panel);
 
-				if (plugin.options.onChangeAfterText !== null) {
-					plugin.$anchor.text(plugin.options.onChangeAfterText)
-				}
+				plugin.textFlag && plugin.$anchor.text(plugin.options.onChangeAfterText);
 
-				plugin.$anchor.addClass(plugin.options.activeClassName)
+				plugin.$anchor
+					.addClass(plugin.options.activeClassName)
+					.attr('aria-expended', true);
 
 				if (plugin.options.mode === 'fade') {
 					plugin.$panel.stop().fadeIn(plugin.options.speed, plugin.options.easing, function () {
@@ -195,18 +225,21 @@
 					plugin.$panel.stop().show();
 					plugin.afterChange(plugin.$anchor, plugin.$panel);
 				}
-				plugin.$anchor.attr('aria-expended', true);
+
+				plugin.afterChange(plugin.$anchor, plugin.$panel);
 			},
-			hide: function () {
+			close: function () {
 				var plugin = this;
 
 				plugin.flag = false;
 
-				if (plugin.options.onChangeBeforeText !== null) {
-					plugin.$anchor.text(plugin.options.onChangeBeforeText)
-				}
+				plugin.beforeChange(plugin.$anchor, plugin.$panel);
 
-				plugin.$anchor.removeClass(plugin.options.activeClassName)
+				plugin.textFlag && plugin.$anchor.text(plugin.options.onChangeBeforeText);
+
+				plugin.$anchor
+					.removeClass(plugin.options.activeClassName)
+					.attr('aria-expended', false);
 
 				if (plugin.options.mode === 'fade') {
 					plugin.$panel.stop().fadeOut(plugin.options.speed, plugin.options.easing);
@@ -215,14 +248,19 @@
 				} else {
 					plugin.$panel.stop().hide();
 				}
-				plugin.$anchor.attr('aria-expended', false);
+
+				plugin.afterChange(plugin.$anchor, plugin.$panel);
 			},
-			destroy: function () {
+			reInit: function() {
 				var plugin = this;
 
-				plugin.unbindEvents();
 				plugin.flag = false;
-				plugin.$panel.removeAttr('aria-expended style');
+				plugin.textFlag = false;
+
+				plugin
+					.unbindEvents()
+					.removeCache()
+					.init();
 			}
 		});
 
@@ -278,12 +316,12 @@
 			destroy: function() {
 				var plugin = this;
 
-				plugin.$element.removeAttr('style');
-				plugin.$panel.appendTo( plugin.$element ).removeAttr('style');
-				plugin.$container.find( plugin.options.panel ).length === 0 && plugin.$container.remove();
-				plugin.$button.removeAttr('aria-expended');
 				plugin.flag = false;
-				plugin.unbindEvents();
+
+				plugin.$element.removeData('plugin_' + plugin._name);
+				plugin
+					.unbindEvents()
+					.removeCache();
 			},
 			buildCache: function() {
 				var plugin = this;
@@ -294,20 +332,45 @@
 				plugin.$panel = plugin.$element.find(plugin.options.panel);
 				plugin.$container = $(container).length ? $(container) : $('body').append('<div class=' + plugin.options.tooltipContainerClassName + '></div>')
 				plugin.$win = $(win);
-				plugin.$button.attr('aria-expended', false);
-				plugin.$panel.css('z-index', plugin.options.zindex).hide().appendTo($(container));
-				plugin.$element.css({
-					'display': 'inline-block'
-				});
+
+				var _id = plugin.$panel.attr('id') ? plugin.$panel.attr('id') : COMMON.uuid(plugin._name);
+
+				var focusible = COMMON.checkFocusibleElement( plugin.$button );
+
+				plugin.$element.css('display', 'inline-block');
+
+				plugin.$button.attr({
+					'role': 'tooltip',
+					'aria-describedby': _id,
+					'aria-controls': _id,
+					'aria-expended': false,
+					'tabindex': focusible ? '' : 0
+				})
+
+				plugin.$panel
+					.css('z-index', plugin.options.zindex)
+					.attr('id', _id)
+					.hide()
+					.appendTo($(container));
 			},
-			unbindEvents: function() {
+			removeCache: function() {
 				var plugin = this;
 
-				plugin.$button.off('.' + plugin._name);
-				plugin.$win.off('.' + plugin._name);
+				plugin.$element
+					.removeAttr('style')
+					.removeData('plugin_' + plugin._name);
+				plugin.$panel
+					.appendTo(plugin.$element)
+					.removeAttr('style');
+
+				plugin.$button.removeAttr('role aria-describedby aria-controls aria-expended');
+				plugin.$container.find(plugin.options.panel).length === 0 && plugin.$container.remove();
+
+				!COMMON.checkPrevId(plugin.$panel, plugin._name) && plugin.$panel.removeAttr('id');
 			},
 			bindEvents: function() {
 				var plugin = this;
+
 				var eventName = (function () {
 					var events = plugin.options.mode;
 
@@ -345,14 +408,16 @@
 						});
 				}
 			},
+			unbindEvents: function() {
+				var plugin = this;
+
+				plugin.$button.off('.' + plugin._name);
+				plugin.$win.off('.' + plugin._name);
+			},
 			toggle: function() {
 				var plugin = this;
 
-				if ( plugin.flag === false ) {
-					plugin.open();
-				} else {
-					plugin.close();
-				}
+				plugin.flag ? plugin.close() : plugin.open();
 			},
 			open: function() {
 				var plugin = this;
@@ -369,7 +434,7 @@
 				var plugin = this;
 
 				plugin.flag = false;
-				plugin.$button.attr('aria-expended', true);
+				plugin.$button.attr('aria-expended', false);
 				plugin.$panel
 					.css('position', '')
 					.removeClass(plugin.options.activeClassName)
@@ -416,9 +481,11 @@
 			reInit: function() {
 				var plugin = this;
 
-				plugin.destroy();
-				plugin.buildCache();
-				plugin.bindEvents();
+				plugin.flag = false;
+				plugin
+					.unbindEvents()
+					.removeCache()
+					.init();
 			}
 		});
 
@@ -473,22 +540,25 @@
 		$.extend(Plugin.prototype, {
 			init: function () {
 				var plugin = this;
+
 				plugin.buildCache();
 				plugin.bindEvents();
-				if (plugin.options.isInitActive) {
-					plugin.$anchor.eq(plugin.options.initIndex).trigger(plugin.options.event);
-				}
+
+				plugin.options.isInitActive && plugin.$anchor.eq(plugin.options.initIndex).trigger(plugin.options.event);
+
 				plugin.initialized = true;
 			},
 			destroy: function () {
 				var plugin = this;
-				plugin.unbindEvents();
-				plugin.$list.removeAttr('role');
-				plugin.$anchor.removeAttr('style role').removeClass(plugin.options.activeClassName);
-				plugin.$panel.removeAttr('style role aria-labelledby').removeClass(plugin.options.activeClassName);
+
 				plugin.idx = 0;
 				plugin.flag = false;
 				plugin.initialized = false;
+
+				plugin.$element.removeData('plugin_' + plugin._name);
+				plugin
+					.unbindEvents()
+					.removeCache();
 			},
 			buildCache: function () {
 				var plugin = this;
@@ -502,7 +572,7 @@
 				plugin.$anchor.each(function (index) {
 					var $this = $(this);
 					var _id = $this.attr('id') ? $this.attr('id') : COMMON.uuid('pualugin-' + plugin._name + '-');
-					var tagName = $this.get(0).tagName.toLowerCase();
+					var focusible = COMMON.checkFocusibleElement( $this );
 
 					$this
 						.data(plugin._name + '_target', plugin.$panel.eq(index))
@@ -510,6 +580,7 @@
 						.attr({
 							'id': _id,
 							'role': 'tab',
+							'tabindex': focusible ? '' : 0
 						});
 
 					tabsId.push(_id);
@@ -524,6 +595,18 @@
 				});
 
 				plugin.$list.attr('role', 'tablist');
+			},
+			removeCache: function() {
+				var plugin = this;
+
+				plugin.$list.removeAttr('role');
+				plugin.$anchor
+					.removeAttr('style role')
+					.removeClass(plugin.options.activeClassName);
+				plugin.$panel
+					.removeAttr('style role aria-labelledby')
+					.removeClass(plugin.options.activeClassName);
+				!COMMON.checkPrevId( plugin.$panel, plugin._name ) && plugin.$panel.removeAttr('id');
 			},
 			bindEvents: function () {
 				var plugin = this;
@@ -588,6 +671,7 @@
 					.addClass(plugin.options.activeClassName);
 
 				plugin.flag = true;
+
 				plugin.beforeChange($anchor, $panel);
 
 				if (plugin.options.mode === 'fade') {
@@ -605,6 +689,7 @@
 					plugin.flag = false;
 					plugin.afterChange($anchor, $panel);
 				}
+
 				if (plugin.options.withScroll && plugin.initialized) {
 					$('html, body').stop().animate({
 						scrollTop: plugin.$element.offset().top
@@ -638,7 +723,7 @@
 
 				plugin.$anchor.eq(index).trigger(plugin.options.event);
 
-				if (withScroll) {
+				if ( withScroll && plugin.initialized ) {
 					$('html, body').stop().animate({
 						scrollTop: plugin.$element.offset().top
 					}, plugin.options.speed);
@@ -649,8 +734,12 @@
 
 				plugin.idx = 0;
 				plugin.flag = false;
-				plugin.destroy();
-				plugin.init();
+				plugin.initialized = false;
+
+				plugin
+					.unbindEvents()
+					.removeCache()
+					.init();
 			}
 		});
 
@@ -685,9 +774,8 @@
 			panelEl: '[data-element="accordion__panel"]',
 			activeClassName: 'is-active',
 			initIndex: 0,
+			isInitActive: true,
 			autoFold: true,
-			expandedText: 'collapse',
-			collapsedText: 'expand',
 			autoScroll: false
 		};
 
@@ -709,18 +797,20 @@
 
 				plugin.buildCache();
 				plugin.bindEvents();
-				plugin.$panel.hide();
-				plugin.open(plugin.$anchor.eq(plugin.options.initIndex));
+
+				plugin.options.isInitActive && plugin.open(plugin.$anchor.eq(plugin.options.initIndex));
+
 				plugin.initialized = true;
 			},
 			destroy: function () {
 				var plugin = this;
 
-				plugin.unbindEvents();
-				plugin.$header.removeAttr('style').removeClass(plugin.options.activeClassName);
-				plugin.$panel.removeAttr('style').removeClass(plugin.options.activeClassName);
 				plugin.flag = false;
-				plugin.removeProperty();
+				plugin.initialized = false;
+				plugin.$element.removeData('plugin_' + plugin._name);
+				plugin
+					.unbindEvents()
+					.removeCache();
 			},
 			buildCache: function () {
 				var plugin = this;
@@ -728,9 +818,45 @@
 				plugin.$wrap = $(plugin.element).attr('role', 'presentation');
 				plugin.$header = plugin.$wrap.find(plugin.options.itemEl);
 				plugin.$anchor = plugin.$wrap.find(plugin.options.anchorEl);
-				plugin.$panel = plugin.$wrap.find(plugin.options.panelEl);
+				plugin.$panel = plugin.$wrap.find(plugin.options.panelEl).hide();
 
-				plugin.setProperty();
+				var tabsId = [];
+
+				plugin.$anchor.each(function (index) {
+					var $this = $(this);
+					var _id = $this.attr('id') ? $this.attr('id') : COMMON.uuid('pualugin-' + plugin._name + '-');
+
+					$this
+						.data(plugin._name + '_target', plugin.$panel.eq(index))
+						.data('index', index)
+						.data('title', $.trim($this.text()))
+						.attr({
+							'id': _id,
+							'aria-expanded': false,
+							'aria-controls': _id + '-panel'
+						});
+
+					tabsId.push(_id);
+				});
+
+				plugin.$panel.each(function (index) {
+					$(this).attr({
+						'aria-labelledby': tabsId[index],
+						'role': 'region'
+					}).hide();
+				});
+			},
+			removeCache: function() {
+				var plugin = this;
+
+				plugin.$anchor
+					.data(plugin._name + '_target', '')
+					.data('index', '')
+					.data('title', '')
+					.removeAttr('id aria-expanded aria-controls');
+
+				plugin.$panel.removeAttr('aria-labelledby role')
+				!COMMON.checkPrevId( plugin.$anchor, plugin._name ) && plugin.$anchor.removeAttr('id');
 			},
 			bindEvents: function () {
 				var plugin = this;
@@ -776,11 +902,7 @@
 
 				plugin.flag = true;
 
-				if ($targetAnchor.hasClass(plugin.options.activeClassName)) {
-					plugin.close($targetAnchor);
-				} else {
-					plugin.open($targetAnchor);
-				}
+				$targetAnchor.hasClass(plugin.options.activeClassName) ? plugin.close($targetAnchor) : plugin.open($targetAnchor);
 			},
 			open: function ($targetAnchor) {
 				var plugin = this;
@@ -807,7 +929,7 @@
 					plugin.flag = false;
 				}
 
-				plugin._changeStatus($targetAnchor, true);
+				$targetAnchor.attr('aria-expanded', false);
 
 				if (plugin.options.autoFold) {
 					plugin.$anchor.not($targetAnchor).each(function () {
@@ -837,7 +959,7 @@
 					plugin.flag = false;
 				}
 
-				plugin._changeStatus($targetAnchor, false);
+				$targetAnchor.attr('aria-expanded', false);
 
 				plugin.afterChange($targetAnchor);
 			},
@@ -851,64 +973,16 @@
 					}, plugin.options.speed);
 				}
 			},
-			_changeStatus: function ($anchor, isOpen) {
-				var plugin = this;
-				$anchor.attr({
-					'aria-expanded': isOpen,
-					'title': isOpen ? plugin.options.expandedText : plugin.options.collapsedText,
-				});
-			},
-			setProperty: function() {
-				var plugin = this;
-				var tabsId = [];
-
-				plugin.$anchor.each(function (index) {
-					var $this = $(this);
-					var _id = $this.attr('id') ? $this.attr('id') : COMMON.uuid('pualugin-' + plugin._name + '-');
-
-					$this
-						.data(plugin._name + '_target', plugin.$panel.eq(index))
-						.data('index', index)
-						.data('title', $.trim($this.text()))
-						.attr({
-							'id': _id,
-							'aria-expanded': false,
-							'aria-controls': _id + '-panel',
-							'title': plugin.options.collapsedText
-						});
-
-					tabsId.push(_id);
-				});
-
-				plugin.$panel.each(function (index) {
-					$(this).attr({
-						'id': tabsId[index] + '-panel',
-						'aria-labelledby': tabsId[index],
-						'role': 'region'
-					}).hide();
-				});
-			},
-			removeProperty: function() {
-				var plugin = this;
-
-				plugin.$anchor.each(function (index) {
-					var $this = $(this);
-
-					$this
-						.data(plugin._name + '_target', '')
-						.data('index', '')
-						.data('title', '')
-						.removeAttr('id aria-expanded aria-controls title');
-				});
-
-				plugin.$panel.each(function (index) {
-					$(this).removeAttr('id aria-labelledby role').hide();
-				});
-			},
 			reInit: function() {
 				var plugin = this;
 
-				plugin.init();
+				plugin.flag = false;
+				plugin.initialized = false;
+
+				plugin
+					.unbindEvents()
+					.removeCache()
+					.init();
 			}
 		});
 
@@ -962,17 +1036,14 @@
 			destroy: function() {
 				var plugin = this;
 
-				plugin.unbindEvents();
-				plugin.$header.removeAttr('style');
-				plugin.$target.removeAttr('style');
-			},
-			reInit: function() {
-				var plugin = this;
+				plugin.flag = false;
+				plugin.headerHeight = 0;
 
-				plugin.destroy();
-				plugin.unbindEvents();
-				plugin.buildCache();
-				plugin.bindEvents();
+				plugin.$element.removeData('plugin_' + plugin._name);
+				plugin
+					.unbindEvents()
+					.removeCache()
+					.init();
 			},
 			buildCache: function() {
 				var plugin = this;
@@ -981,7 +1052,15 @@
 				plugin.$header = plugin.$element.find( plugin.options.headerEl );
 				plugin.$target = plugin.$element.find( plugin.options.targetEl );
 				plugin.$win = $( win );
+
 				plugin.headerHeight = plugin.$header.outerHeight();
+			},
+			removeCache: function() {
+				var plugin = this;
+
+				plugin.$element.removeAttr('style');
+				plugin.$header.removeAttr('style');
+				plugin.$target.removeAttr('style');
 			},
 			bindEvents: function() {
 				var plugin = this;
@@ -1093,6 +1172,17 @@
 				var plugin = this;
 
 				plugin.$element.trigger('afterChange', [plugin, plugin.$target]);
+			},
+			reInit: function() {
+				var plugin = this;
+
+				plugin.flag = false;
+				plugin.headerHeight = 0;
+
+				plugin
+					.unbindEvents()
+					.removeCache()
+					.init();
 			}
 		})
 
@@ -1245,15 +1335,18 @@
 		var pluginName = "modal";
 
 		var defaults = {
+			closeExisting: true,
+			stackLevel: 10,
+			activeClassName: 'is-open',
+			contentsWrapClassName: 'pualugin-wrap',
+			modalClassName: 'pualugin-modal',
+			modalMaskClassName: 'pualugin-modal__mask',
 			container: '[data-element=modal]',
 			modal: '[data-element=modal__element]',
-			innerContainer: '[data-element=modal__element-container]',
+			modalInner: '[data-element=modal__element-container]',
 			mask: '[data-element=modal__mask]',
 			close: '[data-element=modal__close]',
-			open: '[data-element=modal__open]',
-			modalWidth: 500,
-			modalHeight: 500,
-			activeClassName: 'is-open'
+			open: '[data-element=modal__open]'
 		}
 
 		function Plugin(element, options) {
@@ -1261,196 +1354,257 @@
 			this._name = pluginName;
 			this._defaults = defaults;
 			this.options = $.extend({}, this._defaults, options);
-			this.stackLevel = 0;
-			this.initialSetting = false;
 			this.flag = false;
+			this.stackLevel = this.options.stackLevel;
+			this.fullSize = false;
+			this.currentScrollTop = 0;
 			this.init();
 		}
 
 		$.extend(Plugin.prototype, {
 			init: function() {
 				var plugin = this;
+
+				//initialSettings
+				var container =
+					$('<div></div>')
+						.addClass(plugin.options.modalClassName)
+						.attr('data-element', 'modal')
+						.appendTo('body');
+
+				$( plugin.options.modal ).appendTo( container );
+
 				plugin.buildCache();
 				plugin.bindEvents();
+			},
+			destroy: function() {
+				var plugin = this;
+
+				plugin.flag = false;
+				plugin.stackLevel = 10;
+
+				plugin.$element.removeData('plugin_' + plugin._name);
+				plugin
+					.unbindEvents()
+					.removeCache();
 			},
 			buildCache: function() {
 				var plugin = this;
 
-				// InitialSettings ( modal-container + modal-mask )
 				plugin.$element = $(plugin.element);
-				plugin.$container = $(plugin.options.container).length ? $(plugin.options.container) : $('<div class="pualugin-modal" data-element="modal"></div>').appendTo('body');
-				plugin.$mask = $( plugin.options.mask ).length ? $( plugin.options.mask ) : $('<div class="pualugin-modal__mask" data-element="modal__mask"></div>').appendTo('body');
-
-				plugin.appendModal();
-
-				plugin.$innerContainer = plugin.$element.find(plugin.options.innerContainer);
+				plugin.$container = plugin.$element.find(plugin.options.container);
+				plugin.$modal = plugin.$element.find( plugin.options.modal );
+				plugin.$modalInner = plugin.$element.find( plugin.options.modalInner );
+				plugin.$open = plugin.$element.find( plugin.options.open );
 				plugin.$close = plugin.$element.find( plugin.options.close );
-				plugin.$open = $('[data-target=#' + plugin.$element.attr('id') + ']') || null;
 				plugin.$win = $(win);
 				plugin.$doc = $(doc);
 				plugin.$body = $('body');
 				plugin.$html = $('html');
 
-				plugin.$element.attr({
+				plugin.$modal.attr({
 					'role': 'dialog',
-					'aria-modal': true
+					'aria-modal': true,
 				})
-				plugin.$innerContainer.css({
-					'width': plugin.options.modalWidth,
-					'height': plugin.options.modalHeight
+				plugin.$open.attr({
+					'aria-expended': false,
+					'aria-controls': plugin.$open.data('target')
 				})
+			},
+			remoevCache: function() {
+				var plugin = this;
+
+				plugin.$modal.removeAttr('role aria-modal z-index tabindex');
 			},
 			bindEvents: function() {
 				var plugin = this;
-				var focusEl = COMMON.findFocusElement( plugin.$element );
-				var focusElFirst = $(focusEl[0]);
-				var focusElLast = $(focusEl[1]);
-
-				plugin.$element.on('open.' + plugin._name, function(e, target) {
-					plugin.open( target );
-				})
-
-				plugin.$element.on('close.' + plugin._name, function(e, target) {
-					plugin.close( target );
-				})
 
 				plugin.$close.on('click.' + plugin._name, function(e) {
 					e.preventDefault();
 					e.stopPropagation();
 
-					plugin.close( plugin.$element );
+					plugin.close( $(this).closest(plugin.options.modal) );
 				})
 
 				plugin.$open !== null && plugin.$open.on('click.' + plugin._name, function(e) {
 					e.preventDefault();
 					e.stopPropagation();
 
-					plugin.open( plugin.$element );
+					plugin.open( $(this).data('target'), $(this) );
 				})
 
 				plugin.$doc.on('click.' + plugin._name, function(e) {
-					var target = e.target;
+					if (!plugin.$modalInner.is(e.target) && plugin.$modalInner.has(e.target).length === 0){
+						plugin.close( e.target );
+					}
+				})
 
-					if ( plugin.flag && plugin.$open[0] !== target ) {
-						if (!plugin.$innerContainer.is(target) && plugin.$innerContainer.has(target).length === 0 ){
-							plugin.close( plugin.$element );
+				plugin.$modal.each(function() {
+					var focusEl = COMMON.findFocusElement( this );
+					var focusElFirst = $(focusEl[0]);
+					var focusElLast = $(focusEl[1]);
+
+					focusElFirst.on('keydown.' + plugin._name, function(e) {
+						var keyCode = e.keyCode || e.which;
+						if ( e.shiftKey && keyCode === 9 ) {
+							e.preventDefault();
+							focusElLast.focus();
 						}
-					}
+					})
+
+					focusElLast.on('keydown.' + plugin._name, function(e) {
+						var keyCode = e.keyCode || e.which;
+						if ( keyCode == 9 && !e.shiftKey ) {
+							e.preventDefault();
+							focusElFirst.focus();
+						}
+					})
 				})
-
-				focusElFirst.on('keydown.' + plugin._name, function(e) {
-					var keyCode = e.keyCode || e.which;
-					if ( e.shiftKey && keyCode === 9 ) {
-						e.preventDefault();
-						focusElLast.focus();
-					}
-				})
-
-				focusElLast.on('keydown.' + plugin._name, function(e) {
-					var keyCode = e.keyCode || e.which;
-					if ( keyCode == 9 && !e.shiftKey ) {
-						e.preventDefault();
-						focusElFirst.focus();
-					}
-				})
-			},
-			appendModal: function() {
-				var plugin = this;
-				plugin.$container.append( plugin.$element );
-			},
-			open: function() {
-				var plugin = this;
-
-				if ( plugin.flag ) return;
-				plugin.flag = true;
-
-				plugin.beforeChange( plugin.$element );
-
-				plugin.setStyle();
-				plugin.touchBindEvent();
-				plugin.$element
-					.attr('tabindex', 0)
-					.addClass(plugin.options.activeClassName)
-					.focus();
-
-				plugin.afterChange( plugin.$element );
-
-			},
-			close: function() {
-				var plugin = this;
-
-				if (!plugin.flag) return;
-				plugin.flag = false;
-
-				plugin.beforeChange( plugin.$element );
-
-				plugin.$element.attr('tabindex', -1).removeClass(plugin.options.activeClassName);
-				plugin.removeStyle();
-				plugin.$open.focus();
-
-				plugin.afterChange( plugin.$element );
-			},
-			setStyle: function() {
-				var plugin = this;
-0
-				plugin.$mask.addClass(plugin.options.activeClassName);
-				plugin.$html.addClass('pualugin-modal__is-locked');
-				$('[data-element=modal]').css({
-					'z-index': 1001 + plugin.stackLevel
-				})
-			},
-			removeStyle: function() {
-				var plugin = this;
-
-				plugin.$mask.removeClass(plugin.options.activeClassName);
-				plugin.$html.removeClass('pualugin-modal__is-locked');
-				$('.pualugin').removeClass('pualugin-modal__is-locked');
-				$('[data-element=modal]').css({
-					'z-index': ''
-				})
-			},
-			touchBindEvent: function() {
-				var plugin = this;
-
-				plugin.$container.on('touchmove.' + plugin._name, function(e) {
-					e.preventDefault();
-				})
-			},
-			touchUnbindEvent: function() {
-				var plugin = this;
-
-				plugin.$container.off( '.' + plugin._name);
-			},
-			destroy: function() {
-				var plugin = this;
-
-				plugin.unbindEvents();
-				plugin.removeStyle();
-				plugin.$innerContainer.removeAttr('style');
-				plugin.$element.removeAttr('role aria-modal');
 			},
 			unbindEvents: function () {
 				var plugin = this;
 
-				plugin.$element.off('.' + plugin._name);
 				plugin.$open !== null && plugin.$open.off('.' + plugin._name);
+				plugin.$close.off('.' + plugin._name);
 				plugin.$doc.off('.' + plugin._name);
-				plugin.$container.off('.' + plugin._name);
+
+				plugin.$modal.each(function() {
+					var focusEl = COMMON.findFocusElement( this );
+					$(focusEl[0]).off('.' + plugin._name);
+					$(focusEl[1]).off('.' + plugin._name);
+				})
 			},
-			beforeChange: function ($modal) {
+			open: function( target, $clickTarget ) {
 				var plugin = this;
-				plugin.$element.trigger('beforeChange', [plugin, $modal]);
+				var $target = $(target);
+
+				if ( plugin.options.closeExisting ) {
+					plugin.$modal.not( $target ).each(function() {
+						plugin.close( this );
+					})
+				} else {
+					plugin.stackLevel += 10;
+				}
+
+				$clickTarget !== undefined && $clickTarget.attr('aria-expended', true);
+				plugin.wrappingContents( 'open' );
+
+				$target
+					.attr({
+						'tabindex': 0,
+						'z-index': plugin.stackLevel
+					})
+					.addClass(plugin.options.activeClassName)
+					.focus();
+
+				plugin.$body.trigger('modalOpen', [plugin, $target]);
 			},
-			afterChange: function ($modal) {
+			close: function( target ) {
 				var plugin = this;
-				plugin.$element.trigger('afterChange', [plugin, $modal]);
+				var $target = $(target);
+
+				!plugin.options.closeExisting && (plugin.stackLevel -= 10);
+				plugin.wrappingContents('close')
+
+				$target
+					.attr({
+						'tabindex': '',
+						'z-index': ''
+					})
+					.removeClass(plugin.options.activeClassName);
+
+				plugin.$open.each(function() {
+					var $this = $(this);
+					$this.data('target') === '#' + $target.attr('id') && $this.attr('aria-expended', false).focus();
+				})
+
+				plugin.$body.trigger('modalClose', [plugin, $target]);
 			},
-			reInit: function() {
+			wrappingContents: function( status ) {
 				var plugin = this;
 
-				plugin.destroy();
-				plugin.buildCache();
-				plugin.bindEvents();
+				if ( status === 'open' ) {
+					plugin.currentScrollTop = plugin.$win.scrollTop();
+					var wrap =
+						$('<div></div>')
+							.attr('id', plugin.options.contentsWrapClassName)
+							.prependTo('body')
+							.css({
+								"position": "fixed",
+								"width": "100%",
+								"height": "100%",
+								"overflow": "hidden"
+							});
+					plugin.$html
+						.find('body > *')
+						.not('script, style, #__bs_notify__, .' + plugin.options.modalClassName)
+						.not('#' + plugin.options.contentsWrapClassName)
+						.appendTo(wrap);
+
+					wrap.scrollTop( plugin.currentScrollTop )
+				} else {
+					plugin.$element.find('#pualugin-wrap > *').prependTo('body')
+					plugin.$element.find('#pualugin-wrap').remove();
+
+					$('html, body').scrollTop( plugin.currentScrollTop )
+				}
+			},
+			test: function( $target ) {
+				var plugin = this;
+
+				var startScreenY,
+					moveScreenY;
+
+				var flag = false;
+				var topFlag = true;
+				var bottomFlag = false;
+
+
+				$target.on('scroll', function(e) {
+					if ( $(this).scrollTop() + $(this).outerHeight() === $(this).outerHeight() ) {
+						console.log('topFlag true')
+						topFlag = true;
+						bottomFlag = false;
+					} else if ( $(this).scrollTop() + $(this).outerHeight() === $(this).prop('scrollHeight') ) {
+						console.log('bottomFlag true')
+						topFlag = false;
+						bottomFlag = true;
+					}
+				})
+
+
+				plugin.$doc.on('touchstart', function(e) {
+					startScreenY = e.originalEvent.touches[0].screenY;
+				})
+				plugin.$doc.on('touchmove', function(e) {
+					moveScreenY = e.originalEvent.touches[0].screenY;
+					if ( startScreenY > moveScreenY ) {
+						// down
+						if ( topFlag ) {
+							topFlag = false;
+							$target.off('touchmove')
+						}
+						if ( bottomFlag ) {
+							$target.on('touchmove', function(e){
+								console.log('Dont move')
+								e.preventDefault();
+							})
+						}
+					} else {
+						// up
+						if ( topFlag ) {
+							$target.on('touchmove', function(e){
+								console.log('Dont move')
+								e.preventDefault();
+							})
+						}
+						if ( bottomFlag ) {
+							bottomFlag = false;
+							$target.off('touchmove');
+						}
+					}
+				})
+
 			}
 		});
 
@@ -1463,7 +1617,7 @@
 		}
 
 		$(function () {
-			$('[data-element=modal__element]').modal();
+			$('body').modal();
 		});
 
 	})(jQuery, window, document, undefined)
