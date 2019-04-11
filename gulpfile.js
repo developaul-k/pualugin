@@ -24,7 +24,7 @@ const paths = {
     src: src + '/components/*.html',
     dest: 'assets/components'
   },
-  main: {
+  index: {
     src: src + '/*.html',
     dest: 'assets'
   }
@@ -46,7 +46,7 @@ const browserSync = done => {
           var pathname = require('url').parse(req.url).pathname;
           var filename = require('path').join(baseDir, pathname.substr(-1) === '/' ? pathname + 'index.html' : pathname);
 
-          var parser = new ssi('src', paths.main.dest, '/index.html');
+          var parser = new ssi('src', paths.index.dest, '/index.html');
 
           if (filename.indexOf('.html') > -1 && fs.existsSync(filename)) {
             res.end(
@@ -117,11 +117,11 @@ const components = () => {
 }
 
 
-const main = () => {
+const copyIndex = () => {
   return (
     gulp
-      .src(paths.main.src)
-      .pipe(gulp.dest(paths.main.dest))
+      .src(paths.index.src)
+      .pipe(gulp.dest(paths.index.dest))
       .pipe(cache.clear())
   )
 }
@@ -130,9 +130,9 @@ const watch = () => {
   gulp.watch(paths.styles.src, styles).on('change', path => browserSyncStream(path));
   gulp.watch(paths.scripts.src, scripts).on('change', path => browserSyncReload(path));
   gulp.watch(paths.components.src, components).on('change', path => browserSyncReload(path));
-  gulp.watch(paths.main.src, main).on('change', path => browserSyncReload(path));
+  gulp.watch(paths.index.src, copyIndex).on('change', path => browserSyncReload(path));
 }
 
-const taskSync = gulp.parallel(browserSync, styles, scripts, watch, main);
+const taskSync = gulp.parallel(browserSync, styles, scripts, watch, copyIndex);
 
 gulp.task('default', taskSync);
