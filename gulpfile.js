@@ -35,22 +35,23 @@ const browserSync = done => {
     port: 3000,
     open: false,
     server: {
-      baseDir: ['./'],
+      baseDir: ['./assets'],
       middleware: [
         require('connect-modrewrite')([
           '^(.*)\.html$ $1.shtml'
         ]), function(req, res, next) {
           var fs = require('fs');
           var ssi = require('ssi');
-          var baseDir = './src';
+          var baseDir = './assets';
           var pathname = require('url').parse(req.url).pathname;
           var filename = require('path').join(baseDir, pathname.substr(-1) === '/' ? pathname + 'index.html' : pathname);
 
-          var parser = new ssi('src', paths.main.dest, '/**/index.html');
+          var parser = new ssi('src', paths.main.dest, '/index.html');
 
           if (filename.indexOf('.html') > -1 && fs.existsSync(filename)) {
             res.end(
-              parser.parse(filename, fs.readFileSync(filename, {
+              parser
+              .parse(filename, fs.readFileSync(filename, {
                 encoding: 'utf8'
               })).contents,
               parser.compile()
@@ -60,7 +61,7 @@ const browserSync = done => {
             next();
         },
         bsSSi({
-          baseDir: __dirname + '/src',
+          baseDir: __dirname + '/assets',
           ext: '.html',
         })
       ]
@@ -119,7 +120,7 @@ const components = () => {
 const main = () => {
   return (
     gulp
-      .src([paths.main.src])
+      .src(paths.main.src)
       .pipe(gulp.dest(paths.main.dest))
       .pipe(cache.clear())
   )
