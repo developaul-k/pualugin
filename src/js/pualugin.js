@@ -835,6 +835,7 @@
 							'aria-controls': _id + '-panel'
 						});
 
+
 					tabsId.push(_id);
 				});
 
@@ -861,7 +862,7 @@
 
 				plugin.$element
 					.off('click' + '.' + plugin._name)
-					.on('click' + '.' + plugin._name, plugin.options.anchorEl, function (e) {
+					.on('click' + '.' + plugin._name, plugin.options.anchor, function (e) {
 						e.stopPropagation();
 						e.preventDefault();
 						if (plugin.flag) {
@@ -971,7 +972,7 @@
 				var plugin = this;
 
 				$('html, body').stop().animate({
-					scrollTop: plugin.$element.offset().top
+					scrollTop: plugin.$wrap.offset().top
 				}, plugin.options.speed);
 			},
 			reInit: function() {
@@ -1639,6 +1640,7 @@
 		var pluginName = 'overrideSlick';
 
 		var defaults = {
+
 		}
 
 		function Plugin(element, options) {
@@ -1662,12 +1664,12 @@
 			bindEvents: function() {
 				var plugin = this;
 
-                var initEvent = 'init.' + plugin._name,
-                    refreshEvent = 'refresh.' + plugin._name,
-                    beforeEvent = 'beforeChange.' + plugin._name,
-                    breakpointEvent = 'breakpoint.' + plugin._name,
-                    afterEvent = 'afterChange.' + plugin._name,
-					destroyEvent = 'destroy.' + plugin._name;
+                var initEvent = 'init.'+plugin._name,
+                    refreshEvent = 'refresh.'+plugin._name,
+                    beforeEvent = 'beforeChange.'+plugin._name,
+                    breakpointEvent = 'breakpoint.'+plugin._name,
+                    afterEvent = 'afterChange.'+plugin._name,
+					destroyEvent = 'destroy.'+plugin._name;
 
 				plugin.$element.on({
 					[initEvent]: function(e, slick) {
@@ -1680,7 +1682,7 @@
 						//afterEvent
 					},
 					[refreshEvent]: function(e, slick) {
-						//refreshEvent
+
 					},
 					[destroyEvent]: function(e, slick) {
 						//destroyEvent
