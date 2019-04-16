@@ -138,6 +138,19 @@
     </li>
     <li class="pualugin-options__li">
       <div class="pualugin-options__name">
+        easing
+      </div>
+      <ul class="pualugin-options__ul">
+        <li class="pualugin-options__li">
+          type: String
+        </li>
+        <li class="pualugin-options__li">
+          default: swing
+        </li>
+      </ul>
+    </li>
+    <li class="pualugin-options__li">
+      <div class="pualugin-options__name">
         event
       </div>
       <ul class="pualugin-options__ul">
@@ -170,14 +183,17 @@
     </li>
     <li class="pualugin-options__li">
       <div class="pualugin-options__name">
-        easing
+        autoScroll
       </div>
       <ul class="pualugin-options__ul">
         <li class="pualugin-options__li">
-          type: String
+          type: Boolean
         </li>
         <li class="pualugin-options__li">
-          default: swing
+          default: false
+        </li>
+        <li class="pualugin-options__li">
+          description: 탭 클릭 시 해당 탭의 상단까지 자동으로 스크롤 여부
         </li>
       </ul>
     </li>
@@ -295,12 +311,12 @@
 <code class="javascript">
   var yourVariable = $('.your-element').data('plugin_tab');
 
-  yourVariable.go(1); //OR
-  yourVariable.go(2, true); //OR
-  yourVariable.go(0, false); //OR
-  
+  yourVariable.open(1); //OR
+  yourVariable.open(2, true); //OR
+  yourVariable.open(0, false); //OR
+
   yourVariable.destroy();
-  
+
   yourVariable.reInit();
 </code>
 </pre>
@@ -309,11 +325,11 @@
   <ul class="pualugin-options__ul">
     <li class="pualugin-options__li">
       <div class="pualugin-options__name">
-        go
+        open
       </div>
       <ul class="pualugin-options__ul">
         <li class="pualugin-options__li">
-          Arguments: index, withScroll(Boolean): 선택된 탭의 상단으로 스크롤 이동 여부
+          Arguments: index, autoScroll(Boolean): 선택된 탭의 상단으로 스크롤 이동 여부
         </li>
         <li class="pualugin-options__li">
           description: 원하는 탭 오픈

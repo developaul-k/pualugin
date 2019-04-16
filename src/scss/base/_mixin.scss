@@ -31,6 +31,12 @@
     transition: $value;
 }
 
+@mixin flex ( $align, $justify ) {
+    display: flex;
+    align-items: $align;
+    justify-content: $justify;
+}
+
 // Reset Style Button
 @mixin resetButton() {
     border: none;

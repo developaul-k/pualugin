@@ -40,13 +40,13 @@ const browserSync = done => {
         require('connect-modrewrite')([
           '^(.*)\.html$ $1.shtml'
         ]), function(req, res, next) {
-          var fs = require('fs');
-          var ssi = require('ssi');
-          var baseDir = './assets';
-          var pathname = require('url').parse(req.url).pathname;
-          var filename = require('path').join(baseDir, pathname.substr(-1) === '/' ? pathname + 'index.html' : pathname);
+          const fs = require('fs');
+          const ssi = require('ssi');
+          const baseDir = './assets';
+          const pathname = require('url').parse(req.url).pathname;
+          const filename = require('path').join(baseDir, pathname.substr(-1) === '/' ? pathname + 'index.html' : pathname);
 
-          var parser = new ssi('src', paths.index.dest, '/index.html');
+          const parser = new ssi('src', paths.index.dest, '/index.html');
 
           if (filename.indexOf('.html') > -1 && fs.existsSync(filename)) {
             res.end(
@@ -74,6 +74,7 @@ const browserSyncStream = path => {
   cache.clearAll();
   return gulp.src(path).pipe(bs.stream());
 }
+
 const browserSyncReload = path => {
   cache.clearAll();
   return gulp.src(path).pipe(bs.reload({stream: true}));
@@ -95,6 +96,7 @@ const styles = () => {
       .pipe(gulp.dest(paths.styles.dest))
   )
 }
+
 const scripts = () => {
   return (
     gulp
@@ -115,7 +117,6 @@ const components = () => {
       .pipe(cache.clear())
   )
 }
-
 
 const copyIndex = () => {
   return (

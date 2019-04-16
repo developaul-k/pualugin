@@ -276,7 +276,7 @@
 			$('[data-element=toggle]').toggle();
 		});
 
-	})(jQuery, window, document, undefined);
+	})(jQuery, window, document, undefined)
 
 	/*
 	** Plugin - Tooltip
@@ -500,7 +500,7 @@
 		$(function () {
 			$('[data-element=tooltip]').tooltip();
 		});
-	})(jQuery, window, document, undefined);
+	})(jQuery, window, document, undefined)
 
 	/*
 	** Plugin - Tab
@@ -515,15 +515,14 @@
 			event: 'click', // 'focusin'
 			speed: 300,
 			easing: 'swing',
-			listEl: '[data-element="tab__list"]',
-			anchorEl: '[data-element="tab__anchor"]',
-			panelEl: '[data-element="tab__panel"]',
+			list: '[data-element="tab__list"]',
+			anchor: '[data-element="tab__anchor"]',
+			panel: '[data-element="tab__panel"]',
 			activeClassName: 'is-active',
 			disabledClassName: 'is-disabled',
-			withScroll: false,
+			autoScroll: false,
 			isInitActive: true,
-			initIndex: 0,
-			selectedText: 'Selected'
+			initIndex: 0
 		};
 
 		function Plugin(element, options) {
@@ -562,33 +561,32 @@
 			},
 			buildCache: function () {
 				var plugin = this;
-				var tabsId = [];
+				var anchorsId = [];
 
 				plugin.$element = $(plugin.element);
-				plugin.$anchor = plugin.$element.find(plugin.options.anchorEl);
-				plugin.$panel = plugin.$element.find(plugin.options.panelEl);
-				plugin.$list = plugin.$element.find(plugin.options.listEl);
+				plugin.$anchor = plugin.$element.find(plugin.options.anchor);
+				plugin.$panel = plugin.$element.find(plugin.options.panel);
+				plugin.$list = plugin.$element.find(plugin.options.list);
 
-				plugin.$anchor.each(function (index) {
+				plugin.$anchor.each(function (idx) {
 					var $this = $(this);
 					var _id = $this.attr('id') ? $this.attr('id') : COMMON.uuid('pualugin-' + plugin._name + '-');
 					var focusible = COMMON.checkFocusibleElement( $this );
 
 					$this
-						.data(plugin._name + '_target', plugin.$panel.eq(index))
-						.data('index', index)
+						.data(plugin._name + '_target', plugin.$panel.eq(idx))
 						.attr({
 							'id': _id,
 							'role': 'tab',
 							'tabindex': focusible ? '' : 0
 						});
 
-					tabsId.push(_id);
+					anchorsId.push(_id);
 				});
 
-				plugin.$panel.each(function (index) {
+				plugin.$panel.each(function (idx) {
 					$(this).attr({
-						'aria-labelledby': tabsId[index],
+						'aria-labelledby': anchorsId[idx],
 						'role': 'tabpanel',
 						'tabindex': 0
 					});
@@ -601,6 +599,7 @@
 
 				plugin.$list.removeAttr('role');
 				plugin.$anchor
+					.removeData(plugin._name + '_target')
 					.removeAttr('style role')
 					.removeClass(plugin.options.activeClassName);
 				plugin.$panel
@@ -634,15 +633,16 @@
 
 						if (e.type === 'click' || e.type === 'focusin' || key === 13 || key === 32) {
 							plugin.idx = $(this).data('index');
-							plugin.hide(this);
-							plugin.show(this);
+							plugin.close(this);
+							plugin.open(this);
 							e.preventDefault();
 						}
 					});
 			},
 			unbindEvents: function () {
 				var plugin = this;
-				plugin.$anchor.off('.' + plugin._name).removeData(plugin._name + '_target');
+
+				plugin.$anchor.off('.' + plugin._name);
 				plugin.$element.off('.' + plugin._name);
 			},
 			beforeChange: function ($anchor, $panel) {
@@ -657,15 +657,15 @@
 
 				$panel.find('.slick-initialized').length && $panel.find('.slick-initialized').slick('setPosition');
 			},
-			show: function (_target) {
+			open: function ( target ) {
 				var plugin = this,
-					$anchor = $(_target);
+					$anchor = $(target);
 
 				var $panel = $anchor
 					.addClass(plugin.options.activeClassName)
 					.attr({
 						'aria-selected': true,
-						'title': plugin.options.selectedText
+						'aria-expended': true
 					})
 					.data(plugin._name + '_target')
 					.addClass(plugin.options.activeClassName);
@@ -690,21 +690,21 @@
 					plugin.afterChange($anchor, $panel);
 				}
 
-				if (plugin.options.withScroll && plugin.initialized) {
+				if (plugin.options.autoScroll && plugin.initialized) {
 					$('html, body').stop().animate({
 						scrollTop: plugin.$element.offset().top
 					}, plugin.options.speed);
 				}
 			},
-			hide: function (_except) {
+			close: function ( target ) {
 				var plugin = this;
 
-				plugin.$anchor.not(_except).each(function () {
+				plugin.$anchor.not( target ).each(function () {
 					var $panel = $(this)
 						.removeClass(plugin.options.activeClassName)
 						.attr({
 							'aria-selected': false,
-							'title': ''
+							'aria-expended': false
 						})
 						.data(plugin._name + '_target')
 						.removeClass(plugin.options.activeClassName);
@@ -718,12 +718,12 @@
 					}
 				});
 			},
-			go: function(index, withScroll) {
+			go: function(index, autoScroll) {
 				var plugin = this;
 
 				plugin.$anchor.eq(index).trigger(plugin.options.event);
 
-				if ( withScroll && plugin.initialized ) {
+				if ( autoScroll && plugin.initialized ) {
 					$('html, body').stop().animate({
 						scrollTop: plugin.$element.offset().top
 					}, plugin.options.speed);
@@ -755,7 +755,7 @@
 			$('[data-element=tab]').tab();
 		});
 
-	})(jQuery, window, document, undefined);
+	})(jQuery, window, document, undefined)
 
 	/*
 	** Plugin - Accordion
@@ -769,9 +769,9 @@
 			mode: 'slide', // static, slide
 			speed: 200,
 			easing: 'linear',
-			itemEl: '[data-element="accordion__item"]',
-			anchorEl: '[data-element="accordion__anchor"]',
-			panelEl: '[data-element="accordion__panel"]',
+			item: '[data-element="accordion__item"]',
+			anchor: '[data-element="accordion__anchor"]',
+			panel: '[data-element="accordion__panel"]',
 			activeClassName: 'is-active',
 			initIndex: 0,
 			isInitActive: true,
@@ -815,10 +815,10 @@
 			buildCache: function () {
 				var plugin = this;
 
-				plugin.$wrap = $(plugin.element).attr('role', 'presentation');
-				plugin.$header = plugin.$wrap.find(plugin.options.itemEl);
-				plugin.$anchor = plugin.$wrap.find(plugin.options.anchorEl);
-				plugin.$panel = plugin.$wrap.find(plugin.options.panelEl).hide();
+				plugin.$element = $(plugin.element).attr('role', 'presentation');
+				plugin.$header = plugin.$element.find(plugin.options.item);
+				plugin.$anchor = plugin.$element.find(plugin.options.anchor);
+				plugin.$panel = plugin.$element.find(plugin.options.panel).hide();
 
 				var tabsId = [];
 
@@ -828,7 +828,6 @@
 
 					$this
 						.data(plugin._name + '_target', plugin.$panel.eq(index))
-						.data('index', index)
 						.data('title', $.trim($this.text()))
 						.attr({
 							'id': _id,
@@ -851,7 +850,6 @@
 
 				plugin.$anchor
 					.data(plugin._name + '_target', '')
-					.data('index', '')
 					.data('title', '')
 					.removeAttr('id aria-expanded aria-controls');
 
@@ -861,7 +859,7 @@
 			bindEvents: function () {
 				var plugin = this;
 
-				plugin.$wrap
+				plugin.$element
 					.off('click' + '.' + plugin._name)
 					.on('click' + '.' + plugin._name, plugin.options.anchorEl, function (e) {
 						e.stopPropagation();
@@ -886,16 +884,16 @@
 			},
 			unbindEvents: function () {
 				var plugin = this;
-				plugin.$wrap.off('.' + plugin._name);
+				plugin.$element.off('.' + plugin._name);
 				plugin.$header.off('.' + plugin._name);
 			},
 			beforeChange: function ($activeItemEl) {
 				var plugin = this;
-				plugin.$wrap.trigger('beforeChange', [plugin, $activeItemEl]);
+				plugin.$element.trigger('beforeChange', [plugin, $activeItemEl]);
 			},
 			afterChange: function ($activeItemEl) {
 				var plugin = this;
-				plugin.$wrap.trigger('afterChange', [plugin, $activeItemEl]);
+				plugin.$element.trigger('afterChange', [plugin, $activeItemEl]);
 			},
 			toggle: function ($targetAnchor) {
 				var plugin = this;
@@ -910,7 +908,7 @@
 				plugin.beforeChange($targetAnchor);
 
 				var $panel = $targetAnchor
-					.data(plugin._name + '_isOpen', true)
+					.attr('aria-expanded', true)
 					.addClass(plugin.options.activeClassName)
 					.data(plugin._name + '_target')
 					.addClass(plugin.options.activeClassName);
@@ -918,6 +916,7 @@
 				if (plugin.initialized && plugin.options.mode === 'slide') {
 					$panel.stop().slideDown(plugin.options.speed, plugin.options.easing, function () {
 						plugin.flag = false;
+
 						if (plugin.options.autoScroll) {
 							$('html, body').stop().animate({
 								scrollTop: $targetAnchor.offset().top
@@ -928,8 +927,6 @@
 					$panel.stop().show();
 					plugin.flag = false;
 				}
-
-				$targetAnchor.attr('aria-expanded', false);
 
 				if (plugin.options.autoFold) {
 					plugin.$anchor.not($targetAnchor).each(function () {
@@ -945,7 +942,7 @@
 				plugin.beforeChange($targetAnchor);
 
 				var $panel = $targetAnchor
-					.data(plugin._name + '_isOpen', false)
+					.attr('aria-expanded', false)
 					.removeClass(plugin.options.activeClassName)
 					.data(plugin._name + '_target')
 					.removeClass(plugin.options.activeClassName);
@@ -959,19 +956,23 @@
 					plugin.flag = false;
 				}
 
-				$targetAnchor.attr('aria-expanded', false);
-
 				plugin.afterChange($targetAnchor);
 			},
-			go: function( index, withScroll ) {
+			go: function( idx, autoScroll ) {
 				var plugin = this;
 
-				plugin.$anchor.eq(index).trigger('click');
-				if (withScroll) {
-					$('html, body').stop().animate({
-						scrollTop: plugin.$wrap.offset().top
-					}, plugin.options.speed);
+				plugin.$anchor.eq(idx).trigger('click');
+
+				if ( autoScroll ) {
+					plugin.autoScroll();
 				}
+			},
+			autoScroll: function() {
+				var plugin = this;
+
+				$('html, body').stop().animate({
+					scrollTop: plugin.$element.offset().top
+				}, plugin.options.speed);
 			},
 			reInit: function() {
 				var plugin = this;
@@ -998,7 +999,7 @@
 			$('[data-element=accordion]').accordion();
 		});
 
-	})(jQuery, window, document, undefined);
+	})(jQuery, window, document, undefined)
 
 	/*
 	** Plugin - Sticky
@@ -1638,7 +1639,6 @@
 		var pluginName = 'overrideSlick';
 
 		var defaults = {
-
 		}
 
 		function Plugin(element, options) {
@@ -1662,25 +1662,30 @@
 			bindEvents: function() {
 				var plugin = this;
 
-                var initEvent = 'init.'+plugin._name,
-                    refreshEvent = 'refresh.'+plugin._name,
-                    beforeEvent = 'beforeChange.'+plugin._name,
-                    breakpointEvent = 'breakpoint.'+plugin._name,
-                    afterEvent = 'afterChange.'+plugin._name,
-					destroyEvent = 'destroy.'+plugin._name;
+                var initEvent = 'init.' + plugin._name,
+                    refreshEvent = 'refresh.' + plugin._name,
+                    beforeEvent = 'beforeChange.' + plugin._name,
+                    breakpointEvent = 'breakpoint.' + plugin._name,
+                    afterEvent = 'afterChange.' + plugin._name,
+					destroyEvent = 'destroy.' + plugin._name;
 
-				plugin.$element.on(initEvent, function(e, slick) {
-					//initEvent
+				plugin.$element.on({
+					[initEvent]: function(e, slick) {
+						//initEvent
+					},
+					[beforeEvent]: function(e, slick) {
+						//beforeEvent
+					},
+					[afterEvent]: function(e, slick, currentSlide) {
+						//afterEvent
+					},
+					[refreshEvent]: function(e, slick) {
+						//refreshEvent
+					},
+					[destroyEvent]: function(e, slick) {
+						//destroyEvent
+					}
 				});
-				plugin.$element.on(beforeEvent, function(e, slick) {
-					//beforeEvent
-				})
-				plugin.$element.on(afterEvent, function(e, slick) {
-					//afterEvent
-				})
-				plugin.$element.on( destroyEvent, function(e, slick) {
-					//destroyEvent
-				})
 			}
 		});
 
@@ -1694,6 +1699,78 @@
 
 		$(function() {
 			$('body').overrideSlick();
+		})
+	})(jQuery, window, document, undefined)
+
+	/*
+	** Plugin - Checkbox Control
+	*/
+	;
+	(function ($, wino, doc, undefined) {
+		var pluginName = 'checkbox'
+
+		var defaults = {
+			checkbox: '[data-element=checkbox__input]',
+			section: '[data-element=checkbox__section]',
+			all: '[data-element=checkbox__all]'
+		}
+
+		function Plugin( element, options ) {
+			this.element = element;
+			this._defaults = defaults;
+			this.options = $.extend({}, this._defaults, options);
+			this.init();
+		}
+
+		$.extend(Plugin.prototype, {
+			init: function() {
+				var plugin = this;
+
+				plugin.buildCache();
+				plugin.bindEvents();
+			},
+			buildCache: function() {
+				var plugin = this;
+
+				plugin.$element = $(plugin.element);
+				plugin.$section = plugin.$element.find( plugin.options.section );
+				plugin.$checkbox = plugin.$element.find( plugin.options.checkbox ).not(':disabled');
+				plugin.$all = plugin.$element.find( plugin.options.all ).not(':disabled');
+			},
+			bindEvents: function() {
+				var plugin = this;
+
+				plugin.$checkbox.on('change', function(e) {
+					var checkboxLength = plugin.$checkbox.length;
+					var checkedLength = plugin.$checkbox.filter(':checked').length;
+
+					if ( checkboxLength === checkedLength ) {
+						plugin.$all.prop('checked', true);
+					} else {
+						plugin.$all.prop('checked') && plugin.$all.prop('checked', false);
+					}
+				})
+
+				plugin.$all.on('change', function(e) {
+					if ( $(this).prop('checked') ) {
+						plugin.$checkbox.prop('checked', true);
+					} else {
+						plugin.$checkbox.prop('checked', false);
+					}
+				})
+			}
+		});
+
+		$.fn[pluginName] = function ( options ) {
+			return this.each(function () {
+				if (!$.data(this, "plugin_" + pluginName)) {
+					$.data(this, "plugin_" + pluginName, new Plugin(this, options || $(this).data('options')));
+				}
+			});
+		}
+
+		$(function() {
+			$('[data-element=checkbox]').checkbox();
 		})
 	})(jQuery, window, document, undefined)
 

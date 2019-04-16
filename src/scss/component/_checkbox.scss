@@ -1,0 +1,54 @@
+#{$pluginName}-checkbox {
+    display: block;
+    &__input {
+        position: absolute;
+        overflow: hidden;
+        opacity: 0;
+        &:checked {
+            & ~ #{$pluginName}-checkbox__icon {
+                color: #f00;
+            }
+            & ~ #{$pluginName}-checkbox__text {
+                color: #f00;
+            }
+        }
+        &:focus {
+            & ~ #{$pluginName}-checkbox__icon {
+                outline: rgb(59, 153, 252) auto 5px;
+            }
+        }
+        &:disabled {
+            & ~ #{$pluginName}-checkbox__icon {
+                background-color: #f8f8f8;
+            }
+        }
+    }
+    &__icon {
+        width: 20px;
+        height: 20px;
+        border-radius: 3px;
+        border: 1px solid #ddd;
+        display: inline-block;
+        vertical-align: middle;
+        text-align: center;
+        @include transition( color .2s );
+        color: transparent;
+        &:before {
+            margin-right: -1px;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        &:after {
+            width: 1px;
+            height: 100%;
+            display: inline-block;
+            vertical-align: middle;
+            content: '';
+        }
+    }
+    &__text {
+        margin-left: 5px;
+        display: inline-block;
+        vertical-align: middle;
+    }
+}

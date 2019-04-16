@@ -41,6 +41,57 @@
             </nav>
         </header>
         <div class="pualugin__contents">
+            <section id="modal" class="plugin">
+  <h1>Checkbox</h1>
+  <!-- CODE -->
+  <p class="plugin__description">- CODE / 기본</p>
+  <div class="code">
+    <div class="code__language"><i class="fas fa-code"></i> HTML</div>
+    <pre>
+<code class="html">
+  &lt;label class="pualugin-checkbox"&gt;
+    &lt;input type="checkbox" class="pualugin-checkbox__input"&gt;
+    &lt;i class="pualugin-checkbox__icon fas fa-check"&gt;&lt;/i&gt;
+    &lt;span class="pualugin-checkbox__text"&gt;동의합니다.&lt;/span&gt;
+  &lt;/label&gt;
+</code>
+</pre>
+  </div>
+  <!-- CODE -->
+
+  <!-- RESULT -->
+  <p class="plugin__description">- RESULT</p>
+  <div class="pualugin-result">
+    <div data-element="checkbox">
+      <div data-element="checkbox__section">
+        <label class="pualugin-checkbox">
+          <input type="checkbox" class="pualugin-checkbox__input" data-element="checkbox__input" disabled>
+          <i class="pualugin-checkbox__icon fas fa-check"></i>
+          <span class="pualugin-checkbox__text">동의합니다.</span>
+        </label>
+        <br>
+        <label class="pualugin-checkbox">
+          <input type="checkbox" class="pualugin-checkbox__input" data-element="checkbox__input">
+          <i class="pualugin-checkbox__icon fas fa-check"></i>
+          <span class="pualugin-checkbox__text">동의합니다.</span>
+        </label>
+        <br>
+        <label class="pualugin-checkbox">
+          <input type="checkbox" class="pualugin-checkbox__input" data-element="checkbox__input">
+          <i class="pualugin-checkbox__icon fas fa-check"></i>
+          <span class="pualugin-checkbox__text">동의합니다.</span>
+        </label>
+        <br>
+        <label class="pualugin-checkbox">
+          <input type="checkbox" class="pualugin-checkbox__input" data-element="checkbox__all">
+          <i class="pualugin-checkbox__icon fas fa-check"></i>
+          <span class="pualugin-checkbox__text">전체선택</span>
+        </label>
+      </div>
+    </div>
+  </div>
+  <!-- //RESULT -->
+</section>
             <div id="toggle" class="plugin">
   <h1 class="plugin__title">Toggle</h1>
 <!-- CODE -->
@@ -848,6 +899,19 @@
     </li>
     <li class="pualugin-options__li">
       <div class="pualugin-options__name">
+        easing
+      </div>
+      <ul class="pualugin-options__ul">
+        <li class="pualugin-options__li">
+          type: String
+        </li>
+        <li class="pualugin-options__li">
+          default: swing
+        </li>
+      </ul>
+    </li>
+    <li class="pualugin-options__li">
+      <div class="pualugin-options__name">
         event
       </div>
       <ul class="pualugin-options__ul">
@@ -880,14 +944,17 @@
     </li>
     <li class="pualugin-options__li">
       <div class="pualugin-options__name">
-        easing
+        autoScroll
       </div>
       <ul class="pualugin-options__ul">
         <li class="pualugin-options__li">
-          type: String
+          type: Boolean
         </li>
         <li class="pualugin-options__li">
-          default: swing
+          default: false
+        </li>
+        <li class="pualugin-options__li">
+          description: 탭 클릭 시 해당 탭의 상단까지 자동으로 스크롤 여부
         </li>
       </ul>
     </li>
@@ -1005,12 +1072,12 @@
 <code class="javascript">
   var yourVariable = $('.your-element').data('plugin_tab');
 
-  yourVariable.go(1); //OR
-  yourVariable.go(2, true); //OR
-  yourVariable.go(0, false); //OR
-  
+  yourVariable.open(1); //OR
+  yourVariable.open(2, true); //OR
+  yourVariable.open(0, false); //OR
+
   yourVariable.destroy();
-  
+
   yourVariable.reInit();
 </code>
 </pre>
@@ -1019,11 +1086,11 @@
   <ul class="pualugin-options__ul">
     <li class="pualugin-options__li">
       <div class="pualugin-options__name">
-        go
+        open
       </div>
       <ul class="pualugin-options__ul">
         <li class="pualugin-options__li">
-          Arguments: index, withScroll(Boolean): 선택된 탭의 상단으로 스크롤 이동 여부
+          Arguments: index, autoScroll(Boolean): 선택된 탭의 상단으로 스크롤 이동 여부
         </li>
         <li class="pualugin-options__li">
           description: 원하는 탭 오픈
@@ -1460,7 +1527,7 @@
 <!-- Initialzied -->
 </div>
             <div id="sticky" class="plugin">
-<h1>Plugin - Sticky</h1>
+<h1>Sticky</h1>
 
 <!-- CODE -->
 <p class="plugin__description">- CODE / 기본</p>
@@ -1678,7 +1745,7 @@
 <!-- //Event -->
 </div>
             <section id="modal" class="plugin">
-  <h1>Plugin - Modal</h1>
+  <h1>Modal</h1>
 <!-- CODE -->
 <p class="plugin__description">- CODE / 기본</p>
 <div class="code">
